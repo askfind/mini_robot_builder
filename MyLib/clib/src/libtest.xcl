@@ -1,0 +1,15 @@
+-!               LIBTEST.XCL 
+
+    $Name: V3_34K V3_34J V3_34I V3_34H V3_34G $    
+
+    Used for overriding the default configuration.
+
+    xlink 'options' your_file(s) -f libtest -f lnkXXXX
+
+    Copyright 1986 - 1999 IAR Systems. All rights reserved.
+-!
+
+-e_formatted_write=_formatted_write
+
+-e_formatted_read=_formatted_read
+

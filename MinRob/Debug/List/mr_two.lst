@@ -1,0 +1,87 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.25B/WIN             31/Jul/2002  10:04:10 #
+# Copyright 1996-2000 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\MiniRobot_CODE\mr_two.c                       #
+#    Command line =  --cpu=m161 -mt -o C:\AVR_CC\MiniRobot_CODE\Debug\Obj\   #
+#                    -I C:\AVR_CC\AVR\INC\ -lC C:\AVR_CC\MiniRobot_CODE\Debu #
+#                    g\List\ -lA C:\AVR_CC\MiniRobot_CODE\Debug\List\        #
+#                    --ec++ -e --initializers_in_flash -s9 --no_inline       #
+#                    --no_code_motion --no_cross_call --no_clustering        #
+#                    --debug C:\AVR_CC\MiniRobot_CODE\mr_two.c               #
+#    List file    =  C:\AVR_CC\MiniRobot_CODE\Debug\List\mr_two.lst          #
+#    Object file  =  C:\AVR_CC\MiniRobot_CODE\Debug\Obj\mr_two.r90           #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          /* second part of C-SPY DEMO */
+      2          #include "stdio.h"
+      3          
+
+   \                                 In segment TINY_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: TINY_I>`
+      4          char  array[10] = "abcd";
+   \   char __tiny array[10];
+   \                     array:
+   \   00000000                              DS 10
+   \   0000000A                              REQUIRE `?<Initializer for array>`
+      5          
+
+   \                                 In segment CODE, align 2, keep-with-next
+      6          void mr_two(int i)
+      7          {
+      8            char *cp;
+      9          
+     10            cp = &array[i];
+     11            printf ("%c\n", *cp);
+   \   __nearfunc void mr_two(int);
+   \                     ??mr_two:
+   \   00000000   2FE0                       MOV     R30,R16
+   \   00000002   ....                       SUBI    R30,(-(array) & 0xFF)
+   \   00000004   E0F0                       LDI     R31,0
+   \   00000006   8100                       LD      R16,Z
+   \   00000008   E010                       LDI     R17,0
+   \   0000000A   931A                       ST      -Y,R17
+   \   0000000C   930A                       ST      -Y,R16
+   \   0000000E   ....                       LDI     R16,`?<Constant "%c\\n">`
+   \   00000010   ........                   CALL    printf
+   \   00000014   5FCE                       SUBI    R28,254
+     12          }
+   \   00000016   9508                       RET
+
+   \                                 In segment TINY_ID, align 1, keep-with-next
+   \                     `?<Initializer for array>`:
+   \   00000000   6261646300                 DB "abcd"
+   \   00000005   0000000000                 DB 0, 0, 0, 0, 0
+
+   \                                 In segment TINY_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: TINY_I>`
+   \   char __tiny <Constant "%c\n">[4];
+   \                     `?<Constant "%c\\n">`:
+   \   00000000                              DS 4
+   \   00000004                              REQUIRE `?<Initializer for <Constant "%c\\n">>`
+
+   \                                 In segment TINY_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "%c\\n">>`:
+   \   00000000   6325000A                   DB "%c\012"
+
+   Maximum stack usage in bytes:
+
+     Function     CSTACK  RSTACK
+     --------     ------  ------
+     mr_two(int)      2       2 
+       -> printf      2       2 
+
+ 
+     24 bytes in segment CODE
+      6 bytes in segment INITTAB
+     14 bytes in segment TINY_I
+     14 bytes in segment TINY_ID
+ 
+     38 bytes of CODE memory (+ 6 bytes shared)
+     14 bytes of DATA memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,491 @@
+        NAME UART0_A1x_f03
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG NEAR_Z:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        EXTERN ?need_segment_init
+        EXTERN CheckParity
+        FUNCTION CheckParity,0202H
+        EXTERN ?S_MUL_L02
+
+        PUBWEAK `?<Segment init: NEAR_Z>`
+        PUBLIC Count_Tx_UART0
+        PUBLIC IncErrArr_UART0
+        FUNCTION IncErrArr_UART0,0203H
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC New_UART0_TX
+        FUNCTION New_UART0_TX,021203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC S16e
+        PUBLIC S18e
+        PUBLIC S21e
+        PUBLIC S22e
+        PUBLIC S23e
+        PUBLIC S39e
+        PUBLIC S3e
+        PUBLIC S4e
+        PUBLIC S51e
+        PUBLIC S5e
+        PUBWEAK _A_UCSR0B
+        PUBWEAK _A_UDR0
+        PUBLIC fBit_CTS0
+        PUBLIC fBit_DSR0
+        PUBLIC fBit_DTR0
+        PUBLIC fBit_RTS0
+        PUBLIC fCheckParity_UART0
+        PUBLIC fContrStream_UART0
+        PUBLIC fEnb_CTS0
+        PUBLIC fEnb_DSR0
+        PUBLIC fEnb_DTR0
+        PUBLIC fEnb_Echo_UART0
+        PUBLIC fEnb_Err_UART0
+        PUBLIC fEnb_RTS0
+        PUBLIC fEnb_XON_XOFF_Rx_UART0
+        PUBLIC fEnb_XON_XOFF_Tx_UART0
+        PUBLIC fModeCHR90
+        PUBLIC fModeMPCM0
+        PUBLIC fModeU2X0
+        PUBLIC fSpeedBaud_UART0
+        PUBLIC fSym_XOFF
+        PUBLIC fSym_XON
+        PUBLIC main
+        FUNCTION main,021a03H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+;     1 #include "iom161.h"
+
+        ASEGN ABSOLUTE:DATA:NOROOT,02aH
+; union <unnamed> volatile __io _A_UCSR0B;
+_A_UCSR0B:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,02cH
+; union <unnamed> volatile __io _A_UDR0;
+_A_UDR0:
+	DS 1
+;     2 #include "stdio.h"
+;     3 #include "uart0_A1x.h"
+;     4 #include "uart0_A1x_decl.h"
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned int const __flash fSpeedBaud_UART0;
+fSpeedBaud_UART0:
+	DW 9600
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fModeU2X0;
+fModeU2X0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fModeCHR90;
+fModeCHR90:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fCheckParity_UART0;
+fCheckParity_UART0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fContrStream_UART0;
+fContrStream_UART0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_DTR0;
+fEnb_DTR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_DTR0;
+fBit_DTR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_DSR0;
+fEnb_DSR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_DSR0;
+fBit_DSR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_RTS0;
+fEnb_RTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_RTS0;
+fBit_RTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_CTS0;
+fEnb_CTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_CTS0;
+fBit_CTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fSym_XON;
+fSym_XON:
+	DB 17
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fSym_XOFF;
+fSym_XOFF:
+	DB 19
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_XON_XOFF_Tx_UART0;
+fEnb_XON_XOFF_Tx_UART0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_XON_XOFF_Rx_UART0;
+fEnb_XON_XOFF_Rx_UART0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_Echo_UART0;
+fEnb_Echo_UART0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fModeMPCM0;
+fModeMPCM0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_Err_UART0;
+fEnb_Err_UART0:
+	DB 0
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near CheckParity_UART0;
+CheckParity_UART0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near Enb_Err_UART0;
+Enb_Err_UART0:
+	DS 1
+
+        RSEG EEPROM_I:XDATA:NOROOT(0)
+; unsigned char __eeprom S3e;
+S3e:
+	DB 0
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S4e;
+S4e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S5e;
+S5e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S16e;
+S16e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S18e;
+S18e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S21e;
+S21e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S22e;
+S22e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S23e;
+S23e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S39e;
+S39e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S51e;
+S51e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near TxBuf_UART0[32];
+TxBuf_UART0:
+	DS 32
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near TxHead_UART0;
+TxHead_UART0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near TxTail_UART0;
+TxTail_UART0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned int volatile __near Rx_Tx_Err_UART0[5];
+Rx_Tx_Err_UART0:
+	DS 10
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned int volatile __near Count_Tx_UART0;
+Count_Tx_UART0:
+	DS 2
+;     5 
+;     6 
+;     7 ///*************************************
+;     8 // This method interrupt event TX Empty
+;     9 //#pragma vector=UART0_TX_vect
+;    10 //static __interrupt void   UART0_TX()
+
+        RSEG CODE:CODE:NOROOT(1)
+;    11 void New_UART0_TX(void) 
+;    12     {
+; __nearfunc void New_UART0_TX();
+New_UART0_TX:
+        FUNCALL New_UART0_TX, CheckParity
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL New_UART0_TX, CheckParity
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R25
+	ST	-Y,R24
+;    13     unsigned char tmptail;
+;    14     unsigned char cTmp;
+;    15     unsigned char cByte;
+;    16     //volatile unsigned char cPE;
+;    17     //volatile unsigned char cPERx;    
+;    18     //volatile unsigned char FlgErr;
+;    19 
+;    20 
+;    21         /* check if all data is transmitted */
+;    22         if ( TxHead_UART0 != TxTail_UART0 )
+	LDS	R16,TxHead_UART0
+	LDS	R17,TxTail_UART0
+	CP	R16,R17
+	BREQ	??New_UART0_TX_0
+;    23            {
+;    24            /* calculate buffer index */
+;    25            tmptail = ( TxTail_UART0 + 1 ) & TX_BUFFER_MASK_UART0;
+	LDS	R24,TxTail_UART0
+	INC	R24
+	ANDI	R24,0x1F
+;    26            TxTail_UART0 = tmptail; /* store new index */
+	STS	TxTail_UART0,R24
+;    27            cByte = TxBuf_UART0[tmptail];    // Byte for Tx UART0
+	LDI	R25,0
+	MOVW	R31 : R30,R25 : R24
+	SUBI	R30,LOW((-(TxBuf_UART0) & 0xFFFF))
+	SBCI	R31,(-(TxBuf_UART0) & 0xFFFF) >> 8
+	LD	R16,Z
+;    28            /* For Modes CheckParity_UART0 */
+;    29               switch (CheckParity_UART0)
+	LDS	R17,CheckParity_UART0
+	SUBI	R17,0
+	BREQ	??New_UART0_TX_1
+	DEC	R17
+	BREQ	??New_UART0_TX_2
+	DEC	R17
+	BREQ	??New_UART0_TX_3
+	RJMP	??New_UART0_TX_4
+;    30               {
+;    31               case 0:
+;    32               break;
+;    33               case 1:
+;    34               cTmp = CheckParity(cByte);
+??New_UART0_TX_2:
+	CALL	CheckParity
+;    35                 if ( cTmp == 0) // cByte parity
+	TST	R16
+	BRNE	??New_UART0_TX_1
+;    36                 {
+;    37                  UCSR0B = UCSR0B & ~(1<<TXB80);  // TXB80 = 0
+	CBI	0x0A,0x00
+	RJMP	??New_UART0_TX_1
+;    38                 };
+;    39               break;
+;    40               case 2:
+;    41               cTmp = CheckParity(cByte);
+??New_UART0_TX_3:
+	CALL	CheckParity
+;    42                 if ( cTmp == 0) // cByte parity
+	TST	R16
+	BRNE	??New_UART0_TX_1
+;    43                 {
+;    44                  UCSR0B = UCSR0B | (1<<TXB80);   // TXB80 = 1
+	SBI	0x0A,0x00
+	RJMP	??New_UART0_TX_1
+;    45                 };  
+;    46               break;
+;    47               default:
+;    48               UCSR0B = UCSR0B | (1<<TXB80);   // TXB80 = 1
+??New_UART0_TX_4:
+	SBI	0x0A,0x00
+;    49               break;     
+;    50               };
+;    51           UDR0 = TxBuf_UART0[tmptail]; /* start transmition */
+??New_UART0_TX_1:
+	LDI	R25,0
+	MOVW	R31 : R30,R25 : R24
+	SUBI	R30,LOW((-(TxBuf_UART0) & 0xFFFF))
+	SBCI	R31,(-(TxBuf_UART0) & 0xFFFF) >> 8
+	LD	R16,Z
+	OUT	0x0C,R16
+	RJMP	??New_UART0_TX_5
+;    52                 }
+;    53         else
+;    54                 {
+;    55                 UCSR0B &= ~(1<<UDRIE0); /* disable UDRE interrupt */
+??New_UART0_TX_0:
+	CBI	0x0A,0x05
+;    56                 };
+;    57  }
+??New_UART0_TX_5:
+	LD	R24,Y+
+	LD	R25,Y+
+	RET
+;    58 
+;    59 /**********************/
+;    60 /* Function IncErrArr */
+
+        RSEG CODE:CODE:NOROOT(1)
+;    61 void IncErrArr_UART0 ( int pos )
+;    62 {
+;    63  if ( Enb_Err_UART0 != 0 )
+; __nearfunc void IncErrArr_UART0(int);
+IncErrArr_UART0:
+	LDS	R18,Enb_Err_UART0
+	TST	R18
+	BREQ	??IncErrArr_UART0_0
+;    64   {
+;    65   Rx_Tx_Err_UART0[pos]++;
+	LDI	R20,2
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(Rx_Tx_Err_UART0) & 0xFFFF))
+	SBCI	R31,(-(Rx_Tx_Err_UART0) & 0xFFFF) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Z,R16
+	STD	Z+1,R17
+;    66   };  
+;    67 }
+??IncErrArr_UART0_0:
+	RET
+;    68 /*  End IncErrArr    */
+;    69 /*********************/
+;    70 
+;    71 
+
+        RSEG CODE:CODE:NOROOT(1)
+;    72 void main(void)
+;    73 {
+; __nearfunc void main();
+main:
+        FUNCALL main, New_UART0_TX
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R25
+	ST	-Y,R24
+;    74   int i;
+;    75   for (;;)
+;    76   {
+;    77    /*--------------------------*/
+;    78   /*   Test for function UART0 */
+;    79   /*
+;    80 ; 
+;    81 ;      3 bytes in segment ABSOLUTE
+;    82 ;    222 bytes in segment CODE
+;    83 ;      1 byte  in segment EEPROM_I
+;    84 ;      6 bytes in segment INITTAB
+;    85 ;     21 bytes in segment NEAR_F
+;    86 ;     66 bytes in segment NEAR_Z
+;    87 ; 
+;    88 ;    243 bytes of CODE memory (+ 6 bytes shared)
+;    89 ;     66 bytes of DATA memory (+ 3 bytes shared)
+;    90 ;      1 byte  of XDATA memory
+;    91 ;
+;    92 */
+;    93   New_UART0_TX();
+??main_0:
+	RCALL	New_UART0_TX
+;    94   /* End Test */
+;    95   i++;
+	ADIW	R25 : R24,1
+	RJMP	??main_0
+;    96   /* Test Modul for A1x.c */
+;    97   };
+;    98 }
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_Z>`:
+	DW	SFE(NEAR_Z) - SFB(NEAR_Z)
+	DW	SFB(NEAR_Z)
+	DW	0
+	REQUIRE ?need_segment_init
+
+        END
+; 
+;      2 bytes in segment ABSOLUTE
+;    150 bytes in segment CODE
+;      1 byte  in segment EEPROM_I
+;      6 bytes in segment INITTAB
+;     21 bytes in segment NEAR_F
+;     57 bytes in segment NEAR_Z
+; 
+;    171 bytes of CODE memory (+ 6 bytes shared)
+;     57 bytes of DATA memory (+ 2 bytes shared)
+;      1 byte  of XDATA memory
+;
+;Errors: none
+;Warnings: none

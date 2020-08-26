@@ -1,0 +1,93 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             02/Sep/2002  18:28:27 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\MiniRobot_CODE\SRC\Putchar.c                  #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\MyLib\Debug\Obj\ -I         #
+#                    C:\AVR_CC\AVR\INC\ -lC C:\AVR_CC\MyLib\Debug\List\ -lA  #
+#                    C:\AVR_CC\MyLib\Debug\List\ --ec++ -e -y                #
+#                    --initializers_in_flash -z3 --no_cse --no_inline        #
+#                    --no_code_motion --no_cross_call --no_clustering        #
+#                    --library_module --debug C:\AVR_CC\MiniRobot_CODE\SRC\P #
+#                    utchar.c                                                #
+#    List file    =  C:\AVR_CC\MyLib\Debug\List\Putchar.lst                  #
+#    Object file  =  C:\AVR_CC\MyLib\Debug\Obj\Putchar.r90                   #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          /*              PUTCHAR.C
+      2          
+      3             The ANSI "putchar" function.
+      4          
+      5             The putchar function writes the character c to the
+      6             output-stream pointed to by stream. 
+      7             The function returns the character written. If an writing 
+      8             error  occurs the putchar shall return EOF.
+      9          
+     10             $Name: V3_34K V3_34J V3_34I V3_34H V3_34G $    
+     11          
+     12             Copyright 1986 - 1999 IAR Systems. All rights reserved.
+     13          */
+     14          
+     15          #include <iom161.h>
+
+   \                                 In segment ABSOLUTE, at 0x3a
+   \   union <unnamed> volatile __io _A_DDRA;
+   \                     _A_DDRA:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x3b
+   \   union <unnamed> volatile __io _A_PORTA;
+   \                     _A_PORTA:
+   \   00000000                              DS 1
+     16          #include <stdio.h>
+     17          extern void TransmitByte( unsigned char data);
+     18           
+
+   \                                 In segment CODE, align 2, keep-with-next
+     19          int putchar(int ch)
+     20          {
+   \   __intrinsic __nearfunc int putchar(int);
+   \                     putchar:
+   \   00000000   939A                       ST      -Y,R25
+   \   00000002   938A                       ST      -Y,R24
+   \   00000004   01C8                       MOVW    R25 : R24,R17 : R16
+     21          /*
+     22                  put your own putchar-function here
+     23          */
+     24            DDRA  = 0xFF;
+   \   00000006   EF0F                       LDI     R16,255
+   \   00000008   BB0A                       OUT     0x1A,R16
+     25            PORTA = (unsigned char) ch;
+   \   0000000A   BB8B                       OUT     0x1B,R24
+     26            TransmitByte((unsigned char) ch);
+   \   0000000C   2F08                       MOV     R16,R24
+   \   0000000E   ........                   CALL    ??TransmitByte
+     27            return ch;
+   \   00000012   018C                       MOVW    R17 : R16,R25 : R24
+   \   00000014   9189                       LD      R24,Y+
+   \   00000016   9199                       LD      R25,Y+
+   \   00000018   9508                       RET
+     28          }
+     29          
+     30          
+
+   Maximum stack usage in bytes:
+
+     Function                        CSTACK  RSTACK
+     --------                        ------  ------
+     putchar                             2       2 
+       -> TransmitByte(unsigned char)
+                                         2       2 
+
+ 
+      2 bytes in segment ABSOLUTE
+     26 bytes in segment CODE
+ 
+     26 bytes of CODE memory
+      0 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

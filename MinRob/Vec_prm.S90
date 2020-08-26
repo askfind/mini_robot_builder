@@ -1,0 +1,9 @@
+          NAME	vec_04
+ 
+          org 04
+ _VEC04:
+          NOP
+          RETI
+ 
+          END
+  

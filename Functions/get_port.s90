@@ -1,0 +1,12 @@
+NAME get_port
+#include "iom161.h"
+PUBLIC get_port //; Declare symbols to be exported to C function
+
+  RSEG CODE       //; This code is relocatable, RSEG
+
+  get_port:       //; Label, start execution here
+  in R16,PIND     //; Read in the pind value
+  swap R16        //; Swap the upper and lower nibble
+  out PORTB,R16   //; Output the data to the port register
+  ret             //; Return to the main function
+  END

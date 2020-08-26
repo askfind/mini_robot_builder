@@ -1,0 +1,3442 @@
+        NAME Key_Contr_A2x
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG NEAR_I:DATA:NOROOT(0)
+        RSEG NEAR_ID:CODE:NOROOT(0)
+        RSEG NEAR_Z:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        EXTERN ?need_segment_init
+        EXTERN ?US_DIVMOD_L02
+        EXTERN ?UL2F_L04
+        EXTERN ?F_ADD_L04
+        EXTERN ?F2L_L04
+        EXTERN ?UC_DIVMOD_L01
+        EXTERN Reset_UART0
+        FUNCTION Reset_UART0,0202H
+        EXTERN Init_S_UART0
+        FUNCTION Init_S_UART0,0202H
+        EXTERN Init_2S_UART0
+        FUNCTION Init_2S_UART0,0202H
+        EXTERN Init_B_UART0
+        FUNCTION Init_B_UART0,0202H
+        EXTERN Init_P_UART0
+        FUNCTION Init_P_UART0,0202H
+        EXTERN Echo_OFF_UART0
+        FUNCTION Echo_OFF_UART0,0202H
+        EXTERN ControlStream_OFF_UART0
+        FUNCTION ControlStream_OFF_UART0,0202H
+        EXTERN XON_XOFF_OFF_CONTR_Rx_UART0
+        FUNCTION XON_XOFF_OFF_CONTR_Rx_UART0,0202H
+        EXTERN XON_XOFF_OFF_CONTR_Tx_UART0
+        FUNCTION XON_XOFF_OFF_CONTR_Tx_UART0,0202H
+        EXTERN DSR_OFF_CONTR_UART0
+        FUNCTION DSR_OFF_CONTR_UART0,0202H
+        EXTERN DTR_OFF_CONTR_UART0
+        FUNCTION DTR_OFF_CONTR_UART0,0202H
+        EXTERN CTS_OFF_CONTR_UART0
+        FUNCTION CTS_OFF_CONTR_UART0,0202H
+        EXTERN RTS_OFF_CONTR_UART0
+        FUNCTION RTS_OFF_CONTR_UART0,0202H
+        EXTERN RTS_CLR_UART0
+        FUNCTION RTS_CLR_UART0,0202H
+        EXTERN DTR_CLR_UART0
+        FUNCTION DTR_CLR_UART0,0202H
+        EXTERN CTS_CLR_UART0
+        FUNCTION CTS_CLR_UART0,0202H
+        EXTERN DSR_CLR_UART0
+        FUNCTION DSR_CLR_UART0,0202H
+        EXTERN Enable_Err_Count_UART0
+        FUNCTION Enable_Err_Count_UART0,0202H
+        EXTERN printf
+        FUNCTION printf,0202H
+        EXTERN getchar_K
+        FUNCTION getchar_K,0202H
+        EXTERN _Small_Ctype
+
+        PUBWEAK `?<Segment init: NEAR_I>`
+        PUBWEAK `?<Segment init: NEAR_Z>`
+        PUBLIC Cal_Key_Contr
+        FUNCTION Cal_Key_Contr,0203H
+        LOCFRAME CSTACK, 1, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC CodeASCII
+        PUBLIC Init_SPI
+        FUNCTION Init_SPI,0203H
+        PUBLIC Init_Timer0
+        FUNCTION Init_Timer0,021203H
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC Key_Event_00
+        FUNCTION Key_Event_00,0203H
+        PUBLIC Key_Event_01
+        FUNCTION Key_Event_01,0203H
+        PUBLIC Key_Event_10
+        FUNCTION Key_Event_10,0203H
+        PUBLIC Key_Event_11
+        FUNCTION Key_Event_11,0203H
+        FUNCTION Overflow_Timer0,021233H
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC Reset_DISP_CONTR
+        FUNCTION Reset_DISP_CONTR,0203H
+        LOCFRAME CSTACK, 3, STACK
+        PUBLIC Reset_KEY_CONTR
+        FUNCTION Reset_KEY_CONTR,0203H
+        LOCFRAME CSTACK, 3, STACK
+        FUNCTION SPI_STC,0233H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC Start_Timer0
+        FUNCTION Start_Timer0,0203H
+        PUBLIC Stop_Timer0
+        FUNCTION Stop_Timer0,0203H
+        PUBLIC Wr_Sym_Disp
+        FUNCTION Wr_Sym_Disp,0203H
+        LOCFRAME CSTACK, 1, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK _A_DDRA
+        PUBWEAK _A_DDRB
+        PUBWEAK _A_DDRC
+        PUBWEAK _A_PINC
+        PUBWEAK _A_PORTA
+        PUBWEAK _A_PORTB
+        PUBWEAK _A_PORTC
+        PUBWEAK _A_SFIOR
+        PUBWEAK _A_SPCR
+        PUBWEAK _A_SPDR
+        PUBWEAK _A_SPSR
+        PUBWEAK _A_TCCR0
+        PUBWEAK _A_TCNT0
+        PUBWEAK _A_TIMSK
+        PUBLIC main
+        FUNCTION main,0a1a03H
+        LOCFRAME CSTACK, 15, STACK
+        LOCFRAME RSTACK, 2, STACK
+;     1 /*********************************************
+;     2 * Programm:       Key_Disp_Contr_A2x.c       *
+;     3 *                                            *
+;     4 *  Note:  For projekt MINIROBIT BUILDING     *
+;     5 *                                            *
+;     6 * Name:  Module Code adapted from Atmel AVR  *
+;     7 *        Application for Amega161            *
+;     8 *        KEY CONTROLS Driver                 *
+;     9 *        DISPLAY CONTROLS Driver                                    *
+;    10 * Edit data:     17.09.2002                  *
+;    11 * Last data:     01.10.2002                  *
+;    12 * Version:       0.02                        *
+;    13 **********************************************/
+;    14 
+;    15 #include "iom161.h"
+
+        ASEGN ABSOLUTE:DATA:NOROOT,02dH
+; union <unnamed> volatile __io _A_SPCR;
+_A_SPCR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,02eH
+; union <unnamed> volatile __io _A_SPSR;
+_A_SPSR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,02fH
+; union <unnamed> volatile __io _A_SPDR;
+_A_SPDR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,033H
+; union <unnamed> volatile __io _A_PINC;
+_A_PINC:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,034H
+; union <unnamed> volatile __io _A_DDRC;
+_A_DDRC:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,035H
+; union <unnamed> volatile __io _A_PORTC;
+_A_PORTC:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,037H
+; union <unnamed> volatile __io _A_DDRB;
+_A_DDRB:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,038H
+; union <unnamed> volatile __io _A_PORTB;
+_A_PORTB:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03aH
+; union <unnamed> volatile __io _A_DDRA;
+_A_DDRA:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03bH
+; union <unnamed> volatile __io _A_PORTA;
+_A_PORTA:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,050H
+; union <unnamed> volatile __io _A_SFIOR;
+_A_SFIOR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,052H
+; union <unnamed> volatile __io _A_TCNT0;
+_A_TCNT0:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,053H
+; union <unnamed> volatile __io _A_TCCR0;
+_A_TCCR0:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,059H
+; union <unnamed> volatile __io _A_TIMSK;
+_A_TIMSK:
+	DS 1
+;    16 #include "key_contr_A2x.h"
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near A21_y;
+A21_y:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near c_y1;
+c_y1:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SCN0[8];
+SCN0:
+	DS 8
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near Head_SCN0;
+Head_SCN0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SCN1[8];
+SCN1:
+	DS 8
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near Head_SCN1;
+Head_SCN1:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SCN2[8];
+SCN2:
+	DS 8
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near Head_SCN2;
+Head_SCN2:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SCN3[8];
+SCN3:
+	DS 8
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near Head_SCN3;
+Head_SCN3:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN0;
+SUM_SCN0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN1;
+SUM_SCN1:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN2;
+SUM_SCN2:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN3;
+SUM_SCN3:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN4;
+SUM_SCN4:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN5;
+SUM_SCN5:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN6;
+SUM_SCN6:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN7;
+SUM_SCN7:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN8;
+SUM_SCN8:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN9;
+SUM_SCN9:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN10;
+SUM_SCN10:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN11;
+SUM_SCN11:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN12;
+SUM_SCN12:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN13;
+SUM_SCN13:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN14;
+SUM_SCN14:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near SUM_SCN15;
+SUM_SCN15:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near NEW_SCN0;
+NEW_SCN0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near NEW_SCN1;
+NEW_SCN1:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near NEW_SCN2;
+NEW_SCN2:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near NEW_SCN3;
+NEW_SCN3:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M00[4];
+EVEN_M00:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M01[4];
+EVEN_M01:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M10[4];
+EVEN_M10:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M11[4];
+EVEN_M11:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M00_SUM;
+EVEN_M00_SUM:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M01_SUM;
+EVEN_M01_SUM:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M10_SUM;
+EVEN_M10_SUM:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near EVEN_M11_SUM;
+EVEN_M11_SUM:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near OLD_SCN0;
+OLD_SCN0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near OLD_SCN1;
+OLD_SCN1:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near OLD_SCN2;
+OLD_SCN2:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near OLD_SCN3;
+OLD_SCN3:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near M00[4];
+M00:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near M01[4];
+M01:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near M10[4];
+M10:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near M11[4];
+M11:
+	DS 4
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near mTC_0;
+mTC_0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near cTest;
+cTest:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near A22_y;
+A22_y:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near DS[16];
+`DS`:
+	DS 16
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near DAN[16];
+DAN:
+	DS 16
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near DST[16];
+DST:
+	DS 16
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned int volatile __near COUNT_TIME;
+COUNT_TIME:
+	DS 2
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near DISP_POS;
+DISP_POS:
+	DS 1
+;    17 #include "Code_ASCII_A2x.h"
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash CodeASCII[128];
+CodeASCII:
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 129
+	DB 243
+	DB 73
+	DB 97
+	DB 51
+	DB 37
+	DB 251
+	DB 177
+	DB 1
+	DB 33
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 17
+	DB 1
+	DB 141
+	DB 255
+	DB 13
+	DB 29
+	DB 255
+	DB 19
+	DB 255
+	DB 255
+	DB 255
+	DB 135
+	DB 255
+	DB 255
+	DB 129
+	DB 255
+	DB 25
+	DB 255
+	DB 37
+	DB 255
+	DB 19
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 239
+	DB 255
+	DB 255
+	DB 7
+	DB 79
+	DB 67
+	DB 255
+	DB 255
+	DB 255
+	DB 31
+	DB 255
+	DB 255
+	DB 255
+	DB 207
+	DB 255
+	DB 255
+	DB 87
+	DB 71
+	DB 255
+	DB 255
+	DB 95
+	DB 255
+	DB 255
+	DB 199
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 255
+	DB 243
+	DB 255
+	DB 255
+;    18 #include "stdio.h"
+;    19 #include "ctype.h"
+;    20 #include "c:\AVR_CC\UART_MOD\uart0_A1x_ext_func.h"
+;    21 #include "c:\AVR_CC\Functions\scan_cmd.h"
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near BUF_CMD[40];
+BUF_CMD:
+	DS 40
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near Head_CMD;
+Head_CMD:
+	DS 1
+;    22 
+;    23 
+;    24 /* Debug test KEY_CONTR for module */
+;    25 #define TEST_KEY_CONTR
+;    26 
+;    27 /*--------------------------*/
+;    28 /*  Reset  DISP_CONTR_A2.2  */
+
+        RSEG CODE:CODE:NOROOT(1)
+;    29 void Reset_DISP_CONTR ( void ) // Clear Arrs and Variables
+;    30     {
+; __nearfunc void Reset_DISP_CONTR();
+Reset_DISP_CONTR:
+	MOV	R21,R25
+	MOV	R20,R24
+	SBIW	R29 : R28,3
+;    31     volatile unsigned char cTmp;
+;    32     volatile int i;
+;    33    /* Status DISP_CONTRL y=0 Reset */
+;    34     A22_y = 0;
+	LDI	R16,0
+	STS	A22_y,R16
+;    35    /* Erase Array and Variabke */
+;    36    for (i=0;i<=DISP_LEN-1;i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??Reset_DISP_CONTR_0
+;    37       {
+;    38       DS[i] = '1';             // Erase Arr
+??Reset_DISP_CONTR_1:
+	LDI	R16,49
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(`DS`) & 0xFFFF))
+	SBCI	R31,(-(`DS`) & 0xFFFF) >> 8
+	ST	Z,R16
+;    39       DAN[i] = 0xA0;        // ( Test A0= No Animation) Erase Arr
+	LDI	R16,160
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(DAN) & 0xFFFF))
+	SBCI	R31,(-(DAN) & 0xFFFF) >> 8
+	ST	Z,R16
+;    40       DST[i] = 5;              // Erase Arr
+	LDI	R16,5
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(DST) & 0xFFFF))
+	SBCI	R31,(-(DST) & 0xFFFF) >> 8
+	ST	Z,R16
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??Reset_DISP_CONTR_0:
+	LD	R24,Y
+	LDD	R25,Y+1
+	CPI	R24,16
+	SBCI	R25,0
+	BRLT	??Reset_DISP_CONTR_1
+;    41       };
+;    42 
+;    43     COUNT_TIME = 0;
+	LDI	R16,0
+	LDI	R17,0
+	LDI	R30,LOW(COUNT_TIME)
+	LDI	R31,(COUNT_TIME) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    44     DISP_POS = 0;
+	LDI	R16,0
+	STS	DISP_POS,R16
+;    45     /* Port Disp OUTPUT */
+;    46     DISP_PORT_CONT = 0xff;  // All bits Port DISP output
+	LDI	R16,255
+	OUT	0x1A,R16
+;    47     /* y0 -> y1 */
+;    48     A22_y = 1;           // New Status A2.2 Enable display indicator
+	LDI	R16,1
+	STS	A22_y,R16
+;    49   }
+	ADIW	R29 : R28,3
+	MOV	R24,R20
+	MOV	R25,R21
+	RET
+;    50 
+;    51 /*  END Reset  DISP_CONTR_A2.2  */
+;    52 /*------------------------------*/
+;    53 
+;    54 /*----------------------------------------------*/
+;    55 /*  Write Symbol to Indicator  DISP_CONTR_A2.2  */
+
+        RSEG CODE:CODE:NOROOT(1)
+;    56 void Wr_Sym_Disp ( char id_pos ) // Clear Arrs and Variables
+;    57 {
+; __nearfunc void Wr_Sym_Disp(char);
+Wr_Sym_Disp:
+	ST	-Y,R24
+;    58   unsigned char cTmp;
+;    59   unsigned char cBits;
+;    60   unsigned char cFl;
+;    61 
+;    62   /* 1. Off Led Indicator */
+;    63   DISP_PORT_CONT = 0xff;  // All bits Port DISP output
+	LDI	R17,255
+	OUT	0x1A,R17
+;    64   DISP_PORT_OUT = (DISP_PORT_OUT | 0xff);    // Off Indicator Posicion
+	IN	R17,0x1B
+	LDI	R18,255
+	OUT	0x1B,R18
+;    65   /* 2. New Posicion Indicator */
+;    66    DISP_POS = (id_pos + 1);   // New posicion indndicator
+	INC	R16
+	STS	DISP_POS,R16
+;    67    if ( DISP_POS > DISP_LEN-1)    // if posicion > size buffer indicator
+	LDS	R16,DISP_POS
+	CPI	R16,16
+	BRCS	??Wr_Sym_Disp_0
+;    68    {
+;    69    DISP_POS = 0;
+	LDI	R16,0
+	STS	DISP_POS,R16
+;    70    };
+;    71   /* 3. Calculate animacion Symbols */
+;    72 
+;    73     /* 3.1 Test Bits High  0=symbol ASCII or 1=Field Bits */
+;    74     cTmp = (DAN[DISP_POS] & ~(0x1F) ) >> 7 ;
+??Wr_Sym_Disp_0:
+	LDS	R16,DISP_POS
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(DAN) & 0xFFFF))
+	SBCI	R31,(-(DAN) & 0xFFFF) >> 8
+	LD	R16,Z
+	LSL	R16
+	LDI	R16,0
+	ROL	R16
+;    75     switch (cTmp)
+	SUBI	R16,0
+	BRNE	??Wr_Sym_Disp_1
+;    76     {
+;    77     case 0:   // Code symbols to bits
+;    78     cBits = CodeASCII[ DS[DISP_POS] & 0x7f ];  // Bits To Output PORT DISPLAY
+	LDI	R16,LOW(CodeASCII)
+	LDI	R17,(CodeASCII) >> 8
+	LDS	R18,DISP_POS
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(`DS`) & 0xFFFF))
+	SBCI	R31,(-(`DS`) & 0xFFFF) >> 8
+	LD	R18,Z
+	MOV	R30,R18
+	LDI	R31,0
+	ANDI	R30,0x7F
+	ANDI	R31,0x00
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R24,Z
+	RJMP	??Wr_Sym_Disp_2
+;    79     break;
+;    80     default: //  Code = Bits output
+;    81     cBits = DS[DISP_POS]; // Bits To Output PORT DISPLAY
+??Wr_Sym_Disp_1:
+	LDS	R16,DISP_POS
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(`DS`) & 0xFFFF))
+	SBCI	R31,(-(`DS`) & 0xFFFF) >> 8
+	LD	R24,Z
+;    82     break;
+;    83     };
+;    84 
+;    85     /* 3.2 Test Bits b6,b5  Type Animacion */
+;    86     cTmp = (DAN[DISP_POS] &  ~(0x1F) ) >> 5 ;
+??Wr_Sym_Disp_2:
+	LDS	R16,DISP_POS
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(DAN) & 0xFFFF))
+	SBCI	R31,(-(DAN) & 0xFFFF) >> 8
+	LD	R16,Z
+	SWAP	R16
+	ANDI	R16,0x0F
+	LSR	R16
+;    87     cTmp = cTmp & ~(0x4); // Clr bits
+	ANDI	R16,0xFB
+	LDI	R17,0
+;    88     switch (cTmp)
+	SUBI	R16,0
+	BREQ	??Wr_Sym_Disp_3
+	SUBI	R16,2
+	BREQ	??Wr_Sym_Disp_4
+	RJMP	??Wr_Sym_Disp_5
+;    89     {
+;    90     case 0:   // Indicator OFF
+;    91     cBits = 0xFF;
+??Wr_Sym_Disp_3:
+	LDI	R24,255
+	RJMP	??Wr_Sym_Disp_5
+;    92     break;
+;    93     case 2:  // Indicator ON-OFF if 0 < DST[...] < COUNT_TIME
+;    94       cFl = (COUNT_TIME / 100 / DST[DISP_POS]+0.5); //
+??Wr_Sym_Disp_4:
+	LDI	R30,LOW(COUNT_TIME)
+	LDI	R31,(COUNT_TIME) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	LDI	R20,100
+	LDI	R21,0
+	CALL	?US_DIVMOD_L02
+	LDS	R18,DISP_POS
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(DST) & 0xFFFF))
+	SBCI	R31,(-(DST) & 0xFFFF) >> 8
+	LD	R20,Z
+	LDI	R21,0
+	CALL	?US_DIVMOD_L02
+	LDI	R18,0
+	LDI	R19,0
+	CALL	?UL2F_L04
+	LDI	R20,0
+	LDI	R21,0
+	LDI	R22,0
+	LDI	R23,63
+	CALL	?F_ADD_L04
+	CALL	?F2L_L04
+;    95       if ( (cFl & 0x01) == 0 )
+	BST	R16,0
+	BRTC	??Wr_Sym_Disp_5
+;    96         {
+;    97         cBits = cBits; // Indicator ON
+;    98         }
+;    99         else
+;   100         {
+;   101         cBits = 0xFF; // Indicator OFF
+	LDI	R24,255
+;   102         };
+;   103     break;
+;   104     default:
+;   105     cBits = cBits; // Indicator ON
+;   106     break;
+;   107     };
+;   108 /* 4. Write Fields Bits to Port Indicator */
+;   109   /* 4.1 Write Fields Bits to Port Indicator */
+;   110   SetBit( DISP_POS_CONT, DISP_POS_0); // Mode Bit port disp output
+??Wr_Sym_Disp_5:
+	SBI	0x17,0x04
+;   111   SetBit( DISP_POS_CONT, DISP_POS_1); // Mode Bit port disp output
+	SBI	0x17,0x05
+;   112   SetBit( DISP_POS_CONT, DISP_POS_2); // Mode Bit port disp output
+	SBI	0x17,0x06
+;   113   SetBit( DISP_POS_CONT, DISP_POS_3); // Mode Bit port disp output
+	SBI	0x17,0x07
+;   114     if ( (DISP_POS & 0x01) == 0)  // test p0
+	LDI	R30,LOW(DISP_POS)
+	LDI	R31,(DISP_POS) >> 8
+	LD	R16,Z
+	SBRC	R16,0
+	RJMP	??Wr_Sym_Disp_6
+;   115     {
+;   116     ClrBit(DISP_POS_OUT, DISP_POS_0);
+	CBI	0x18,0x04
+	RJMP	??Wr_Sym_Disp_7
+;   117     }
+;   118     else
+;   119     {
+;   120     SetBit(DISP_POS_OUT, DISP_POS_0);
+??Wr_Sym_Disp_6:
+	SBI	0x18,0x04
+;   121     };
+;   122     if ( (DISP_POS & 0x02) == 0)  // test p1
+??Wr_Sym_Disp_7:
+	LDI	R30,LOW(DISP_POS)
+	LDI	R31,(DISP_POS) >> 8
+	LD	R16,Z
+	SBRC	R16,1
+	RJMP	??Wr_Sym_Disp_8
+;   123     {
+;   124     ClrBit(DISP_POS_OUT, DISP_POS_1);
+	CBI	0x18,0x05
+	RJMP	??Wr_Sym_Disp_9
+;   125     }
+;   126     else
+;   127     {
+;   128     SetBit(DISP_POS_OUT, DISP_POS_1);
+??Wr_Sym_Disp_8:
+	SBI	0x18,0x05
+;   129     };
+;   130     if ( (DISP_POS & 0x04) == 0) // test p2
+??Wr_Sym_Disp_9:
+	LDI	R30,LOW(DISP_POS)
+	LDI	R31,(DISP_POS) >> 8
+	LD	R16,Z
+	SBRC	R16,2
+	RJMP	??Wr_Sym_Disp_10
+;   131     {
+;   132     ClrBit(DISP_POS_OUT, DISP_POS_2);
+	CBI	0x18,0x06
+	RJMP	??Wr_Sym_Disp_11
+;   133     }
+;   134     else
+;   135     {
+;   136     SetBit(DISP_POS_OUT, DISP_POS_2);
+??Wr_Sym_Disp_10:
+	SBI	0x18,0x06
+;   137     };
+;   138     if ( (DISP_POS & 0x08) == 0)  // test p3
+??Wr_Sym_Disp_11:
+	LDI	R30,LOW(DISP_POS)
+	LDI	R31,(DISP_POS) >> 8
+	LD	R16,Z
+	SBRC	R16,3
+	RJMP	??Wr_Sym_Disp_12
+;   139     {
+;   140     ClrBit(DISP_POS_OUT, DISP_POS_3);
+	CBI	0x18,0x07
+	RJMP	??Wr_Sym_Disp_13
+;   141     }
+;   142     else
+;   143     {
+;   144     SetBit(DISP_POS_OUT, DISP_POS_3);
+??Wr_Sym_Disp_12:
+	SBI	0x18,0x07
+;   145     };
+;   146    /* 4.2 Write Fields Bits to Port Indicator */
+;   147    DISP_PORT_CONT = 0xff;  // All bits Port DISP output
+??Wr_Sym_Disp_13:
+	LDI	R16,255
+	OUT	0x1A,R16
+;   148    DISP_PORT_OUT = cBits;   // Output Indicator Posicion
+	OUT	0x1B,R24
+;   149 
+;   150 }
+	LD	R24,Y+
+	RET
+;   151 /*  END Reset  DISP_CONTR_A2.2  */
+;   152 /*------------------------------*/
+;   153 
+;   154 
+;   155 /*--------------------------*/
+;   156 /*  Reset  KEY_CONTR_A2.1   */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   157 void Reset_KEY_CONTR ( void ) // Clear Arrs and Variables
+;   158      {
+; __nearfunc void Reset_KEY_CONTR();
+Reset_KEY_CONTR:
+	MOV	R21,R25
+	MOV	R20,R24
+	SBIW	R29 : R28,3
+;   159     volatile unsigned char cTmp;
+;   160     volatile int i;
+;   161 
+;   162    /* Status KEY_CONTRL y=0 Reset */
+;   163     A21_y = 0;
+	LDI	R16,0
+	STS	A21_y,R16
+;   164 
+;   165    /* Erase Array and Variabke */
+;   166 
+;   167     for (i=0;i<=BUFFER_SIZE_SCN0-1;i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??Reset_KEY_CONTR_0
+;   168       {
+;   169       SCN0[i] = 0 ;         // Erase Arr
+??Reset_KEY_CONTR_1:
+	LDI	R16,0
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN0) & 0xFFFF))
+	SBCI	R31,(-(SCN0) & 0xFFFF) >> 8
+	ST	Z,R16
+;   170       SCN1[i] = 0 ;         // Erase Arr
+	LDI	R16,0
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN1) & 0xFFFF))
+	SBCI	R31,(-(SCN1) & 0xFFFF) >> 8
+	ST	Z,R16
+;   171       SCN2[i] = 0 ;         // Erase Arr
+	LDI	R16,0
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN2) & 0xFFFF))
+	SBCI	R31,(-(SCN2) & 0xFFFF) >> 8
+	ST	Z,R16
+;   172       SCN3[i] = 0 ;         // Erase Arr
+	LDI	R16,0
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN3) & 0xFFFF))
+	SBCI	R31,(-(SCN3) & 0xFFFF) >> 8
+	ST	Z,R16
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??Reset_KEY_CONTR_0:
+	LD	R24,Y
+	LDD	R25,Y+1
+	CPI	R24,8
+	SBCI	R25,0
+	BRLT	??Reset_KEY_CONTR_1
+;   173        };
+;   174 
+;   175     Head_SCN0 = 0;
+	LDI	R16,0
+	STS	Head_SCN0,R16
+;   176     Head_SCN1 = 0;
+	LDI	R16,0
+	STS	Head_SCN1,R16
+;   177     Head_SCN2 = 0;
+	LDI	R16,0
+	STS	Head_SCN2,R16
+;   178     Head_SCN3 = 0;
+	LDI	R16,0
+	STS	Head_SCN3,R16
+;   179 
+;   180     SUM_SCN0 = 0;
+	LDI	R16,0
+	STS	SUM_SCN0,R16
+;   181     SUM_SCN1 = 0;
+	LDI	R16,0
+	STS	SUM_SCN1,R16
+;   182     SUM_SCN2 = 0;
+	LDI	R16,0
+	STS	SUM_SCN2,R16
+;   183     SUM_SCN3 = 0;
+	LDI	R16,0
+	STS	SUM_SCN3,R16
+;   184     SUM_SCN4 = 0;
+	LDI	R16,0
+	STS	SUM_SCN4,R16
+;   185     SUM_SCN5 = 0;
+	LDI	R16,0
+	STS	SUM_SCN5,R16
+;   186     SUM_SCN6 = 0;
+	LDI	R16,0
+	STS	SUM_SCN6,R16
+;   187     SUM_SCN7 = 0;
+	LDI	R16,0
+	STS	SUM_SCN7,R16
+;   188     SUM_SCN8 = 0;
+	LDI	R16,0
+	STS	SUM_SCN8,R16
+;   189     SUM_SCN9 = 0;
+	LDI	R16,0
+	STS	SUM_SCN9,R16
+;   190     SUM_SCN10 = 0;
+	LDI	R16,0
+	STS	SUM_SCN10,R16
+;   191     SUM_SCN11 = 0;
+	LDI	R16,0
+	STS	SUM_SCN11,R16
+;   192     SUM_SCN12 = 0;
+	LDI	R16,0
+	STS	SUM_SCN12,R16
+;   193     SUM_SCN13 = 0;
+	LDI	R16,0
+	STS	SUM_SCN13,R16
+;   194     SUM_SCN14 = 0;
+	LDI	R16,0
+	STS	SUM_SCN14,R16
+;   195     SUM_SCN15 = 0;
+	LDI	R16,0
+	STS	SUM_SCN15,R16
+;   196 
+;   197     NEW_SCN0 = 0;
+	LDI	R16,0
+	STS	NEW_SCN0,R16
+;   198     NEW_SCN1 = 0;
+	LDI	R16,0
+	STS	NEW_SCN1,R16
+;   199     NEW_SCN2 = 0;
+	LDI	R16,0
+	STS	NEW_SCN2,R16
+;   200     NEW_SCN3 = 0;
+	LDI	R16,0
+	STS	NEW_SCN3,R16
+;   201 
+;   202     OLD_SCN0 = 0;
+	LDI	R16,0
+	STS	OLD_SCN0,R16
+;   203     OLD_SCN1 = 0;
+	LDI	R16,0
+	STS	OLD_SCN1,R16
+;   204     OLD_SCN2 = 0;
+	LDI	R16,0
+	STS	OLD_SCN2,R16
+;   205     OLD_SCN3 = 0;
+	LDI	R16,0
+	STS	OLD_SCN3,R16
+;   206 
+;   207 
+;   208     for (i=0;i<=H_KEY-1;i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??Reset_KEY_CONTR_2
+;   209       {
+;   210       M00[i] = 1 ;         // Disable All event Scan Code
+??Reset_KEY_CONTR_3:
+	LDI	R16,1
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(M00) & 0xFFFF))
+	SBCI	R31,(-(M00) & 0xFFFF) >> 8
+	ST	Z,R16
+;   211       M01[i] = 1 ;         // Enable  All event Scan Code
+	LDI	R16,1
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(M01) & 0xFFFF))
+	SBCI	R31,(-(M01) & 0xFFFF) >> 8
+	ST	Z,R16
+;   212       M10[i] = 1 ;         // Enable  All event Scan Code
+	LDI	R16,1
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(M10) & 0xFFFF))
+	SBCI	R31,(-(M10) & 0xFFFF) >> 8
+	ST	Z,R16
+;   213       M11[i] = 1 ;         // Disable All event Scan Code
+	LDI	R16,1
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(M11) & 0xFFFF))
+	SBCI	R31,(-(M11) & 0xFFFF) >> 8
+	ST	Z,R16
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??Reset_KEY_CONTR_2:
+	LD	R24,Y
+	LDD	R25,Y+1
+	CPI	R24,4
+	SBCI	R25,0
+	BRLT	??Reset_KEY_CONTR_3
+;   214        };
+;   215     A21_y = 1;    // New status A2x
+	LDI	R16,1
+	STS	A21_y,R16
+;   216     c_y1 = 0;     // Variable for transitive process
+	LDI	R16,0
+	STS	c_y1,R16
+;   217                   // for input status KEY
+;   218      }
+	ADIW	R29 : R28,3
+	MOV	R24,R20
+	MOV	R25,R21
+	RET
+;   219 /*  END Reset  KEY_CONTR_A2.1   */
+;   220 /*------------------------------*/
+;   221 
+;   222 
+;   223 /*---------------------------*/
+;   224 /*  Start Timer 0 for  A2x    */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   225 void Start_Timer0 ( void )
+;   226      {
+;   227      SetBit(TIMSK,TOIE0);     // enable Overflow interrupt
+; __nearfunc void Start_Timer0();
+Start_Timer0:
+	IN	R16,0x39
+	ORI	R16,0x02
+	OUT	0x39,R16
+;   228      TCCR0 = TCCR0 | 0x03;    // CK/64
+	IN	R16,0x33
+	ORI	R16,0x03
+	OUT	0x33,R16
+;   229      /*  Set mTC_0 */
+;   230      mTC_0 = 0x8D;            // 1 mc for ZQ=7,3728 MGh
+	LDI	R16,141
+	STS	mTC_0,R16
+;   231      /* Set period Timer0 */
+;   232      TCNT0 = mTC_0;   // Set counter Timer0
+	LDS	R16,mTC_0
+	OUT	0x32,R16
+;   233      }
+	RET
+;   234 
+;   235 /*---------------------------*/
+;   236 /*  Stop Timer 0 for  A2x    */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   237 void Stop_Timer0 ( void )
+;   238      {
+;   239      ClrBit(TIMSK,TOIE0);     // disable Overflow interrupt
+; __nearfunc void Stop_Timer0();
+Stop_Timer0:
+	IN	R16,0x39
+	ANDI	R16,0xFD
+	OUT	0x39,R16
+;   240      TCCR0 = TCCR0 & ~(0x07); // Stop Timer0
+	IN	R16,0x33
+	ANDI	R16,0xF8
+	OUT	0x33,R16
+;   241      }
+	RET
+;   242 
+;   243 /*---------------------------*/
+;   244 /*  Init Timer 0 for  A2x    */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   245 void Init_Timer0 ( void )
+;   246      {
+;   247      /* Disable interrupt */
+;   248      Stop_Timer0();           // Stop
+; __nearfunc void Init_Timer0();
+Init_Timer0:
+        FUNCALL Init_Timer0, Stop_Timer0
+        LOCFRAME RSTACK, 2, STACK
+	RCALL	Stop_Timer0
+;   249 
+;   250      SetBit(SFIOR,PSR10);     // Reset Prescaler for Timer 0 and 1
+	IN	R16,0x30
+	ORI	R16,0x01
+	OUT	0x30,R16
+;   251      ClrBit(SFIOR,PSR10);
+	IN	R16,0x30
+	ANDI	R16,0xFE
+	OUT	0x30,R16
+;   252 
+;   253      /* Set Mode Timer0 */
+;   254      ClrBit(TCCR0,COM00);     // disconnectedfrom output pin OC0
+	IN	R16,0x33
+	ANDI	R16,0xEF
+	OUT	0x33,R16
+;   255      ClrBit(TCCR0,COM01);     //
+	IN	R16,0x33
+	ANDI	R16,0xDF
+	OUT	0x33,R16
+;   256      ClrBit(TCCR0,FOC0);      // No Compare
+	IN	R16,0x33
+	ANDI	R16,0x7F
+	OUT	0x33,R16
+;   257      ClrBit(TCCR0,PWM0);      // No pulse modulator
+	IN	R16,0x33
+	ANDI	R16,0xBF
+	OUT	0x33,R16
+;   258      ClrBit(TCCR0,CTC0);      // Clear
+	IN	R16,0x33
+	ANDI	R16,0xF7
+	OUT	0x33,R16
+;   259      /* Enable intrrupt and start Timer0 */
+;   260      }
+	RET
+;   261 
+;   262 /*---------------------------*/
+;   263 /*  Calculate status KEY     */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   264 void Cal_Key_Contr ( void )
+;   265   {
+; __nearfunc void Cal_Key_Contr();
+Cal_Key_Contr:
+	SBIW	R29 : R28,1
+;   266     volatile unsigned char i;
+;   267     unsigned char scan;
+;   268 
+;   269   /*************************/
+;   270   /*  Output puls bit SEL0 */
+;   271    SetBit(KEY_PORT_CONT,SEL0); // Bit port to output
+	SBI	0x14,0x04
+;   272    SetBit(KEY_PORT_OUT, SEL0);     // Output "1" SEL0
+	SBI	0x15,0x04
+;   273    for (i=0;i<50;i++)
+	LDI	R16,0
+	ST	Y,R16
+	RJMP	??Cal_Key_Contr_0
+;   274     {
+;   275      ClrBit(KEY_PORT_OUT, SEL0);     // Output "0" SEL0
+??Cal_Key_Contr_1:
+	CBI	0x15,0x04
+	LD	R16,Y
+	INC	R16
+	ST	Y,R16
+??Cal_Key_Contr_0:
+	LD	R16,Y
+	CPI	R16,50
+	BRCS	??Cal_Key_Contr_1
+;   276     };
+;   277    SetBit(KEY_PORT_OUT, SEL0);     // Output "1" SEL0
+	SBI	0x15,0x04
+;   278   /* 2. Input scan-code for SEL0 */
+;   279    KEY_PORT_CONT = KEY_PORT_CONT & ~( 8+4+2+1); // PORT input
+	IN	R16,0x14
+	ANDI	R16,0xF0
+	OUT	0x14,R16
+;   280    scan = KEY_PORT_IN & 0x0F; // scan port SEL0
+	IN	R16,0x13
+	ANDI	R16,0x0F
+;   281   /* 3. Calcumate mediam */
+;   282   SUM_SCN0 = SUM_SCN0 - (SCN0[Head_SCN0]& 0x01 );
+	LDS	R17,SUM_SCN0
+	LDS	R18,Head_SCN0
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN0) & 0xFFFF))
+	SBCI	R31,(-(SCN0) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x01
+	SUB	R17,R18
+	STS	SUM_SCN0,R17
+;   283   SUM_SCN0 = SUM_SCN0 + (scan & 0x01);
+	MOV	R17,R16
+	ANDI	R17,0x01
+	LDI	R30,LOW(SUM_SCN0)
+	LDI	R31,(SUM_SCN0) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   284   SUM_SCN1 = SUM_SCN1 - ((SCN0[Head_SCN0]& 0x02)>>1);
+	LDS	R17,SUM_SCN1
+	LDS	R18,Head_SCN0
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN0) & 0xFFFF))
+	SBCI	R31,(-(SCN0) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x02
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN1,R17
+;   285   SUM_SCN1 = SUM_SCN1 + ((scan & 0x02)>>1);
+	MOV	R17,R16
+	ANDI	R17,0x02
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN1)
+	LDI	R31,(SUM_SCN1) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   286   SUM_SCN2 = SUM_SCN2 - ((SCN0[Head_SCN0]& 0x04)>>2);
+	LDS	R17,SUM_SCN2
+	LDS	R18,Head_SCN0
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN0) & 0xFFFF))
+	SBCI	R31,(-(SCN0) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x04
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN2,R17
+;   287   SUM_SCN2 = SUM_SCN2 + ((scan & 0x04)>>2);
+	MOV	R17,R16
+	ANDI	R17,0x04
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN2)
+	LDI	R31,(SUM_SCN2) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   288   SUM_SCN3 = SUM_SCN3 - ((SCN0[Head_SCN0] & 0x08)>>3);
+	LDS	R17,SUM_SCN3
+	LDS	R18,Head_SCN0
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN0) & 0xFFFF))
+	SBCI	R31,(-(SCN0) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x08
+	ASR	R18
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN3,R17
+;   289   SUM_SCN3 = SUM_SCN3 + ((scan & 0x08)>>3);
+	MOV	R17,R16
+	ANDI	R17,0x08
+	ASR	R17
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN3)
+	LDI	R31,(SUM_SCN3) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   290 
+;   291 
+;   292   SCN0[Head_SCN0] = scan;
+	LDS	R18,Head_SCN0
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN0) & 0xFFFF))
+	SBCI	R31,(-(SCN0) & 0xFFFF) >> 8
+	ST	Z,R16
+;   293 
+;   294   Head_SCN0 = (Head_SCN0+1) & BUFFER_MASK_SCN0;
+	LDS	R16,Head_SCN0
+	INC	R16
+	ANDI	R16,0x07
+	STS	Head_SCN0,R16
+;   295 
+;   296   OLD_SCN0 = NEW_SCN0;
+	LDS	R16,NEW_SCN0
+	STS	OLD_SCN0,R16
+;   297   NEW_SCN0 = 0;
+	LDI	R16,0
+	STS	NEW_SCN0,R16
+;   298   i = (unsigned char)( SUM_SCN0 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN0
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   299   NEW_SCN0 = NEW_SCN0 | i;
+	LDS	R16,NEW_SCN0
+	LD	R17,Y
+	OR	R17,R16
+	STS	NEW_SCN0,R17
+;   300   i = (unsigned char)( SUM_SCN1 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN1
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   301   NEW_SCN0 = NEW_SCN0 | (i<<1);
+	LDS	R16,NEW_SCN0
+	LD	R17,Y
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN0,R17
+;   302   i = (unsigned char)( SUM_SCN2 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN2
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   303   NEW_SCN0 = NEW_SCN0 | (i<<2);
+	LDS	R16,NEW_SCN0
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN0,R17
+;   304   i = (unsigned char)( SUM_SCN3 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN3
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   305   NEW_SCN0 = NEW_SCN0 | (i<<3);
+	LDS	R16,NEW_SCN0
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN0,R17
+;   306 
+;   307   /***************************/
+;   308   /* Output puls bit SEL1 */
+;   309   SetBit(KEY_PORT_CONT,SEL1); // Bit port to output
+	SBI	0x14,0x05
+;   310    SetBit(KEY_PORT_OUT, SEL1);     // Output "1" SEL1
+	SBI	0x15,0x05
+;   311    for (i=0;i<50;i++)
+	LDI	R16,0
+	ST	Y,R16
+	RJMP	??Cal_Key_Contr_2
+;   312     {
+;   313      ClrBit(KEY_PORT_OUT, SEL1);     // Output "0" SEL1
+??Cal_Key_Contr_3:
+	CBI	0x15,0x05
+	LD	R16,Y
+	INC	R16
+	ST	Y,R16
+??Cal_Key_Contr_2:
+	LD	R16,Y
+	CPI	R16,50
+	BRCS	??Cal_Key_Contr_3
+;   314     };
+;   315    SetBit(KEY_PORT_OUT, SEL1);     // Output "1" SEL1
+	SBI	0x15,0x05
+;   316   /*  Input scan-code for SEL1 */
+;   317    KEY_PORT_CONT = KEY_PORT_CONT & ~( 8+4+2+1); // PORT input
+	IN	R16,0x14
+	ANDI	R16,0xF0
+	OUT	0x14,R16
+;   318    scan = KEY_PORT_IN & 0x0F; // scan port SEL1
+	IN	R16,0x13
+	ANDI	R16,0x0F
+;   319   /*  Calcumate mediam */
+;   320   SUM_SCN4 = SUM_SCN4 - (SCN1[Head_SCN1]& 0x01 );
+	LDS	R17,SUM_SCN4
+	LDS	R18,Head_SCN1
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN1) & 0xFFFF))
+	SBCI	R31,(-(SCN1) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x01
+	SUB	R17,R18
+	STS	SUM_SCN4,R17
+;   321   SUM_SCN4 = SUM_SCN4 + (scan & 0x01);
+	MOV	R17,R16
+	ANDI	R17,0x01
+	LDI	R30,LOW(SUM_SCN4)
+	LDI	R31,(SUM_SCN4) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   322   SUM_SCN5 = SUM_SCN5 - ((SCN1[Head_SCN1]& 0x02)>>1);
+	LDS	R17,SUM_SCN5
+	LDS	R18,Head_SCN1
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN1) & 0xFFFF))
+	SBCI	R31,(-(SCN1) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x02
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN5,R17
+;   323   SUM_SCN5 = SUM_SCN5 + ((scan & 0x02)>>1);
+	MOV	R17,R16
+	ANDI	R17,0x02
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN5)
+	LDI	R31,(SUM_SCN5) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   324   SUM_SCN6 = SUM_SCN6 - ((SCN1[Head_SCN1]& 0x04)>>2);
+	LDS	R17,SUM_SCN6
+	LDS	R18,Head_SCN1
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN1) & 0xFFFF))
+	SBCI	R31,(-(SCN1) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x04
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN6,R17
+;   325   SUM_SCN6 = SUM_SCN6 + ((scan & 0x04)>>2);
+	MOV	R17,R16
+	ANDI	R17,0x04
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN6)
+	LDI	R31,(SUM_SCN6) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   326   SUM_SCN7 = SUM_SCN7 - ((SCN1[Head_SCN1] & 0x08)>>3);
+	LDS	R17,SUM_SCN7
+	LDS	R18,Head_SCN1
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN1) & 0xFFFF))
+	SBCI	R31,(-(SCN1) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x08
+	ASR	R18
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN7,R17
+;   327   SUM_SCN7 = SUM_SCN7 + ((scan & 0x08)>>3);
+	MOV	R17,R16
+	ANDI	R17,0x08
+	ASR	R17
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN7)
+	LDI	R31,(SUM_SCN7) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   328 
+;   329   SCN1[Head_SCN1] = scan;
+	LDS	R18,Head_SCN1
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN1) & 0xFFFF))
+	SBCI	R31,(-(SCN1) & 0xFFFF) >> 8
+	ST	Z,R16
+;   330 
+;   331   Head_SCN1 = (Head_SCN1+1) & BUFFER_MASK_SCN1;
+	LDS	R16,Head_SCN1
+	INC	R16
+	ANDI	R16,0x07
+	STS	Head_SCN1,R16
+;   332 
+;   333   OLD_SCN1 = NEW_SCN1;
+	LDS	R16,NEW_SCN1
+	STS	OLD_SCN1,R16
+;   334   NEW_SCN1 = 0;
+	LDI	R16,0
+	STS	NEW_SCN1,R16
+;   335   i = (unsigned char)( SUM_SCN4 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN4
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   336   NEW_SCN1 = NEW_SCN1 | i;
+	LDS	R16,NEW_SCN1
+	LD	R17,Y
+	OR	R17,R16
+	STS	NEW_SCN1,R17
+;   337   i = (unsigned char)( SUM_SCN5 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN5
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   338   NEW_SCN1 = NEW_SCN1 | (i<<1);
+	LDS	R16,NEW_SCN1
+	LD	R17,Y
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN1,R17
+;   339   i = (unsigned char)( SUM_SCN6 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN6
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   340   NEW_SCN1 = NEW_SCN1 | (i<<2);
+	LDS	R16,NEW_SCN1
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN1,R17
+;   341   i = (unsigned char)( SUM_SCN7 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN7
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   342   NEW_SCN1 = NEW_SCN1 | (i<<3);
+	LDS	R16,NEW_SCN1
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN1,R17
+;   343 
+;   344   /************************/
+;   345   /* Output puls bit SEL2 */
+;   346    SetBit(KEY_PORT_CONT,SEL2); // Bit port to output
+	SBI	0x14,0x06
+;   347    SetBit(KEY_PORT_OUT, SEL2);     // Output "1" SEL2
+	SBI	0x15,0x06
+;   348    for (i=0;i<50;i++)
+	LDI	R16,0
+	ST	Y,R16
+	RJMP	??Cal_Key_Contr_4
+;   349     {
+;   350      ClrBit(KEY_PORT_OUT, SEL2);     // Output "0" SEL2
+??Cal_Key_Contr_5:
+	CBI	0x15,0x06
+	LD	R16,Y
+	INC	R16
+	ST	Y,R16
+??Cal_Key_Contr_4:
+	LD	R16,Y
+	CPI	R16,50
+	BRCS	??Cal_Key_Contr_5
+;   351     };
+;   352    SetBit(KEY_PORT_OUT, SEL2);     // Output "1" SEL2
+	SBI	0x15,0x06
+;   353   /* 2. Input scan-code for SEL2 */
+;   354    KEY_PORT_CONT = KEY_PORT_CONT & ~( 8+4+2+1); // PORT input
+	IN	R16,0x14
+	ANDI	R16,0xF0
+	OUT	0x14,R16
+;   355    scan = KEY_PORT_IN & 0x0F; // scan port SEL2
+	IN	R16,0x13
+	ANDI	R16,0x0F
+;   356   /* 3. Calcumate mediam */
+;   357   SUM_SCN8 = SUM_SCN8 - (SCN2[Head_SCN2]& 0x01 );
+	LDS	R17,SUM_SCN8
+	LDS	R18,Head_SCN2
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN2) & 0xFFFF))
+	SBCI	R31,(-(SCN2) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x01
+	SUB	R17,R18
+	STS	SUM_SCN8,R17
+;   358   SUM_SCN8 = SUM_SCN8 + (scan & 0x01);
+	MOV	R17,R16
+	ANDI	R17,0x01
+	LDI	R30,LOW(SUM_SCN8)
+	LDI	R31,(SUM_SCN8) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   359   SUM_SCN9 = SUM_SCN9 - ((SCN2[Head_SCN2]& 0x02)>>1);
+	LDS	R17,SUM_SCN9
+	LDS	R18,Head_SCN2
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN2) & 0xFFFF))
+	SBCI	R31,(-(SCN2) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x02
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN9,R17
+;   360   SUM_SCN9 = SUM_SCN9 + ((scan & 0x02)>>1);
+	MOV	R17,R16
+	ANDI	R17,0x02
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN9)
+	LDI	R31,(SUM_SCN9) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   361   SUM_SCN10 = SUM_SCN10 - ((SCN2[Head_SCN2]& 0x04)>>2);
+	LDS	R17,SUM_SCN10
+	LDS	R18,Head_SCN2
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN2) & 0xFFFF))
+	SBCI	R31,(-(SCN2) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x04
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN10,R17
+;   362   SUM_SCN10 = SUM_SCN10 + ((scan & 0x04)>>2);
+	MOV	R17,R16
+	ANDI	R17,0x04
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN10)
+	LDI	R31,(SUM_SCN10) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   363   SUM_SCN11 = SUM_SCN11 - ((SCN2[Head_SCN2] & 0x08)>>3);
+	LDS	R17,SUM_SCN11
+	LDS	R18,Head_SCN2
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN2) & 0xFFFF))
+	SBCI	R31,(-(SCN2) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x08
+	ASR	R18
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN11,R17
+;   364   SUM_SCN11 = SUM_SCN11+ ((scan & 0x08)>>3);
+	MOV	R17,R16
+	ANDI	R17,0x08
+	ASR	R17
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN11)
+	LDI	R31,(SUM_SCN11) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   365 
+;   366 
+;   367   SCN2[Head_SCN2] = scan;
+	LDS	R18,Head_SCN2
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN2) & 0xFFFF))
+	SBCI	R31,(-(SCN2) & 0xFFFF) >> 8
+	ST	Z,R16
+;   368 
+;   369   Head_SCN2 = (Head_SCN2+1) & BUFFER_MASK_SCN0;
+	LDS	R16,Head_SCN2
+	INC	R16
+	ANDI	R16,0x07
+	STS	Head_SCN2,R16
+;   370 
+;   371   OLD_SCN2 = NEW_SCN2;
+	LDS	R16,NEW_SCN2
+	STS	OLD_SCN2,R16
+;   372   NEW_SCN2 = 0;
+	LDI	R16,0
+	STS	NEW_SCN2,R16
+;   373   i = (unsigned char)( SUM_SCN8 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN8
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   374   NEW_SCN2 = NEW_SCN2 | i;
+	LDS	R16,NEW_SCN2
+	LD	R17,Y
+	OR	R17,R16
+	STS	NEW_SCN2,R17
+;   375   i = (unsigned char)( SUM_SCN9 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN9
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   376   NEW_SCN2 = NEW_SCN2 | (i<<1);
+	LDS	R16,NEW_SCN2
+	LD	R17,Y
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN2,R17
+;   377   i = (unsigned char)( SUM_SCN10 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN10
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   378   NEW_SCN2 = NEW_SCN2 | (i<<2);
+	LDS	R16,NEW_SCN2
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN2,R17
+;   379   i = (unsigned char)( SUM_SCN11 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN11
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   380   NEW_SCN2 = NEW_SCN2 | (i<<3);
+	LDS	R16,NEW_SCN2
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN2,R17
+;   381 
+;   382   /*************************/
+;   383   /*  Output puls bit SEL3 */
+;   384    SetBit(KEY_PORT_CONT,SEL3); // Bit port to output
+	SBI	0x14,0x07
+;   385    SetBit(KEY_PORT_OUT, SEL3);     // Output "1" SEL3
+	SBI	0x15,0x07
+;   386    for (i=0;i<50;i++)
+	LDI	R16,0
+	ST	Y,R16
+	RJMP	??Cal_Key_Contr_6
+;   387     {
+;   388      ClrBit(KEY_PORT_OUT, SEL3);     // Output "0" SEL3
+??Cal_Key_Contr_7:
+	CBI	0x15,0x07
+	LD	R16,Y
+	INC	R16
+	ST	Y,R16
+??Cal_Key_Contr_6:
+	LD	R16,Y
+	CPI	R16,50
+	BRCS	??Cal_Key_Contr_7
+;   389     };
+;   390    SetBit(KEY_PORT_OUT, SEL3);     // Output "1" SEL3
+	SBI	0x15,0x07
+;   391   /* 2. Input scan-code for SEL0 */
+;   392    KEY_PORT_CONT = KEY_PORT_CONT & ~( 8+4+2+1); // PORT input
+	IN	R16,0x14
+	ANDI	R16,0xF0
+	OUT	0x14,R16
+;   393    scan = KEY_PORT_IN & 0x0F; // scan port SEL3
+	IN	R16,0x13
+	ANDI	R16,0x0F
+;   394   /* 3. Calcumate mediam */
+;   395   SUM_SCN12 = SUM_SCN12 - (SCN3[Head_SCN3]& 0x01 );
+	LDS	R17,SUM_SCN12
+	LDS	R18,Head_SCN3
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN3) & 0xFFFF))
+	SBCI	R31,(-(SCN3) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x01
+	SUB	R17,R18
+	STS	SUM_SCN12,R17
+;   396   SUM_SCN12 = SUM_SCN12 + (scan & 0x01);
+	MOV	R17,R16
+	ANDI	R17,0x01
+	LDI	R30,LOW(SUM_SCN12)
+	LDI	R31,(SUM_SCN12) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   397   SUM_SCN13 = SUM_SCN13 - ((SCN3[Head_SCN3]& 0x02)>>1);
+	LDS	R17,SUM_SCN13
+	LDS	R18,Head_SCN3
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN3) & 0xFFFF))
+	SBCI	R31,(-(SCN3) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x02
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN13,R17
+;   398   SUM_SCN13 = SUM_SCN13 + ((scan & 0x02)>>1);
+	MOV	R17,R16
+	ANDI	R17,0x02
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN13)
+	LDI	R31,(SUM_SCN13) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   399   SUM_SCN14 = SUM_SCN14 - ((SCN3[Head_SCN3]& 0x04)>>2);
+	LDS	R17,SUM_SCN14
+	LDS	R18,Head_SCN3
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN3) & 0xFFFF))
+	SBCI	R31,(-(SCN3) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x04
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN14,R17
+;   400   SUM_SCN14 = SUM_SCN14 + ((scan & 0x04)>>2);
+	MOV	R17,R16
+	ANDI	R17,0x04
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN14)
+	LDI	R31,(SUM_SCN14) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   401   SUM_SCN15 = SUM_SCN15 - ((SCN3[Head_SCN3] & 0x08)>>3);
+	LDS	R17,SUM_SCN15
+	LDS	R18,Head_SCN3
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN3) & 0xFFFF))
+	SBCI	R31,(-(SCN3) & 0xFFFF) >> 8
+	LD	R18,Z
+	ANDI	R18,0x08
+	ASR	R18
+	ASR	R18
+	ASR	R18
+	SUB	R17,R18
+	STS	SUM_SCN15,R17
+;   402   SUM_SCN15 = SUM_SCN15 + ((scan & 0x08)>>3);
+	MOV	R17,R16
+	ANDI	R17,0x08
+	ASR	R17
+	ASR	R17
+	ASR	R17
+	LDI	R30,LOW(SUM_SCN15)
+	LDI	R31,(SUM_SCN15) >> 8
+	LD	R18,Z
+	ADD	R18,R17
+	ST	Z,R18
+;   403 
+;   404   SCN3[Head_SCN3] = scan;
+	LDS	R18,Head_SCN3
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(SCN3) & 0xFFFF))
+	SBCI	R31,(-(SCN3) & 0xFFFF) >> 8
+	ST	Z,R16
+;   405 
+;   406   Head_SCN3 = (Head_SCN3+1) & BUFFER_MASK_SCN0;
+	LDS	R16,Head_SCN3
+	INC	R16
+	ANDI	R16,0x07
+	STS	Head_SCN3,R16
+;   407 
+;   408   OLD_SCN3 = NEW_SCN3;
+	LDS	R16,NEW_SCN3
+	STS	OLD_SCN3,R16
+;   409   NEW_SCN3 = 0;
+	LDI	R16,0
+	STS	NEW_SCN3,R16
+;   410   i = (unsigned char)( SUM_SCN12 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN12
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   411   NEW_SCN3 = NEW_SCN3 | i;
+	LDS	R16,NEW_SCN3
+	LD	R17,Y
+	OR	R17,R16
+	STS	NEW_SCN3,R17
+;   412   i = (unsigned char)( SUM_SCN13 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN13
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   413   NEW_SCN3 = NEW_SCN3 | (i<<1);
+	LDS	R16,NEW_SCN3
+	LD	R17,Y
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN3,R17
+;   414   i = (unsigned char)( SUM_SCN14 / BUFFER_SIZE_KEY);
+	LDS	R16,SUM_SCN14
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   415   NEW_SCN3 = NEW_SCN3 | (i<<2);
+	LDS	R16,NEW_SCN3
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN3,R17
+;   416   i = (unsigned char)( SUM_SCN15 / BUFFER_SIZE_KEY );
+	LDS	R16,SUM_SCN15
+	LDI	R20,8
+	CALL	?UC_DIVMOD_L01
+	ST	Y,R16
+;   417   NEW_SCN3 = NEW_SCN3 | (i<<3);
+	LDS	R16,NEW_SCN3
+	LD	R17,Y
+	LSL	R17
+	LSL	R17
+	LSL	R17
+	OR	R17,R16
+	STS	NEW_SCN3,R17
+;   418 
+;   419   /* Return vector [type   event, scan-code] */
+;   420     if ( ((NEW_SCN2 & 0x01) - (OLD_SCN2 & 0x01)) > 0 )
+	LDS	R16,NEW_SCN2
+	LDS	R17,OLD_SCN2
+;   421     {
+;   422     //DDRA = 0xFF;
+;   423     //PORTA = ~((unsigned char) PORTA);
+;   424     };
+;   425   }
+	ADIW	R29 : R28,1
+	RET
+;   426 /*  END Calculate status KEY */
+;   427 /*---------------------------*/
+;   428 
+;   429 /*-----------------------------*/
+;   430 /*  Calculate events KEY  0->0 */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   431 unsigned char Key_Event_00 ( unsigned char sel ) // sel = [0,1,2,3]
+;   432   {
+;   433   unsigned char tmp;
+;   434   switch (sel)
+; __nearfunc unsigned char Key_Event_00(unsigned char);
+Key_Event_00:
+	MOV	R17,R16
+	SUBI	R17,0
+	BREQ	??Key_Event_00_0
+	DEC	R17
+	BREQ	??Key_Event_00_1
+	DEC	R17
+	BREQ	??Key_Event_00_2
+	DEC	R17
+	BRNE	??Key_Event_00_3
+	RJMP	??Key_Event_00_4
+??Key_Event_00_3:
+	RJMP	??Key_Event_00_5
+;   435   {
+;   436   case 0:
+;   437   /* calculate event */
+;   438   tmp = (( ~(NEW_SCN0) & ~OLD_SCN0 ) & M00[sel]) & 0x0F;
+??Key_Event_00_0:
+	LDS	R17,NEW_SCN0
+	LDS	R18,OLD_SCN0
+	COM	R17
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M00) & 0xFFFF))
+	SBCI	R31,(-(M00) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   439   EVEN_M00[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M00) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M00) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_00_6
+;   440   break;
+;   441   case 1:
+;   442   tmp = (( ~(NEW_SCN1) & ~OLD_SCN1 ) & M00[sel]) & 0x0F;
+??Key_Event_00_1:
+	LDS	R17,NEW_SCN1
+	LDS	R18,OLD_SCN1
+	COM	R17
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M00) & 0xFFFF))
+	SBCI	R31,(-(M00) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   443   EVEN_M00[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M00) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M00) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_00_6
+;   444   break;
+;   445   case 2:
+;   446   tmp = (( ~(NEW_SCN2) & ~OLD_SCN2 ) & M00[sel]) & 0x0F;
+??Key_Event_00_2:
+	LDS	R17,NEW_SCN2
+	LDS	R18,OLD_SCN2
+	COM	R17
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M00) & 0xFFFF))
+	SBCI	R31,(-(M00) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   447   EVEN_M00[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M00) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M00) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_00_6
+;   448   break;
+;   449   case 3:
+;   450   tmp = (( ~(NEW_SCN3) & ~OLD_SCN3 ) & M00[sel]) & 0x0F;
+??Key_Event_00_4:
+	LDS	R17,NEW_SCN3
+	LDS	R18,OLD_SCN3
+	COM	R17
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M00) & 0xFFFF))
+	SBCI	R31,(-(M00) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   451   EVEN_M00[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M00) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M00) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_00_6
+;   452   break;
+;   453   default:
+;   454   tmp = 0;
+??Key_Event_00_5:
+	LDI	R17,0
+;   455   break;
+;   456   };
+;   457  return ( tmp);
+??Key_Event_00_6:
+	MOV	R16,R17
+	RET
+;   458   }
+;   459 
+;   460 /*  END Calculate events KEY 0->0 */
+;   461 /*--------------------------------*/
+;   462 
+;   463 /*-----------------------------*/
+;   464 /*  Calculate events KEY  0->1 */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   465 unsigned char Key_Event_01 ( unsigned char sel )// sel = [0,1,2,3]
+;   466   {
+;   467   unsigned char tmp;
+;   468   switch (sel)
+; __nearfunc unsigned char Key_Event_01(unsigned char);
+Key_Event_01:
+	MOV	R17,R16
+	SUBI	R17,0
+	BREQ	??Key_Event_01_0
+	DEC	R17
+	BREQ	??Key_Event_01_1
+	DEC	R17
+	BREQ	??Key_Event_01_2
+	DEC	R17
+	BREQ	??Key_Event_01_3
+	RJMP	??Key_Event_01_4
+;   469   {
+;   470   case 0:
+;   471   /* calculate event */
+;   472   tmp = (( (NEW_SCN0) & ~OLD_SCN0 ) & M01[sel]) & 0x0F;
+??Key_Event_01_0:
+	LDS	R17,NEW_SCN0
+	LDS	R18,OLD_SCN0
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M01) & 0xFFFF))
+	SBCI	R31,(-(M01) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   473   EVEN_M01[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M01) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M01) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_01_5
+;   474   break;
+;   475   case 1:
+;   476   tmp = (( (NEW_SCN1) & ~OLD_SCN1 ) & M01[sel]) & 0x0F;
+??Key_Event_01_1:
+	LDS	R17,NEW_SCN1
+	LDS	R18,OLD_SCN1
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M01) & 0xFFFF))
+	SBCI	R31,(-(M01) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   477   EVEN_M01[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M01) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M01) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_01_5
+;   478   break;
+;   479   case 2:
+;   480   tmp = (( (NEW_SCN2) & ~OLD_SCN2 ) & M01[sel]) & 0x0F;
+??Key_Event_01_2:
+	LDS	R17,NEW_SCN2
+	LDS	R18,OLD_SCN2
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M01) & 0xFFFF))
+	SBCI	R31,(-(M01) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   481   EVEN_M01[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M01) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M01) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_01_5
+;   482   break;
+;   483   case 3:
+;   484   tmp = (( (NEW_SCN3) & ~OLD_SCN3 ) & M01[sel]) & 0x0F;
+??Key_Event_01_3:
+	LDS	R17,NEW_SCN3
+	LDS	R18,OLD_SCN3
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M01) & 0xFFFF))
+	SBCI	R31,(-(M01) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   485   EVEN_M01[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M01) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M01) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_01_5
+;   486   break;
+;   487   default:
+;   488   tmp = 0;
+??Key_Event_01_4:
+	LDI	R17,0
+;   489   break;
+;   490    };
+;   491 return ( tmp);
+??Key_Event_01_5:
+	MOV	R16,R17
+	RET
+;   492   }
+;   493 
+;   494 /*  END Calculate events KEY 0->1 */
+;   495 /*--------------------------------*/
+;   496 
+;   497 /*-----------------------------*/
+;   498 /*  Calculate events KEY  1->0 */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   499 unsigned char Key_Event_10 ( unsigned char sel )// sel = [0,1,2,3]
+;   500   {
+;   501   unsigned char tmp;
+;   502   switch (sel)
+; __nearfunc unsigned char Key_Event_10(unsigned char);
+Key_Event_10:
+	MOV	R17,R16
+	SUBI	R17,0
+	BREQ	??Key_Event_10_0
+	DEC	R17
+	BREQ	??Key_Event_10_1
+	DEC	R17
+	BREQ	??Key_Event_10_2
+	DEC	R17
+	BREQ	??Key_Event_10_3
+	RJMP	??Key_Event_10_4
+;   503   {
+;   504   case 0:
+;   505   /* calculate event */
+;   506   tmp = (( ~(NEW_SCN0) & OLD_SCN0 ) & M10[sel]) & 0x0F;
+??Key_Event_10_0:
+	LDS	R18,NEW_SCN0
+	LDS	R17,OLD_SCN0
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M10) & 0xFFFF))
+	SBCI	R31,(-(M10) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   507   EVEN_M10[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M10) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M10) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_10_5
+;   508   break;
+;   509   case 1:
+;   510   tmp = (( ~(NEW_SCN1) & OLD_SCN1 ) & M10[sel]) & 0x0F;
+??Key_Event_10_1:
+	LDS	R18,NEW_SCN1
+	LDS	R17,OLD_SCN1
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M10) & 0xFFFF))
+	SBCI	R31,(-(M10) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   511   EVEN_M10[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M10) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M10) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_10_5
+;   512   break;
+;   513   case 2:
+;   514   tmp = (( ~(NEW_SCN2) & OLD_SCN2 ) & M10[sel]) & 0x0F;
+??Key_Event_10_2:
+	LDS	R18,NEW_SCN2
+	LDS	R17,OLD_SCN2
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M10) & 0xFFFF))
+	SBCI	R31,(-(M10) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   515   EVEN_M10[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M10) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M10) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_10_5
+;   516   break;
+;   517   case 3:
+;   518   tmp = (( ~(NEW_SCN3) & OLD_SCN3 ) & M10[sel]) & 0x0F;
+??Key_Event_10_3:
+	LDS	R18,NEW_SCN3
+	LDS	R17,OLD_SCN3
+	COM	R18
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M10) & 0xFFFF))
+	SBCI	R31,(-(M10) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   519   EVEN_M10[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M10) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M10) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_10_5
+;   520   break;
+;   521   default:
+;   522   tmp = 0;
+??Key_Event_10_4:
+	LDI	R17,0
+;   523   break;
+;   524    };
+;   525  return ( tmp);
+??Key_Event_10_5:
+	MOV	R16,R17
+	RET
+;   526   }
+;   527 
+;   528 /*  END Calculate events KEY 1->0 */
+;   529 /*--------------------------------*/
+;   530 
+;   531 /*-----------------------------*/
+;   532 /*  Calculate events KEY  1->1 */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   533 unsigned char Key_Event_11 ( unsigned char sel )// sel = [0,1,2,3]
+;   534   {
+;   535   unsigned char tmp;
+;   536   switch (sel)
+; __nearfunc unsigned char Key_Event_11(unsigned char);
+Key_Event_11:
+	MOV	R17,R16
+	SUBI	R17,0
+	BREQ	??Key_Event_11_0
+	DEC	R17
+	BREQ	??Key_Event_11_1
+	DEC	R17
+	BREQ	??Key_Event_11_2
+	DEC	R17
+	BREQ	??Key_Event_11_3
+	RJMP	??Key_Event_11_4
+;   537   {
+;   538   case 0:
+;   539   /* calculate event */
+;   540   tmp = (( (NEW_SCN0) & OLD_SCN0 ) & M11[sel]) & 0x0F;
+??Key_Event_11_0:
+	LDS	R17,NEW_SCN0
+	LDS	R18,OLD_SCN0
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M11) & 0xFFFF))
+	SBCI	R31,(-(M11) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   541   EVEN_M11[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M11) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M11) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_11_5
+;   542   break;
+;   543   case 1:
+;   544   tmp = (( (NEW_SCN1) & OLD_SCN1 ) & M11[sel]) & 0x0F;
+??Key_Event_11_1:
+	LDS	R17,NEW_SCN1
+	LDS	R18,OLD_SCN1
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M11) & 0xFFFF))
+	SBCI	R31,(-(M11) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   545   EVEN_M11[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M11) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M11) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_11_5
+;   546   break;
+;   547   case 2:
+;   548   tmp = (( (NEW_SCN2) & OLD_SCN2 ) & M11[sel]) & 0x0F;
+??Key_Event_11_2:
+	LDS	R17,NEW_SCN2
+	LDS	R18,OLD_SCN2
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M11) & 0xFFFF))
+	SBCI	R31,(-(M11) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   549   EVEN_M11[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M11) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M11) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_11_5
+;   550   break;
+;   551   case 3:
+;   552   tmp = (( (NEW_SCN3) & OLD_SCN3 ) & M11[sel]) & 0x0F;
+??Key_Event_11_3:
+	LDS	R17,NEW_SCN3
+	LDS	R18,OLD_SCN3
+	AND	R18,R17
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(M11) & 0xFFFF))
+	SBCI	R31,(-(M11) & 0xFFFF) >> 8
+	LD	R17,Z
+	AND	R17,R18
+	ANDI	R17,0x0F
+;   553   EVEN_M11[sel] = tmp;
+	MOV	R18,R16
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(EVEN_M11) & 0xFFFF))
+	SBCI	R31,(-(EVEN_M11) & 0xFFFF) >> 8
+	ST	Z,R17
+	RJMP	??Key_Event_11_5
+;   554   break;
+;   555   default:
+;   556   tmp = 0;
+??Key_Event_11_4:
+	LDI	R17,0
+;   557   break;
+;   558   };
+;   559  return ( tmp);
+??Key_Event_11_5:
+	MOV	R16,R17
+	RET
+;   560   }
+;   561 /*  END Calculate events KEY 1->1 */
+;   562 /*--------------------------------*/
+;   563 
+;   564 
+;   565 /*----------------------------*/
+;   566 /* Interrupt Timer 0 Overflow */
+;   567 #pragma vector=TIMER0_OVF_vect
+
+        RSEG CODE:CODE:NOROOT(1)
+;   568   static __interrupt void Overflow_Timer0(void)
+;   569   {
+; static __nearfunc __interrupt void Overflow_Timer0();
+Overflow_Timer0:
+        FUNCALL Overflow_Timer0, Cal_Key_Contr
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL Overflow_Timer0, Cal_Key_Contr
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL Overflow_Timer0, Key_Event_00
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL Overflow_Timer0, Key_Event_01
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL Overflow_Timer0, Key_Event_10
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL Overflow_Timer0, Key_Event_11
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL Overflow_Timer0, Wr_Sym_Disp
+        LOCFRAME CSTACK, 16, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R25
+	ST	-Y,R24
+	ST	-Y,R31
+	ST	-Y,R30
+	ST	-Y,R3
+	ST	-Y,R2
+	ST	-Y,R1
+	ST	-Y,R0
+	ST	-Y,R23
+	ST	-Y,R22
+	ST	-Y,R21
+	ST	-Y,R20
+	ST	-Y,R19
+	ST	-Y,R18
+	ST	-Y,R17
+	ST	-Y,R16
+	IN	R25,0x3F
+;   570   unsigned char tmp;
+;   571   unsigned char i;
+;   572 
+;   573 #ifdef TEST_KEY_CONTR
+;   574   /* test pulse time */
+;   575   DDRA = 0xFF;
+	LDI	R16,255
+	OUT	0x1A,R16
+;   576   ClrBit (PORTA,PA0);
+	CBI	0x1B,0x00
+;   577 #endif
+;   578 
+;   579   switch (A21_y)  // Select for status A2x
+	LDS	R16,A21_y
+	DEC	R16
+	BREQ	??Overflow_Timer0_0
+	DEC	R16
+	BREQ	??Overflow_Timer0_1
+	RJMP	??Overflow_Timer0_2
+;   580     {
+;   581     case 0: // Reset and Init Timer0
+;   582     break;
+;   583     case 1: // Transitive process A2x
+;   584     Cal_Key_Contr();
+??Overflow_Timer0_0:
+	RCALL	Cal_Key_Contr
+;   585       if (c_y1 > TRANS_KEY)
+	LDS	R16,c_y1
+	CPI	R16,11
+	BRCS	??Overflow_Timer0_3
+;   586         {
+;   587         A21_y = 2;  // change status
+	LDI	R16,2
+	STS	A21_y,R16
+;   588         };
+;   589     c_y1++;
+??Overflow_Timer0_3:
+	LDI	R30,LOW(c_y1)
+	LDI	R31,(c_y1) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+	RJMP	??Overflow_Timer0_2
+;   590     break;
+;   591     case 2:
+;   592     // Event
+;   593     Cal_Key_Contr();
+??Overflow_Timer0_1:
+	RCALL	Cal_Key_Contr
+;   594     break;
+;   595     default:
+;   596     break;
+;   597     };
+;   598 
+;   599   tmp = 0;
+??Overflow_Timer0_2:
+	LDI	R16,0
+;   600   for (i=0;i<=3;i++)
+	LDI	R24,0
+	RJMP	??Overflow_Timer0_4
+;   601   {
+;   602   tmp = Key_Event_00(i);
+??Overflow_Timer0_5:
+	MOV	R16,R24
+	RCALL	Key_Event_00
+;   603   tmp = tmp | tmp;
+	OR	R16,R16
+	INC	R24
+??Overflow_Timer0_4:
+	CPI	R24,4
+	BRCS	??Overflow_Timer0_5
+;   604   };
+;   605   EVEN_M00_SUM = tmp;   // if tmp = 0 then no Events
+	STS	EVEN_M00_SUM,R16
+;   606 
+;   607   tmp = 0;
+	LDI	R16,0
+;   608   for (i=0;i<=3;i++)
+	LDI	R24,0
+	RJMP	??Overflow_Timer0_6
+;   609   {
+;   610   tmp = Key_Event_01(i);
+??Overflow_Timer0_7:
+	MOV	R16,R24
+	RCALL	Key_Event_01
+;   611   tmp = tmp | tmp;
+	OR	R16,R16
+	INC	R24
+??Overflow_Timer0_6:
+	CPI	R24,4
+	BRCS	??Overflow_Timer0_7
+;   612   };
+;   613   EVEN_M01_SUM = tmp;   // if tmp = 0 then no Events
+	STS	EVEN_M01_SUM,R16
+;   614 
+;   615   tmp = 0;
+	LDI	R16,0
+;   616   for (i=0;i<=3;i++)
+	LDI	R24,0
+	RJMP	??Overflow_Timer0_8
+;   617   {
+;   618   tmp = Key_Event_10(i);
+??Overflow_Timer0_9:
+	MOV	R16,R24
+	RCALL	Key_Event_10
+;   619   tmp = tmp | tmp;
+	OR	R16,R16
+	INC	R24
+??Overflow_Timer0_8:
+	CPI	R24,4
+	BRCS	??Overflow_Timer0_9
+;   620   };
+;   621   EVEN_M10_SUM = tmp;   // if tmp = 0 then no Events
+	STS	EVEN_M10_SUM,R16
+;   622 
+;   623   tmp = 0;
+	LDI	R16,0
+;   624   for (i=0;i<=3;i++)
+	LDI	R24,0
+	RJMP	??Overflow_Timer0_10
+;   625   {
+;   626   tmp = Key_Event_11(i);
+??Overflow_Timer0_11:
+	MOV	R16,R24
+	RCALL	Key_Event_11
+;   627   tmp = tmp | tmp;
+	OR	R16,R16
+	INC	R24
+??Overflow_Timer0_10:
+	CPI	R24,4
+	BRCS	??Overflow_Timer0_11
+;   628   };
+;   629   EVEN_M11_SUM = tmp;   // if tmp = 0 then no Events
+	STS	EVEN_M11_SUM,R16
+;   630 
+;   631 
+;   632   if (tmp != 0) // test YES Events
+;   633   {
+;   634   // DDRA = 0xFF;
+;   635   // PORTA = ~(PORTA);
+;   636   };            // end test
+;   637 
+;   638 
+;   639   Wr_Sym_Disp(DISP_POS); // Output Indicator
+	LDS	R16,DISP_POS
+	RCALL	Wr_Sym_Disp
+;   640 
+;   641 #ifdef TEST_KEY_CONTR
+;   642   /* test pulse time */
+;   643   DDRA = 0xFF;
+	LDI	R16,255
+	OUT	0x1A,R16
+;   644   SetBit (PORTA,PA0);
+	SBI	0x1B,0x00
+;   645 #endif
+;   646   cTest++;
+	LDI	R30,LOW(cTest)
+	LDI	R31,(cTest) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+;   647   //DDRA = 0xFF;
+;   648   //ClrBit (PORTA,PA0);
+;   649   PORTA = ~(cTest);
+	LDS	R16,cTest
+	COM	R16
+	OUT	0x1B,R16
+;   650   //PORTA = ~( TCNT0 - mTC_0);
+;   651   //PORTA = ~( (cTest & 0xf0) | (PORTA & 0x0F));
+;   652   //PORTA = ~(tmp);
+;   653 
+;   654   /* Increment counter interrupt Timer 0 */
+;   655   COUNT_TIME++;
+	LDI	R30,LOW(COUNT_TIME)
+	LDI	R31,(COUNT_TIME) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Z,R16
+	STD	Z+1,R17
+;   656 
+;   657   /* Corect TIME0 */
+;   658   TCNT0 = mTC_0+TCNT0;
+	LDS	R16,mTC_0
+	IN	R17,0x32
+	ADD	R17,R16
+	OUT	0x32,R17
+;   659   }
+	OUT	0x3F,R25
+	LD	R16,Y+
+	LD	R17,Y+
+	LD	R18,Y+
+	LD	R19,Y+
+	LD	R20,Y+
+	LD	R21,Y+
+	LD	R22,Y+
+	LD	R23,Y+
+	LD	R0,Y+
+	LD	R1,Y+
+	LD	R2,Y+
+	LD	R3,Y+
+	LD	R30,Y+
+	LD	R31,Y+
+	LD	R24,Y+
+	LD	R25,Y+
+	RETI
+;   660 /* END Interrupt Timer 0 Overflow */
+;   661 /*--------------------------------*/
+;   662 
+;   663 /*---------------------------------------*/
+;   664 /*  Init SPI Inteface for KEY_CONTR A2x  */
+
+        RSEG CODE:CODE:NOROOT(1)
+;   665 void Init_SPI ( void)
+;   666 {
+;   667  /* Disable Interrupt SPI */
+;   668  ClrBit (SPCR,SPIE);
+; __nearfunc void Init_SPI();
+Init_SPI:
+	CBI	0x0D,0x07
+;   669  ClrBit (SPCR,SPE);
+	CBI	0x0D,0x06
+;   670 
+;   671  SetBit (SPCR, MSTR); // Mode Master
+	SBI	0x0D,0x04
+;   672  SetBit (SPCR, CPOL); // Mode SCK 1_0_1
+	SBI	0x0D,0x03
+;   673  SetBit (SPCR, CPHA);
+	SBI	0x0D,0x02
+;   674 
+;   675  ClrBit (SPSR, SPI2X);// "0"  Fcl/128
+	CBI	0x0E,0x00
+;   676  SetBit (SPCR, SPR1); // "1"
+	SBI	0x0D,0x01
+;   677  SetBit (SPCR, SPR0); // "1"
+	SBI	0x0D,0x00
+;   678 
+;   679  /* Enable Interrupt SPI */
+;   680  SetBit (SPCR,SPE);
+	SBI	0x0D,0x06
+;   681  SetBit (SPCR,SPIE);
+	SBI	0x0D,0x07
+;   682 }
+	RET
+;   683 /*  END Init SPI Inteface for KEY_CONTR A2x  */
+;   684 /*-------------------------------------------*/
+;   685 
+;   686 /*---------------*/
+;   687 /* Interrupt SPI */
+;   688 #pragma vector=SPI_STC_vect
+
+        RSEG CODE:CODE:NOROOT(1)
+;   689   static __interrupt void SPI_STC(void)
+;   690   {
+; static __nearfunc __interrupt void SPI_STC();
+SPI_STC:
+	ST	-Y,R31
+	ST	-Y,R30
+	ST	-Y,R17
+	ST	-Y,R16
+	IN	R17,0x3F
+;   691   SPDR = 'U';
+	LDI	R16,85
+	OUT	0x0F,R16
+;   692 
+;   693    cTest++;
+	LDI	R30,LOW(cTest)
+	LDI	R31,(cTest) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+;   694   //DDRA = 0xFF;
+;   695   //PORTA = ~(cTest);
+;   696   }
+	OUT	0x3F,R17
+	LD	R16,Y+
+	LD	R17,Y+
+	LD	R30,Y+
+	LD	R31,Y+
+	RETI
+;   697 /* END Interrupt SPI  */
+;   698 /*--------------------*/
+;   699 
+;   700 #ifdef TEST_KEY_CONTR
+;   701 /* main - a simple test program*/
+
+        RSEG CODE:CODE:NOROOT(1)
+;   702 void main( void )
+;   703         {
+; __nearfunc void main();
+main:
+        FUNCALL main, Reset_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Init_S_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Init_2S_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Init_B_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Init_P_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Echo_OFF_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ControlStream_OFF_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, XON_XOFF_OFF_CONTR_Rx_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, XON_XOFF_OFF_CONTR_Tx_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, DSR_OFF_CONTR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, DTR_OFF_CONTR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, CTS_OFF_CONTR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, RTS_OFF_CONTR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, RTS_CLR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, DTR_CLR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, CTS_CLR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, DSR_CLR_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Enable_Err_Count_UART0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Reset_KEY_CONTR
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Reset_DISP_CONTR
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Init_Timer0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Start_Timer0
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 15, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, getchar_K
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 15, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 13, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R25
+	ST	-Y,R24
+	SBIW	R29 : R28,11
+;   704         static volatile unsigned char c_y1;
+;   705         volatile long int l_i;
+;   706         volatile unsigned char cByte;
+;   707         volatile int iByte;
+;   708         volatile int iRet;
+;   709         volatile unsigned int i;
+;   710 
+;   711         _CLI();  // disable global interrupt
+        cli
+;   712 
+;   713 
+;   714         /*----------------------------------------*/
+;   715         // 1. Init_SPI(); // test init SPI inteface
+;   716 
+;   717 
+;   718         /*-----------------------*/
+;   719         /* 2. Init UART0         */
+;   720         Reset_UART0();
+	CALL	Reset_UART0
+;   721         Init_S_UART0(57600); // 57600 default
+	LDI	R16,0
+	LDI	R17,225
+	CALL	Init_S_UART0
+;   722         Init_2S_UART0(0);
+	LDI	R16,0
+	CALL	Init_2S_UART0
+;   723         Init_B_UART0(1);  // Size Bits '8'
+	LDI	R16,1
+	CALL	Init_B_UART0
+;   724         Init_P_UART0(0);  // Parity    'N'
+	LDI	R16,0
+	CALL	Init_P_UART0
+;   725                           // Stop Bit  '1'
+;   726         Echo_OFF_UART0(); // Set Echo
+	CALL	Echo_OFF_UART0
+;   727         ControlStream_OFF_UART0();     // Flow Control OFF
+	CALL	ControlStream_OFF_UART0
+;   728         XON_XOFF_OFF_CONTR_Rx_UART0(); // Disable Software Control OFF
+	CALL	XON_XOFF_OFF_CONTR_Rx_UART0
+;   729         XON_XOFF_OFF_CONTR_Tx_UART0(); // Disable Tx Control
+	CALL	XON_XOFF_OFF_CONTR_Tx_UART0
+;   730         /* Enable control hardware flow all signals */
+;   731          DSR_OFF_CONTR_UART0();  // Disable Hardware Flow Control DSR
+	CALL	DSR_OFF_CONTR_UART0
+;   732          DTR_OFF_CONTR_UART0();  // Disable Hardware Flow Control DTR
+	CALL	DTR_OFF_CONTR_UART0
+;   733          CTS_OFF_CONTR_UART0();  // Disable Hardware Flow Control CTS
+	CALL	CTS_OFF_CONTR_UART0
+;   734          RTS_OFF_CONTR_UART0();  // Disable Hardware Flow Control RTS
+	CALL	RTS_OFF_CONTR_UART0
+;   735          RTS_CLR_UART0();       // RTS0=0 Request to send
+	CALL	RTS_CLR_UART0
+;   736          DTR_CLR_UART0();       // DTR0=0 Data Terminal Ready
+	CALL	DTR_CLR_UART0
+;   737          CTS_CLR_UART0();
+	CALL	CTS_CLR_UART0
+;   738          DSR_CLR_UART0();
+	CALL	DSR_CLR_UART0
+;   739         /* Enable error counters*/
+;   740         Enable_Err_Count_UART0();
+	CALL	Enable_Err_Count_UART0
+;   741         i = 0;
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+;   742 
+;   743         /*-------------------------*/
+;   744         /* 3. Set A2.1 KEY_CONTR   */
+;   745         Reset_KEY_CONTR();
+	RCALL	Reset_KEY_CONTR
+;   746         c_y1 = 0; // temp variable status A21_y1=1 c_y1 = 0...4
+	LDI	R16,0
+	STS	??c_y1,R16
+;   747         /* Set A2.2 DISP_CONTR */
+;   748         Reset_DISP_CONTR ();
+	RCALL	Reset_DISP_CONTR
+;   749         /* Init Timer0 */
+;   750         Init_Timer0();
+	RCALL	Init_Timer0
+;   751 
+;   752         /*-------------------*/
+;   753         /* 4. Begin programm */
+;   754         _SEI(); // enable global interrupt
+        sei
+;   755         /* Start Timer0 */
+;   756         Start_Timer0();
+	RCALL	Start_Timer0
+;   757         iRet = printf("Test ver 0.02 for file 'A2x.c' KEY_CONTR \n\r");
+	LDI	R16,LOW(`?<Constant "Test ver 0.02 for fil...">`)
+	LDI	R17,(`?<Constant "Test ver 0.02 for fil...">`) >> 8
+	CALL	printf
+	STD	Y+4,R16
+	STD	Y+5,R17
+;   758         
+;   759         //SPDR = 'U'; // For start and interrupt Transmit On Byte 8 bits
+;   760 
+;   761         i=0;
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+	RJMP	??main_0
+;   762 
+;   763         while ( 1 ) /* forever */
+;   764                 {
+;   765                 /* test new function getchar() and prints stdin */
+;   766                 /* Reset point for BUFFER BUF_CMD */
+;   767                 Head_CMD = 0; // point begin
+;   768                 do 
+;   769                 { 
+;   770                   iByte = getchar_K();     // new size buffer 40 yes
+;   771                   iRet = printf("%c",toupper( (unsigned char) iByte));
+;   772                   /* Save elements BUF_CMD */
+;   773                   BUF_CMD[Head_CMD] = (unsigned char) iByte;
+;   774                   Head_CMD++;
+;   775                         if ( Head_CMD > (BUFFER_SIZE_CMD-1) )
+;   776                         {
+;   777                          Head_CMD--; // end buffer
+;   778                         };
+;   779                   
+;   780                   if (iByte == 0x0A)  // ^J LF  
+;   781                   {
+;   782                   iRet = printf("\r");                  
+;   783                   };
+;   784                 }
+;   785                 while ( iByte != 0x0A);
+;   786                 /*test print strings */
+;   787                 for (i=0;i<BUFFER_SIZE_CMD-1;i++)
+;   788                 {
+;   789                 iRet = printf("%c",BUF_CMD[i]);
+??main_1:
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(BUF_CMD) & 0xFFFF))
+	SBCI	R31,(-(BUF_CMD) & 0xFFFF) >> 8
+	LD	R16,Z
+	LDI	R17,0
+	ST	-Y,R17
+	ST	-Y,R16
+	LDI	R16,LOW(`?<Constant "%c">`)
+	LDI	R17,(`?<Constant "%c">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	STD	Y+4,R16
+	STD	Y+5,R17
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+2,R16
+	STD	Y+3,R17
+??main_2:
+	LDD	R24,Y+2
+	LDD	R25,Y+3
+	CPI	R24,39
+	SBCI	R25,0
+	BRCS	??main_1
+;   790                 };
+;   791                 
+;   792                 /*
+;   793                 cByte = (unsigned char) i;
+;   794                 iRet = printf("%c",' '); // yes
+;   795                 iRet = printf("%c",cByte); // yes
+;   796                 */
+;   797 
+;   798                 /* test init variables */
+;   799                 i++;
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+2,R16
+	STD	Y+3,R17
+;   800                 cByte = 'a';
+	LDI	R16,97
+	STD	Y+6,R16
+;   801                 iByte = 0;
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+;   802                 iRet = 0;
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+4,R16
+	STD	Y+5,R17
+;   803                 l_i = 0;
+	LDI	R16,0
+	LDI	R17,0
+	LDI	R18,0
+	LDI	R19,0
+	STD	Y+7,R16
+	STD	Y+8,R17
+	STD	Y+9,R18
+	STD	Y+10,R19
+??main_0:
+	LDI	R16,0
+	STS	Head_CMD,R16
+??main_3:
+	CALL	getchar_K
+	ST	Y,R16
+	STD	Y+1,R17
+	LDI	R16,LOW((_Small_Ctype + 1))
+	LDI	R17,(_Small_Ctype + 1) >> 8
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOV	R30,R18
+	LDI	R31,0
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R16,Z
+	ANDI	R16,0x02
+	TST	R16
+	BREQ	??main_4
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R17,0
+	ANDI	R16,0x5F
+	ANDI	R17,0x00
+	RJMP	??main_5
+??main_4:
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R17,0
+??main_5:
+	ST	-Y,R17
+	ST	-Y,R16
+	LDI	R16,LOW(`?<Constant "%c">`)
+	LDI	R17,(`?<Constant "%c">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	STD	Y+4,R16
+	STD	Y+5,R17
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDS	R18,Head_CMD
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(BUF_CMD) & 0xFFFF))
+	SBCI	R31,(-(BUF_CMD) & 0xFFFF) >> 8
+	ST	Z,R16
+	LDI	R30,LOW(Head_CMD)
+	LDI	R31,(Head_CMD) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+	LDS	R16,Head_CMD
+	CPI	R16,40
+	BRCS	??main_6
+	LDI	R30,LOW(Head_CMD)
+	LDI	R31,(Head_CMD) >> 8
+	LD	R16,Z
+	DEC	R16
+	ST	Z,R16
+??main_6:
+	LD	R16,Y
+	LDD	R17,Y+1
+	CPI	R16,10
+	LDI	R16,0
+	CPC	R17,R16
+	BRNE	??main_7
+	LDI	R16,LOW(`?<Constant "\\r">`)
+	LDI	R17,(`?<Constant "\\r">`) >> 8
+	CALL	printf
+	STD	Y+4,R16
+	STD	Y+5,R17
+??main_7:
+	LD	R16,Y
+	LDD	R17,Y+1
+	CPI	R16,10
+	LDI	R16,0
+	CPC	R17,R16
+	BREQ	??main_8
+	RJMP	??main_3
+??main_8:
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+	RJMP	??main_2
+;   804                 };
+;   805         }
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char volatile __near c_y1;
+??c_y1:
+	DS 1
+
+        COMMON INTVEC:CODE:ROOT(1)
+        ORG 44
+	JMP	Overflow_Timer0
+
+        COMMON INTVEC:CODE:ROOT(1)
+        ORG 48
+	JMP	SPI_STC
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "\r">[2];
+`?<Constant "\\r">`:
+	DS 2
+	REQUIRE `?<Initializer for <Constant "\\r">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "\\r">>`:
+	DB "\015"
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_I>`:
+	DW	SFE(NEAR_I) - SFB(NEAR_I)
+	DW	SFB(NEAR_I)
+	DW	SFB(NEAR_ID)
+	REQUIRE ?need_segment_init
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "%c">[3];
+`?<Constant "%c">`:
+	DS 3
+	REQUIRE `?<Initializer for <Constant "%c">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "%c">>`:
+	DB "%c"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "Test ver 0.02 for fil...">[44];
+`?<Constant "Test ver 0.02 for fil...">`:
+	DS 44
+	REQUIRE `?<Initializer for <Constant "Test ver 0.02 for`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "Test ver 0.02 for`:
+	DB "Test ver 0.02 for file 'A2x.c' KEY_CONTR \012\015"
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_Z>`:
+	DW	SFE(NEAR_Z) - SFB(NEAR_Z)
+	DW	SFB(NEAR_Z)
+	DW	0
+	REQUIRE ?need_segment_init
+
+        END
+;   806 #endif
+; 
+;     14 bytes in segment ABSOLUTE
+;   3834 bytes in segment CODE
+;     12 bytes in segment INITTAB
+;      8 bytes in segment INTVEC
+;    128 bytes in segment NEAR_F
+;     49 bytes in segment NEAR_I
+;     49 bytes in segment NEAR_ID
+;    194 bytes in segment NEAR_Z
+; 
+;   4019 bytes of CODE memory (+ 12 bytes shared)
+;    243 bytes of DATA memory (+ 14 bytes shared)
+;
+;Errors: none
+;Warnings: 2

@@ -1,0 +1,22 @@
+NAME CheckParity7
+#include "iom161.h"
+PUBLIC CheckParity7 ; Declare symbols to be exported to C function
+
+  RSEG CODE         ; This code is relocatable, RSEG
+
+CheckParity7:        ; Label, start execution here
+  clr R17           ; Zero flag SREG C=0 
+  clr R18           ; Zero R18 is test parity           
+  LDI R17,7         ; count 7  
+loop1_7:
+  ROR R16           ; rotate b0 -> C
+  brcc loop2_7      ; if (C=0) then goto loop2
+  com R18           ; change is neg
+loop2_7:
+  dec R17           ;
+  tst R17
+  brne loop1_7      ; if (Z=0) then loop1
+  mov R16,R18       ; rerutn calculate if (R18=0) then parity
+                    ;                  else no parity    
+  ret               ; Return to the main function
+  END

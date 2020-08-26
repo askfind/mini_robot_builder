@@ -1,0 +1,98 @@
+        MODULE Putchar
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        ERROR
+;NOTE: This module defines or uses C++ functions, which is not
+;      possible from assembler code. Assembling this file will
+;      not produce an equivalent object file to the one produced
+;      by the C++ compiler.
+
+        EXTERN ??TransmitByte
+        FUNCTION ??TransmitByte,0202H
+
+        PUBWEAK _A_DDRA
+        PUBWEAK _A_PORTA
+        PUBLIC putchar
+        FUNCTION putchar,031203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+;     1 /*              PUTCHAR.C
+;     2 
+;     3    The ANSI "putchar" function.
+;     4 
+;     5    The putchar function writes the character c to the
+;     6    output-stream pointed to by stream. 
+;     7    The function returns the character written. If an writing 
+;     8    error  occurs the putchar shall return EOF.
+;     9 
+;    10    $Name: V3_34K V3_34J V3_34I V3_34H V3_34G $    
+;    11 
+;    12    Copyright 1986 - 1999 IAR Systems. All rights reserved.
+;    13 */
+;    14 
+;    15 #include <iom161.h>
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03aH
+; union <unnamed> volatile __io _A_DDRA;
+_A_DDRA:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03bH
+; union <unnamed> volatile __io _A_PORTA;
+_A_PORTA:
+	DS 1
+;    16 #include <stdio.h>
+;    17 extern void TransmitByte( unsigned char data);
+;    18  
+
+        RSEG CODE:CODE:NOROOT(1)
+;    19 int putchar(int ch)
+;    20 {
+; __intrinsic __nearfunc int putchar(int);
+putchar:
+        FUNCALL putchar, ??TransmitByte
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R25
+	ST	-Y,R24
+	MOVW	R25 : R24,R17 : R16
+;    21 /*
+;    22         put your own putchar-function here
+;    23 */
+;    24   DDRA  = 0xFF;
+	LDI	R16,255
+	OUT	0x1A,R16
+;    25   PORTA = (unsigned char) ch;
+	OUT	0x1B,R24
+;    26   TransmitByte((unsigned char) ch);
+	MOV	R16,R24
+	CALL	??TransmitByte
+;    27   return ch;
+	MOVW	R17 : R16,R25 : R24
+	LD	R24,Y+
+	LD	R25,Y+
+	RET
+;    28 }
+
+        END
+;    29 
+;    30 
+; 
+;      2 bytes in segment ABSOLUTE
+;     26 bytes in segment CODE
+; 
+;     26 bytes of CODE memory
+;      0 bytes of DATA memory (+ 2 bytes shared)
+;
+;Errors: none
+;Warnings: none

@@ -1,0 +1,3289 @@
+        MODULE Test
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG NEAR_I:DATA:ROOT(0)
+        RSEG NEAR_ID:CODE:ROOT(0)
+        RSEG NEAR_Z:DATA:ROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        ERROR
+;NOTE: This module defines or uses C++ functions, which is not
+;      possible from assembler code. Assembling this file will
+;      not produce an equivalent object file to the one produced
+;      by the C++ compiler.
+
+`?<Name fpos 34>`   SYMBOL "fpos"
+??_Stz              SYMBOL "_Stz", `?<Name fpos 34>`
+
+??_C                SYMBOL "_C", ??_Nullstr
+
+        EXTERN ?need_segment_init
+        EXTERN `?~Init`
+        FUNCTION `?~Init`,0602H
+        EXTERN ?call_ctors
+        EXTERN ??Init
+        FUNCTION ??Init,0202H
+        EXTERN __record_needed_destruction
+        FUNCTION __record_needed_destruction,0202H
+        EXTERN `??operator delete`
+        FUNCTION `??operator delete`,0202H
+        EXTERN ?PROLOGUE4_L09
+        EXTERN ?EPILOGUE_B4_L09
+        EXTERN ??_Throw
+        FUNCTION ??_Throw,010202H
+        EXTERN `??operator new`
+        FUNCTION `??operator new`,0202H
+        EXTERN _Fpz
+        EXTERN ?ML_SRAM_SRAM_16_L07
+        EXTERN ??_Stz
+        EXTERN memcpy
+        FUNCTION memcpy,010202H
+        EXTERN ?PROLOGUE10_L09
+        EXTERN ?Register_R4_is_cg_reg
+        EXTERN ?Register_R5_is_cg_reg
+        EXTERN ?Register_R6_is_cg_reg
+        EXTERN ?Register_R7_is_cg_reg
+        EXTERN ?Register_R8_is_cg_reg
+        EXTERN ?Register_R9_is_cg_reg
+        EXTERN ?EPILOGUE_B10_L09
+        EXTERN _BADOFF
+        EXTERN `?~ios_base`
+        FUNCTION `?~ios_base`,0202H
+        EXTERN __eeput8_16
+        EXTERN __eeput16_16
+
+        PUBWEAK `?<Segment init: NEAR_I>`
+        PUBWEAK `?<Segment init: NEAR_Z>`
+        PUBWEAK ??MyBuf
+        FUNCTION ??MyBuf,021203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_C
+        PUBWEAK ??_Doraise
+        FUNCTION ??_Doraise,0603H
+        PUBWEAK ??_Doraise_1
+        FUNCTION ??_Doraise_1,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_10
+        FUNCTION ??_Doraise_10,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_11
+        FUNCTION ??_Doraise_11,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_2
+        FUNCTION ??_Doraise_2,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_3
+        FUNCTION ??_Doraise_3,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_4
+        FUNCTION ??_Doraise_4,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_5
+        FUNCTION ??_Doraise_5,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_6
+        FUNCTION ??_Doraise_6,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_7
+        FUNCTION ??_Doraise_7,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_8
+        FUNCTION ??_Doraise_8,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Doraise_9
+        FUNCTION ??_Doraise_9,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Gninc
+        FUNCTION ??_Gninc,0203H
+        PUBWEAK ??_Init
+        FUNCTION ??_Init,021203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??_Nullstr
+        FUNCTION ??_Nullstr,0203H
+        PUBWEAK ??_Pninc
+        FUNCTION ??_Pninc,0203H
+        PUBWEAK ??_Refcnt
+        FUNCTION ??_Refcnt,0203H
+        PUBWEAK ??_Tidy
+        FUNCTION ??_Tidy,021203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCTION ??__sti__Test_cpp_ccc03e22,021203H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??c_str
+        FUNCTION ??c_str,021203H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??copy
+        FUNCTION ??copy,021203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??deallocate
+        FUNCTION ??deallocate,021203H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??egptr
+        FUNCTION ??egptr,0203H
+        PUBWEAK ??eof
+        FUNCTION ??eof,0203H
+        PUBWEAK ??epptr
+        FUNCTION ??epptr,0203H
+        PUBWEAK ??eq_int_type
+        FUNCTION ??eq_int_type,0203H
+        PUBWEAK ??fpos
+        FUNCTION ??fpos,021203H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??gbump
+        FUNCTION ??gbump,0203H
+        PUBWEAK ??gptr
+        FUNCTION ??gptr,0203H
+        PUBWEAK ??imbue
+        FUNCTION ??imbue,0603H
+        PUBWEAK ??locale
+        FUNCTION ??locale,021203H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??overflow
+        FUNCTION ??overflow,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??pbackfail
+        FUNCTION ??pbackfail,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??pbump
+        FUNCTION ??pbump,0203H
+        PUBWEAK ??pptr
+        FUNCTION ??pptr,0203H
+        PUBWEAK ??pubsetbuf
+        FUNCTION ??pubsetbuf,041203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??seekoff
+        FUNCTION ??seekoff,021603H
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??seekpos
+        FUNCTION ??seekpos,021603H
+        LOCFRAME CSTACK, 30, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??setbuf
+        FUNCTION ??setbuf,0603H
+        PUBWEAK ??setg
+        FUNCTION ??setg,0203H
+        PUBWEAK ??setp
+        FUNCTION ??setp,0203H
+        PUBWEAK ??sgetc
+        FUNCTION ??sgetc,061203H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??showmanyc
+        FUNCTION ??showmanyc,0603H
+        PUBWEAK ??sputc
+        FUNCTION ??sputc,061203H
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??streambuf
+        FUNCTION ??streambuf,021203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??sync
+        FUNCTION ??sync,0603H
+        PUBWEAK ??to_char_type
+        FUNCTION ??to_char_type,0203H
+        PUBWEAK ??to_int_type
+        FUNCTION ??to_int_type,0203H
+        PUBWEAK ??uflow
+        FUNCTION ??uflow,061603H
+        LOCFRAME CSTACK, 6, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??underflow
+        FUNCTION ??underflow,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??what
+        FUNCTION ??what,0603H
+        PUBWEAK ??what_1
+        FUNCTION ??what_1,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??what_2
+        FUNCTION ??what_2,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??xsgetn
+        FUNCTION ??xsgetn,061603H
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??xsputn
+        FUNCTION ??xsputn,061603H
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~MyBuf`
+        FUNCTION `?~MyBuf`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~bad_exception`
+        FUNCTION `?~bad_exception`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~domain_error`
+        FUNCTION `?~domain_error`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~exception`
+        FUNCTION `?~exception`,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~failure`
+        FUNCTION `?~failure`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~invalid_argument`
+        FUNCTION `?~invalid_argument`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~ios`
+        FUNCTION `?~ios`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~istream`
+        FUNCTION `?~istream`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~length_error`
+        FUNCTION `?~length_error`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~logic_error`
+        FUNCTION `?~logic_error`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~ostream`
+        FUNCTION `?~ostream`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~out_of_range`
+        FUNCTION `?~out_of_range`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~overflow_error`
+        FUNCTION `?~overflow_error`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~range_error`
+        FUNCTION `?~range_error`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~runtime_error`
+        FUNCTION `?~runtime_error`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~streambuf`
+        FUNCTION `?~streambuf`,021603H
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~string`
+        FUNCTION `?~string`,021203H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK `?~underflow_error`
+        FUNCTION `?~underflow_error`,021603H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK _A_ACSR
+        PUBWEAK _A_ASSR
+        PUBWEAK _A_DDRA
+        PUBWEAK _A_DDRB
+        PUBWEAK _A_DDRC
+        PUBWEAK _A_DDRD
+        PUBWEAK _A_DDRE
+        PUBWEAK _A_EEAR
+        PUBWEAK _A_EECR
+        PUBWEAK _A_EEDR
+        PUBWEAK _A_EMCUCR
+        PUBWEAK _A_GIFR
+        PUBWEAK _A_GIMSK
+        PUBWEAK _A_ICR1
+        PUBWEAK _A_MCUCR
+        PUBWEAK _A_MCUSR
+        PUBWEAK _A_OCR0
+        PUBWEAK _A_OCR1A
+        PUBWEAK _A_OCR1B
+        PUBWEAK _A_OCR2
+        PUBWEAK _A_PINA
+        PUBWEAK _A_PINB
+        PUBWEAK _A_PINC
+        PUBWEAK _A_PIND
+        PUBWEAK _A_PINE
+        PUBWEAK _A_PORTA
+        PUBWEAK _A_PORTB
+        PUBWEAK _A_PORTC
+        PUBWEAK _A_PORTD
+        PUBWEAK _A_PORTE
+        PUBWEAK _A_SFIOR
+        PUBWEAK _A_SP
+        PUBWEAK _A_SPCR
+        PUBWEAK _A_SPDR
+        PUBWEAK _A_SPMCR
+        PUBWEAK _A_SPSR
+        PUBWEAK _A_SREG
+        PUBWEAK _A_TCCR0
+        PUBWEAK _A_TCCR1A
+        PUBWEAK _A_TCCR1B
+        PUBWEAK _A_TCCR2
+        PUBWEAK _A_TCNT0
+        PUBWEAK _A_TCNT1
+        PUBWEAK _A_TCNT2
+        PUBWEAK _A_TIFR
+        PUBWEAK _A_TIMSK
+        PUBWEAK _A_UBRR0
+        PUBWEAK _A_UBRR1
+        PUBWEAK _A_UBRRHI
+        PUBWEAK _A_UCSR0A
+        PUBWEAK _A_UCSR0B
+        PUBWEAK _A_UCSR1A
+        PUBWEAK _A_UCSR1B
+        PUBWEAK _A_UDR0
+        PUBWEAK _A_UDR1
+        PUBWEAK _A_WDTCR
+        PUBLIC bit_test
+        PUBLIC c_var
+        PUBLIC ep_a_var
+        PUBLIC ep_c_var
+        PUBLIC i_var
+        PUBLIC main
+        FUNCTION main,021a03H
+        LOCFRAME CSTACK, 192, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC `st`
+        PUBLIC workday
+;     1 /* Test Programm C++
+;     2 */
+;     3 #include <stdio.h>
+;     4 #include <iom161.h>
+
+        ASEGN ABSOLUTE:DATA:ROOT,020H
+; union <unnamed> volatile __io _A_UBRR1;
+_A_UBRR1:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,021H
+; union <unnamed> volatile __io _A_UCSR1B;
+_A_UCSR1B:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,022H
+; union <unnamed> volatile __io _A_UCSR1A;
+_A_UCSR1A:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,023H
+; union <unnamed> volatile __io _A_UDR1;
+_A_UDR1:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,025H
+; union <unnamed> volatile __io _A_PINE;
+_A_PINE:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,026H
+; union <unnamed> volatile __io _A_DDRE;
+_A_DDRE:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,027H
+; union <unnamed> volatile __io _A_PORTE;
+_A_PORTE:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,028H
+; union <unnamed> volatile __io _A_ACSR;
+_A_ACSR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,029H
+; union <unnamed> volatile __io _A_UBRR0;
+_A_UBRR0:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,02aH
+; union <unnamed> volatile __io _A_UCSR0B;
+_A_UCSR0B:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,02bH
+; union <unnamed> volatile __io _A_UCSR0A;
+_A_UCSR0A:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,02cH
+; union <unnamed> volatile __io _A_UDR0;
+_A_UDR0:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,02dH
+; union <unnamed> volatile __io _A_SPCR;
+_A_SPCR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,02eH
+; union <unnamed> volatile __io _A_SPSR;
+_A_SPSR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,02fH
+; union <unnamed> volatile __io _A_SPDR;
+_A_SPDR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,030H
+; union <unnamed> volatile __io _A_PIND;
+_A_PIND:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,031H
+; union <unnamed> volatile __io _A_DDRD;
+_A_DDRD:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,032H
+; union <unnamed> volatile __io _A_PORTD;
+_A_PORTD:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,033H
+; union <unnamed> volatile __io _A_PINC;
+_A_PINC:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,034H
+; union <unnamed> volatile __io _A_DDRC;
+_A_DDRC:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,035H
+; union <unnamed> volatile __io _A_PORTC;
+_A_PORTC:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,036H
+; union <unnamed> volatile __io _A_PINB;
+_A_PINB:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,037H
+; union <unnamed> volatile __io _A_DDRB;
+_A_DDRB:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,038H
+; union <unnamed> volatile __io _A_PORTB;
+_A_PORTB:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,039H
+; union <unnamed> volatile __io _A_PINA;
+_A_PINA:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,03aH
+; union <unnamed> volatile __io _A_DDRA;
+_A_DDRA:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,03bH
+; union <unnamed> volatile __io _A_PORTA;
+_A_PORTA:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,03cH
+; union <unnamed> volatile __io _A_EECR;
+_A_EECR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,03dH
+; union <unnamed> volatile __io _A_EEDR;
+_A_EEDR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,03eH
+; union <unnamed> volatile __io _A_EEAR;
+_A_EEAR:
+	DS 2
+
+        ASEGN ABSOLUTE:DATA:ROOT,040H
+; union <unnamed> volatile __io _A_UBRRHI;
+_A_UBRRHI:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,041H
+; union <unnamed> volatile __io _A_WDTCR;
+_A_WDTCR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,042H
+; union <unnamed> volatile __io _A_OCR2;
+_A_OCR2:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,043H
+; union <unnamed> volatile __io _A_TCNT2;
+_A_TCNT2:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,044H
+; union <unnamed> volatile __io _A_ICR1;
+_A_ICR1:
+	DS 2
+
+        ASEGN ABSOLUTE:DATA:ROOT,046H
+; union <unnamed> volatile __io _A_ASSR;
+_A_ASSR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,047H
+; union <unnamed> volatile __io _A_TCCR2;
+_A_TCCR2:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,048H
+; union <unnamed> volatile __io _A_OCR1B;
+_A_OCR1B:
+	DS 2
+
+        ASEGN ABSOLUTE:DATA:ROOT,04aH
+; union <unnamed> volatile __io _A_OCR1A;
+_A_OCR1A:
+	DS 2
+
+        ASEGN ABSOLUTE:DATA:ROOT,04cH
+; union <unnamed> volatile __io _A_TCNT1;
+_A_TCNT1:
+	DS 2
+
+        ASEGN ABSOLUTE:DATA:ROOT,04eH
+; union <unnamed> volatile __io _A_TCCR1B;
+_A_TCCR1B:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,04fH
+; union <unnamed> volatile __io _A_TCCR1A;
+_A_TCCR1A:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,050H
+; union <unnamed> volatile __io _A_SFIOR;
+_A_SFIOR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,051H
+; union <unnamed> volatile __io _A_OCR0;
+_A_OCR0:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,052H
+; union <unnamed> volatile __io _A_TCNT0;
+_A_TCNT0:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,053H
+; union <unnamed> volatile __io _A_TCCR0;
+_A_TCCR0:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,054H
+; union <unnamed> volatile __io _A_MCUSR;
+_A_MCUSR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,055H
+; union <unnamed> volatile __io _A_MCUCR;
+_A_MCUCR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,056H
+; union <unnamed> volatile __io _A_EMCUCR;
+_A_EMCUCR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,057H
+; union <unnamed> volatile __io _A_SPMCR;
+_A_SPMCR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,058H
+; union <unnamed> volatile __io _A_TIFR;
+_A_TIFR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,059H
+; union <unnamed> volatile __io _A_TIMSK;
+_A_TIMSK:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,05aH
+; union <unnamed> volatile __io _A_GIFR;
+_A_GIFR:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,05bH
+; union <unnamed> volatile __io _A_GIMSK;
+_A_GIMSK:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:ROOT,05dH
+; union <unnamed> volatile __io _A_SP;
+_A_SP:
+	DS 2
+
+        ASEGN ABSOLUTE:DATA:ROOT,05fH
+; union <unnamed> volatile __io _A_SREG;
+_A_SREG:
+	DS 1
+;     5 #include <inavr.h>
+;     6 #include <iostream.h>
+
+        RSEG CODE:CODE:NOROOT(1)
+; static __nearfunc void __sti__Test_cpp_ccc03e22();
+??__sti__Test_cpp_ccc03e22:
+        FUNCALL ??__sti__Test_cpp_ccc03e22, ??Init
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??__sti__Test_cpp_ccc03e22, __record_needed_destruction
+        LOCFRAME RSTACK, 2, STACK
+	LDI	R16,LOW(_Ios_init0)
+	LDI	R17,(_Ios_init0) >> 8
+	CALL	??Init
+	LDI	R16,LOW(?_0)
+	LDI	R17,(?_0) >> 8
+	CALL	__record_needed_destruction
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void exception::~exception(exception *, int);
+`?~exception`:
+        FUNCALL `?~exception`, `??operator delete`
+        LOCFRAME RSTACK, 2, STACK
+	MOV	R20,R16
+	OR	R20,R17
+	BREQ	`?~exception_1`
+	LDI	R20,LOW(??__vtbl)
+	LDI	R21,(??__vtbl) >> 8
+	MOV	R30,R16
+	MOV	R31,R17
+	STD	Z+2,R20
+	STD	Z+3,R21
+	BST	R18,0
+	BRTC	`?~exception_1`
+	CALL	`??operator delete`
+`?~exception_1`:
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char const *exception::what(exception const *) const;
+??what:
+	MOV	R30,R16
+	MOV	R31,R17
+	LD	R16,Z
+	LDD	R17,Z+1
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void exception::_Doraise(exception const *) const;
+??_Doraise:
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void bad_exception::~bad_exception(bad_exception *, int);
+`?~bad_exception`:
+        FUNCALL `?~bad_exception`, `?~exception`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~bad_exception`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~bad_exception_1`
+	LDI	R16,LOW(??__vtbl_1)
+	LDI	R17,(??__vtbl_1) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~exception`
+	BST	R24,0
+	BRTC	`?~bad_exception_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~bad_exception_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void bad_exception::_Doraise(bad_exception const *) const;
+??_Doraise_1:
+        FUNCALL ??_Doraise_1, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc fpos &fpos::fpos(fpos *, streamoff);
+??fpos:
+        FUNCALL ??fpos, `??operator new`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R19 : R18,R17 : R16
+	MOVW	R25 : R24,R21 : R20
+	MOVW	R27 : R26,R23 : R22
+	MOV	R16,R18
+	OR	R16,R19
+	BRNE	??fpos_1
+	LDI	R16,14
+	LDI	R17,0
+	CALL	`??operator new`
+	MOVW	R19 : R18,R17 : R16
+	MOVW	R17 : R16,R19 : R18
+	OR	R16,R17
+	BREQ	??fpos_2
+??fpos_1:
+	MOV	R30,R18
+	MOV	R31,R19
+	ST	Z,R24
+	STD	Z+1,R25
+	STD	Z+2,R26
+	STD	Z+3,R27
+	MOVW	R25 : R24,R19 : R18
+	ADIW	R25 : R24,4
+	LDI	R22,LOW(_Fpz)
+	LDI	R23,(_Fpz) >> 8
+	MOVW	R17 : R16,R25 : R24
+	MOVW	R31 : R30,R23 : R22
+	LDI	R20,7
+	LDI	R21,0
+	CALL	?ML_SRAM_SRAM_16_L07
+	LDI	R30,LOW(??_Stz)
+	LDI	R31,(??_Stz) >> 8
+	LD	R20,Z
+	LDD	R21,Z+1
+	LDD	R22,Z+2
+	MOV	R30,R18
+	MOV	R31,R19
+	STD	Z+11,R20
+	STD	Z+12,R21
+	STD	Z+13,R22
+??fpos_2:
+	MOVW	R17 : R16,R19 : R18
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char *char_traits::copy(char *, char const *, size_t);
+??copy:
+        FUNCALL ??copy, memcpy
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R27
+	ST	-Y,R26
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R17 : R16,R21 : R20
+	MOVW	R31 : R30,R19 : R18
+	CALL	memcpy
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char char_traits::to_char_type(char_traits::int_type const &);
+??to_char_type:
+	MOV	R30,R16
+	MOV	R31,R17
+	LD	R16,Z
+	LDD	R17,Z+1
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int char_traits::to_int_type(char const &);
+??to_int_type:
+	MOV	R30,R16
+	MOV	R31,R17
+	LD	R16,Z
+	LDI	R17,0
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc bool char_traits::eq_int_type(char_traits::int_type const &, char_traits::int_type const &);
+??eq_int_type:
+	MOV	R30,R16
+	MOV	R31,R17
+	LD	R16,Z
+	LDD	R17,Z+1
+	MOV	R30,R18
+	MOV	R31,R19
+	LD	R18,Z
+	LDD	R19,Z+1
+	CP	R16,R18
+	CPC	R17,R19
+	BRNE	??eq_int_type_1
+	LDI	R16,1
+	RET
+??eq_int_type_1:
+	LDI	R16,0
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int char_traits::eof();
+??eof:
+	LDI	R16,255
+	LDI	R17,255
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void char_allocator::deallocate(void *, size_t);
+??deallocate:
+        FUNCALL ??deallocate, `??operator delete`
+        LOCFRAME RSTACK, 2, STACK
+	CALL	`??operator delete`
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void string::~string(string *, int);
+`?~string`:
+        FUNCALL `?~string`, ??_Tidy
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~string`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R25 : R24,R17 : R16
+	MOVW	R27 : R26,R19 : R18
+	MOV	R16,R24
+	OR	R16,R25
+	BREQ	`?~string_1`
+	LDI	R18,1
+	MOVW	R17 : R16,R25 : R24
+	CALL	??_Tidy
+	BST	R26,0
+	BRTC	`?~string_1`
+	MOVW	R17 : R16,R25 : R24
+	CALL	`??operator delete`
+`?~string_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char const *string::c_str(string const *) const;
+??c_str:
+        FUNCALL ??c_str, ??_Nullstr
+        LOCFRAME RSTACK, 2, STACK
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R18,Z+2
+	LDD	R19,Z+3
+	OR	R18,R19
+	BRNE	??c_str_1
+	CALL	??_Nullstr
+	MOVW	R19 : R18,R17 : R16
+	RJMP	??c_str_2
+??c_str_1:
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R18,Z+2
+	LDD	R19,Z+3
+??c_str_2:
+	MOVW	R17 : R16,R19 : R18
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char const *string::_Nullstr();
+??_Nullstr:
+	LDI	R16,LOW(??_C)
+	LDI	R17,(??_C) >> 8
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc unsigned char &string::_Refcnt(string *, char const *);
+??_Refcnt:
+	MOVW	R17 : R16,R19 : R18
+	SUBI	R16,1
+	SBCI	R17,0
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void string::_Tidy(string *, bool);
+??_Tidy:
+        FUNCALL ??_Tidy, ??_Refcnt
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??_Tidy, ??_Refcnt
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??_Tidy, ??deallocate
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??_Tidy, ??_Refcnt
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R27
+	ST	-Y,R26
+	MOVW	R27 : R26,R17 : R16
+	TST	R18
+	BREQ	??_Tidy_1
+	MOV	R30,R26
+	MOV	R31,R27
+	LDD	R16,Z+2
+	LDD	R17,Z+3
+	OR	R16,R17
+	BREQ	??_Tidy_1
+	MOV	R30,R26
+	MOV	R31,R27
+	LDD	R18,Z+2
+	LDD	R19,Z+3
+	MOVW	R17 : R16,R27 : R26
+	CALL	??_Refcnt
+	MOV	R30,R16
+	MOV	R31,R17
+	LD	R16,Z
+	TST	R16
+	BREQ	??_Tidy_2
+	MOV	R30,R26
+	MOV	R31,R27
+	LDD	R18,Z+2
+	LDD	R19,Z+3
+	MOVW	R17 : R16,R27 : R26
+	CALL	??_Refcnt
+	MOV	R30,R16
+	MOV	R31,R17
+	LD	R16,Z
+	CPI	R16,255
+	BRNE	??_Tidy_3
+??_Tidy_2:
+	MOV	R30,R26
+	MOV	R31,R27
+	LDD	R18,Z+6
+	LDD	R19,Z+7
+	SUBI	R18,254
+	SBCI	R19,255
+	MOV	R30,R26
+	MOV	R31,R27
+	LDD	R16,Z+2
+	LDD	R17,Z+3
+	SUBI	R16,1
+	SBCI	R17,0
+	CALL	??deallocate
+	RJMP	??_Tidy_1
+??_Tidy_3:
+	MOV	R30,R26
+	MOV	R31,R27
+	LDD	R18,Z+2
+	LDD	R19,Z+3
+	MOVW	R17 : R16,R27 : R26
+	CALL	??_Refcnt
+	MOV	R30,R16
+	MOV	R31,R17
+	LD	R16,Z
+	DEC	R16
+	ST	Z,R16
+??_Tidy_1:
+	LDI	R16,0
+	LDI	R17,0
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R16,0
+	LDI	R17,0
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+4,R16
+	STD	Z+5,R17
+	LDI	R16,0
+	LDI	R17,0
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+6,R16
+	STD	Z+7,R17
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void logic_error::~logic_error(logic_error *, int);
+`?~logic_error`:
+        FUNCALL `?~logic_error`, `?~string`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~logic_error`, `?~exception`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~logic_error`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~logic_error_1`
+	LDI	R16,LOW(??__vtbl_2)
+	LDI	R17,(??__vtbl_2) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,2
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,252
+	SBCI	R17,255
+	CALL	`?~string`
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~exception`
+	BST	R24,0
+	BRTC	`?~logic_error_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~logic_error_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char const *logic_error::what(logic_error const *) const;
+??what_1:
+        FUNCALL ??what_1, ??c_str
+        LOCFRAME RSTACK, 2, STACK
+	SUBI	R16,252
+	SBCI	R17,255
+	CALL	??c_str
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void logic_error::_Doraise(logic_error const *) const;
+??_Doraise_2:
+        FUNCALL ??_Doraise_2, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void domain_error::~domain_error(domain_error *, int);
+`?~domain_error`:
+        FUNCALL `?~domain_error`, `?~logic_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~domain_error`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~domain_error_1`
+	LDI	R16,LOW(??__vtbl_3)
+	LDI	R17,(??__vtbl_3) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~logic_error`
+	BST	R24,0
+	BRTC	`?~domain_error_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~domain_error_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void domain_error::_Doraise(domain_error const *) const;
+??_Doraise_3:
+        FUNCALL ??_Doraise_3, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void invalid_argument::~invalid_argument(invalid_argument *, int);
+`?~invalid_argument`:
+        FUNCALL `?~invalid_argument`, `?~logic_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~invalid_argument`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~invalid_argument_1`
+	LDI	R16,LOW(??__vtbl_4)
+	LDI	R17,(??__vtbl_4) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~logic_error`
+	BST	R24,0
+	BRTC	`?~invalid_argument_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~invalid_argument_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void invalid_argument::_Doraise(invalid_argument const *) const;
+??_Doraise_4:
+        FUNCALL ??_Doraise_4, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void length_error::~length_error(length_error *, int);
+`?~length_error`:
+        FUNCALL `?~length_error`, `?~logic_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~length_error`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~length_error_1`
+	LDI	R16,LOW(??__vtbl_5)
+	LDI	R17,(??__vtbl_5) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~logic_error`
+	BST	R24,0
+	BRTC	`?~length_error_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~length_error_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void length_error::_Doraise(length_error const *) const;
+??_Doraise_5:
+        FUNCALL ??_Doraise_5, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void out_of_range::~out_of_range(out_of_range *, int);
+`?~out_of_range`:
+        FUNCALL `?~out_of_range`, `?~logic_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~out_of_range`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~out_of_range_1`
+	LDI	R16,LOW(??__vtbl_6)
+	LDI	R17,(??__vtbl_6) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~logic_error`
+	BST	R24,0
+	BRTC	`?~out_of_range_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~out_of_range_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void out_of_range::_Doraise(out_of_range const *) const;
+??_Doraise_6:
+        FUNCALL ??_Doraise_6, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void runtime_error::~runtime_error(runtime_error *, int);
+`?~runtime_error`:
+        FUNCALL `?~runtime_error`, `?~string`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~runtime_error`, `?~exception`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~runtime_error`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~runtime_error_1`
+	LDI	R16,LOW(??__vtbl_7)
+	LDI	R17,(??__vtbl_7) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,2
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,252
+	SBCI	R17,255
+	CALL	`?~string`
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~exception`
+	BST	R24,0
+	BRTC	`?~runtime_error_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~runtime_error_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char const *runtime_error::what(runtime_error const *) const;
+??what_2:
+        FUNCALL ??what_2, ??c_str
+        LOCFRAME RSTACK, 2, STACK
+	SUBI	R16,252
+	SBCI	R17,255
+	CALL	??c_str
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void runtime_error::_Doraise(runtime_error const *) const;
+??_Doraise_7:
+        FUNCALL ??_Doraise_7, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void overflow_error::~overflow_error(overflow_error *, int);
+`?~overflow_error`:
+        FUNCALL `?~overflow_error`, `?~runtime_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~overflow_error`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~overflow_error_1`
+	LDI	R16,LOW(??__vtbl_8)
+	LDI	R17,(??__vtbl_8) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~runtime_error`
+	BST	R24,0
+	BRTC	`?~overflow_error_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~overflow_error_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void overflow_error::_Doraise(overflow_error const *) const;
+??_Doraise_8:
+        FUNCALL ??_Doraise_8, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void underflow_error::~underflow_error(underflow_error *, int);
+`?~underflow_error`:
+        FUNCALL `?~underflow_error`, `?~runtime_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~underflow_error`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~underflow_error_1`
+	LDI	R16,LOW(??__vtbl_9)
+	LDI	R17,(??__vtbl_9) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~runtime_error`
+	BST	R24,0
+	BRTC	`?~underflow_error_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~underflow_error_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void underflow_error::_Doraise(underflow_error const *) const;
+??_Doraise_9:
+        FUNCALL ??_Doraise_9, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void range_error::~range_error(range_error *, int);
+`?~range_error`:
+        FUNCALL `?~range_error`, `?~runtime_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~range_error`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~range_error_1`
+	LDI	R16,LOW(??__vtbl_10)
+	LDI	R17,(??__vtbl_10) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~runtime_error`
+	BST	R24,0
+	BRTC	`?~range_error_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~range_error_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void range_error::_Doraise(range_error const *) const;
+??_Doraise_10:
+        FUNCALL ??_Doraise_10, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc locale &locale::locale(locale *);
+??locale:
+        FUNCALL ??locale, `??operator new`
+        LOCFRAME RSTACK, 2, STACK
+	MOV	R18,R16
+	OR	R18,R17
+	BRNE	??locale_1
+	LDI	R16,1
+	LDI	R17,0
+	CALL	`??operator new`
+??locale_1:
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void ios_base::failure::~failure(ios_base::failure *, int);
+`?~failure`:
+        FUNCALL `?~failure`, `?~runtime_error`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~failure`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~failure_1`
+	LDI	R16,LOW(??__vtbl_11)
+	LDI	R17,(??__vtbl_11) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+2,R16
+	STD	Z+3,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~runtime_error`
+	BST	R24,0
+	BRTC	`?~failure_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~failure_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void ios_base::failure::_Doraise(ios_base::failure const *) const;
+??_Doraise_11:
+        FUNCALL ??_Doraise_11, ??_Throw
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??_Throw
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc streambuf &streambuf::streambuf(streambuf *);
+??streambuf:
+        FUNCALL ??streambuf, `??operator new`
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??streambuf, ??locale
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??streambuf, ??_Init
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R27
+	ST	-Y,R26
+	MOVW	R27 : R26,R17 : R16
+	MOV	R16,R26
+	OR	R16,R27
+	BRNE	??streambuf_1
+	LDI	R16,27
+	LDI	R17,0
+	CALL	`??operator new`
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	OR	R16,R17
+	BREQ	??streambuf_2
+??streambuf_1:
+	LDI	R16,LOW(??__vtbl_12)
+	LDI	R17,(??__vtbl_12) >> 8
+	ADIW	R27 : R26,25
+	ST	X+,R16
+	ST	X,R17
+	SBIW	R27 : R26,26
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,232
+	SBCI	R17,255
+	CALL	??locale
+	MOVW	R17 : R16,R27 : R26
+	CALL	??_Init
+??streambuf_2:
+	MOVW	R17 : R16,R27 : R26
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void streambuf::~streambuf(streambuf *, int);
+`?~streambuf`:
+        FUNCALL `?~streambuf`, `??operator delete`
+        LOCFRAME RSTACK, 2, STACK
+	MOV	R20,R16
+	OR	R20,R17
+	BREQ	`?~streambuf_1`
+	LDI	R20,LOW(??__vtbl_12)
+	LDI	R21,(??__vtbl_12) >> 8
+	MOV	R30,R16
+	MOV	R31,R17
+	STD	Z+25,R20
+	STD	Z+26,R21
+	BST	R18,0
+	BRTC	`?~streambuf_1`
+	CALL	`??operator delete`
+`?~streambuf_1`:
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc streambuf *streambuf::pubsetbuf(streambuf *, char *, streamsize);
+??pubsetbuf:
+        FUNCALL ??pubsetbuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R27
+	ST	-Y,R26
+	MOV	R26,R16
+	MOV	R27,R17
+	ADIW	R27 : R26,25
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R27 : R26,26
+	ADIW	R31 : R30,20
+	LD	R22,Z
+	LDD	R23,Z+1
+	MOVW	R31 : R30,R23 : R22
+	ICALL
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::sgetc(streambuf *);
+??sgetc:
+        FUNCALL ??sgetc, ??gptr
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sgetc, ??gptr
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sgetc, ??egptr
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sgetc, ??gptr
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sgetc, ??to_int_type
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sgetc
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	CALL	??gptr
+	OR	R16,R17
+	BREQ	??sgetc_1
+	MOVW	R17 : R16,R27 : R26
+	CALL	??gptr
+	MOVW	R25 : R24,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	CALL	??egptr
+	CP	R24,R16
+	CPC	R25,R17
+	BRCC	??sgetc_1
+	MOVW	R17 : R16,R27 : R26
+	CALL	??gptr
+	CALL	??to_int_type
+	RJMP	??sgetc_2
+??sgetc_1:
+	ADIW	R27 : R26,25
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R27 : R26,26
+	ADIW	R31 : R30,8
+	MOVW	R17 : R16,R27 : R26
+	LD	R18,Z
+	LDD	R19,Z+1
+	MOVW	R31 : R30,R19 : R18
+	ICALL
+??sgetc_2:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::sputc(streambuf *, streambuf::_E);
+??sputc:
+        FUNCALL ??sputc, ??pptr
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sputc, ??pptr
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sputc, ??epptr
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sputc, ??_Pninc
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sputc, ??to_int_type
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sputc, ??to_int_type
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??sputc
+        LOCFRAME CSTACK, 5, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	SBIW	R29 : R28,1
+	ST	Y,R18
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	CALL	??pptr
+	OR	R16,R17
+	BREQ	??sputc_1
+	MOVW	R17 : R16,R27 : R26
+	CALL	??pptr
+	MOVW	R25 : R24,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	CALL	??epptr
+	CP	R24,R16
+	CPC	R25,R17
+	BRCC	??sputc_1
+	LD	R24,Y
+	MOVW	R17 : R16,R27 : R26
+	CALL	??_Pninc
+	MOV	R30,R16
+	MOV	R31,R17
+	ST	Z,R24
+	CALL	??to_int_type
+	RJMP	??sputc_2
+??sputc_1:
+	ADIW	R27 : R26,25
+	LD	R24,X+
+	LD	R25,X
+	SBIW	R27 : R26,26
+	ADIW	R25 : R24,2
+	MOVW	R17 : R16,R29 : R28
+	CALL	??to_int_type
+	MOVW	R19 : R18,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	MOV	R26,R24
+	MOV	R27,R25
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R27 : R26,1
+	ICALL
+??sputc_2:
+	ADIW	R29 : R28,1
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char *streambuf::gptr(streambuf const *) const;
+??gptr:
+	MOV	R19,R27
+	MOV	R18,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+12
+	LDD	R27,Z+13
+	LD	R16,X+
+	LD	R17,X
+	SBIW	R27 : R26,1
+	MOV	R26,R18
+	MOV	R27,R19
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char *streambuf::pptr(streambuf const *) const;
+??pptr:
+	MOV	R19,R27
+	MOV	R18,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+14
+	LDD	R27,Z+15
+	LD	R16,X+
+	LD	R17,X
+	SBIW	R27 : R26,1
+	MOV	R26,R18
+	MOV	R27,R19
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char *streambuf::egptr(streambuf const *) const;
+??egptr:
+	MOV	R19,R27
+	MOV	R18,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+20
+	LDD	R27,Z+21
+	LD	R16,X+
+	LD	R17,X
+	SBIW	R27 : R26,1
+	MOV	R26,R18
+	MOV	R27,R19
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void streambuf::gbump(streambuf *, int);
+??gbump:
+	MOV	R21,R27
+	MOV	R20,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+12
+	LDD	R27,Z+13
+	LD	R16,X+
+	LD	R17,X
+	ADD	R16,R18
+	ADC	R17,R19
+	ST	X,R17
+	ST	-X,R16
+	MOV	R26,R20
+	MOV	R27,R21
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void streambuf::setg(streambuf *, char *, char *, char *);
+??setg:
+	MOV	R1,R27
+	MOV	R0,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+4
+	LDD	R27,Z+5
+	ST	X+,R18
+	ST	X,R19
+	SBIW	R27 : R26,1
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+12
+	LDD	R27,Z+13
+	ST	X+,R20
+	ST	X,R21
+	SBIW	R27 : R26,1
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+20
+	LDD	R27,Z+21
+	ST	X+,R22
+	ST	X,R23
+	SBIW	R27 : R26,1
+	MOV	R26,R0
+	MOV	R27,R1
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char *streambuf::epptr(streambuf const *) const;
+??epptr:
+	MOV	R19,R27
+	MOV	R18,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+22
+	LDD	R27,Z+23
+	LD	R16,X+
+	LD	R17,X
+	SBIW	R27 : R26,1
+	MOV	R26,R18
+	MOV	R27,R19
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char *streambuf::_Gninc(streambuf *);
+??_Gninc:
+	MOV	R23,R27
+	MOV	R22,R26
+	MOV	R26,R16
+	MOV	R27,R17
+	ADIW	R27 : R26,12
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R27 : R26,13
+	LD	R18,Z
+	LDD	R19,Z+1
+	MOVW	R21 : R20,R19 : R18
+	SUBI	R20,255
+	SBCI	R21,255
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+12
+	LDD	R27,Z+13
+	ST	X+,R20
+	ST	X,R21
+	SBIW	R27 : R26,1
+	MOVW	R17 : R16,R19 : R18
+	MOV	R26,R22
+	MOV	R27,R23
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void streambuf::pbump(streambuf *, int);
+??pbump:
+	MOV	R21,R27
+	MOV	R20,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+14
+	LDD	R27,Z+15
+	LD	R16,X+
+	LD	R17,X
+	ADD	R16,R18
+	ADC	R17,R19
+	ST	X,R17
+	ST	-X,R16
+	MOV	R26,R20
+	MOV	R27,R21
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void streambuf::setp(streambuf *, char *, char *);
+??setp:
+	MOV	R23,R27
+	MOV	R22,R26
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+6
+	LDD	R27,Z+7
+	ST	X+,R18
+	ST	X,R19
+	SBIW	R27 : R26,1
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+14
+	LDD	R27,Z+15
+	ST	X+,R18
+	ST	X,R19
+	SBIW	R27 : R26,1
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+22
+	LDD	R27,Z+23
+	ST	X+,R20
+	ST	X,R21
+	SBIW	R27 : R26,1
+	MOV	R26,R22
+	MOV	R27,R23
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc char *streambuf::_Pninc(streambuf *);
+??_Pninc:
+	MOV	R23,R27
+	MOV	R22,R26
+	MOV	R26,R16
+	MOV	R27,R17
+	ADIW	R27 : R26,14
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R27 : R26,15
+	LD	R18,Z
+	LDD	R19,Z+1
+	MOVW	R21 : R20,R19 : R18
+	SUBI	R20,255
+	SBCI	R21,255
+	MOV	R30,R16
+	MOV	R31,R17
+	LDD	R26,Z+14
+	LDD	R27,Z+15
+	ST	X+,R20
+	ST	X,R21
+	SBIW	R27 : R26,1
+	MOVW	R17 : R16,R19 : R18
+	MOV	R26,R22
+	MOV	R27,R23
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void streambuf::_Init(streambuf *);
+??_Init:
+        FUNCALL ??_Init, ??setp
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??_Init, ??setg
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R27
+	ST	-Y,R26
+	MOVW	R27 : R26,R17 : R16
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+4,R26
+	STD	Z+5,R27
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,254
+	SBCI	R17,255
+	ADIW	R27 : R26,6
+	ST	X+,R16
+	ST	X,R17
+	SBIW	R27 : R26,7
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,248
+	SBCI	R17,255
+	ADIW	R27 : R26,12
+	ST	X+,R16
+	ST	X,R17
+	SBIW	R27 : R26,13
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,246
+	SBCI	R17,255
+	ADIW	R27 : R26,14
+	ST	X+,R16
+	ST	X,R17
+	SBIW	R27 : R26,15
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,240
+	SBCI	R17,255
+	ADIW	R27 : R26,20
+	ST	X+,R16
+	ST	X,R17
+	SBIW	R27 : R26,21
+	MOVW	R17 : R16,R27 : R26
+	SUBI	R16,238
+	SBCI	R17,255
+	ADIW	R27 : R26,22
+	ST	X+,R16
+	ST	X,R17
+	SBIW	R27 : R26,23
+	LDI	R20,0
+	LDI	R21,0
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	??setp
+	LDI	R22,0
+	LDI	R23,0
+	LDI	R20,0
+	LDI	R21,0
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	??setg
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::overflow(streambuf *, streambuf::int_type);
+??overflow:
+        FUNCALL ??overflow, ??eof
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??eof
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::pbackfail(streambuf *, streambuf::int_type);
+??pbackfail:
+        FUNCALL ??pbackfail, ??eof
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??eof
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::showmanyc(streambuf *);
+??showmanyc:
+	LDI	R16,0
+	LDI	R17,0
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::underflow(streambuf *);
+??underflow:
+        FUNCALL ??underflow, ??eof
+        LOCFRAME RSTACK, 2, STACK
+	CALL	??eof
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::uflow(streambuf *);
+??uflow:
+        FUNCALL ??uflow
+        LOCFRAME CSTACK, 6, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??uflow, ??eof
+        LOCFRAME CSTACK, 6, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??uflow, ??eq_int_type
+        LOCFRAME CSTACK, 6, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??uflow, ??eof
+        LOCFRAME CSTACK, 6, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??uflow, ??_Gninc
+        LOCFRAME CSTACK, 6, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??uflow, ??to_int_type
+        LOCFRAME CSTACK, 6, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R27
+	ST	-Y,R26
+	SBIW	R29 : R28,4
+	MOVW	R27 : R26,R17 : R16
+	ADIW	R27 : R26,25
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R27 : R26,26
+	ADIW	R31 : R30,8
+	MOVW	R17 : R16,R27 : R26
+	LD	R18,Z
+	LDD	R19,Z+1
+	MOVW	R31 : R30,R19 : R18
+	ICALL
+	STD	Y+2,R16
+	STD	Y+3,R17
+	CALL	??eof
+	ST	Y,R16
+	STD	Y+1,R17
+	MOVW	R19 : R18,R29 : R28
+	SUBI	R18,254
+	SBCI	R19,255
+	MOVW	R17 : R16,R29 : R28
+	CALL	??eq_int_type
+	TST	R16
+	BREQ	??uflow_1
+	CALL	??eof
+	RJMP	??uflow_2
+??uflow_1:
+	MOVW	R17 : R16,R27 : R26
+	CALL	??_Gninc
+	CALL	??to_int_type
+??uflow_2:
+	ADIW	R29 : R28,4
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::xsgetn(streambuf *, char *, streamsize);
+??xsgetn:
+        FUNCALL ??xsgetn, ??gptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??copy
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??gbump
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??gptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??egptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??gptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??eof
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??eq_int_type
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsgetn, ??to_char_type
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE10_L09
+	REQUIRE	?Register_R4_is_cg_reg
+	REQUIRE	?Register_R5_is_cg_reg
+	REQUIRE	?Register_R6_is_cg_reg
+	REQUIRE	?Register_R7_is_cg_reg
+	REQUIRE	?Register_R8_is_cg_reg
+	REQUIRE	?Register_R9_is_cg_reg
+	SBIW	R29 : R28,4
+	MOVW	R25 : R24,R17 : R16
+	MOVW	R27 : R26,R19 : R18
+	MOVW	R5 : R4,R21 : R20
+	CLR	R6
+	CLR	R7
+	RJMP	??xsgetn_1
+??xsgetn_2:
+	CP	R4,R8
+	CPC	R5,R9
+	BRGE	??xsgetn_3
+	MOVW	R9 : R8,R5 : R4
+??xsgetn_3:
+	MOVW	R17 : R16,R25 : R24
+	CALL	??gptr
+	MOVW	R21 : R20,R9 : R8
+	MOVW	R19 : R18,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	CALL	??copy
+	ADD	R26,R8
+	ADC	R27,R9
+	ADD	R6,R8
+	ADC	R7,R9
+	SUB	R4,R8
+	SBC	R5,R9
+	MOVW	R19 : R18,R9 : R8
+	MOVW	R17 : R16,R25 : R24
+	CALL	??gbump
+??xsgetn_1:
+	LDI	R16,1
+	CP	R4,R16
+	LDI	R16,0
+	CPC	R5,R16
+	BRLT	??xsgetn_4
+	MOVW	R17 : R16,R25 : R24
+	CALL	??gptr
+	OR	R16,R17
+	BREQ	??xsgetn_5
+	MOVW	R17 : R16,R25 : R24
+	CALL	??egptr
+	MOVW	R9 : R8,R17 : R16
+	MOVW	R17 : R16,R25 : R24
+	CALL	??gptr
+	SUB	R8,R16
+	SBC	R9,R17
+	LDI	R16,1
+	CP	R8,R16
+	LDI	R16,0
+	CPC	R9,R16
+	BRGE	??xsgetn_2
+??xsgetn_5:
+	MOV	R30,R24
+	MOV	R31,R25
+	LDD	R18,Z+25
+	LDD	R19,Z+26
+	SUBI	R18,246
+	SBCI	R19,255
+	MOVW	R17 : R16,R25 : R24
+	MOV	R30,R18
+	MOV	R31,R19
+	LD	R18,Z
+	LDD	R19,Z+1
+	MOVW	R31 : R30,R19 : R18
+	ICALL
+	ST	Y,R16
+	STD	Y+1,R17
+	CALL	??eof
+	STD	Y+2,R16
+	STD	Y+3,R17
+	MOVW	R19 : R18,R29 : R28
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,254
+	SBCI	R17,255
+	CALL	??eq_int_type
+	TST	R16
+	BRNE	??xsgetn_4
+	MOVW	R17 : R16,R29 : R28
+	CALL	??to_char_type
+	ST	X,R16
+	ADIW	R27 : R26,1
+	LDI	R16,1
+	ADD	R6,R16
+	LDI	R16,0
+	ADC	R7,R16
+	LDI	R16,255
+	ADD	R4,R16
+	LDI	R16,255
+	ADC	R5,R16
+	RJMP	??xsgetn_1
+??xsgetn_4:
+	MOVW	R17 : R16,R7 : R6
+	ADIW	R29 : R28,4
+	LDI	R30,10
+	JMP	?EPILOGUE_B10_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::xsputn(streambuf *, streambuf::_E const *, streamsize);
+??xsputn:
+        FUNCALL ??xsputn, ??pptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??copy
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??pbump
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??pptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??epptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??pptr
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??to_int_type
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??eof
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??xsputn, ??eq_int_type
+        LOCFRAME CSTACK, 14, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE10_L09
+	REQUIRE	?Register_R4_is_cg_reg
+	REQUIRE	?Register_R5_is_cg_reg
+	REQUIRE	?Register_R6_is_cg_reg
+	REQUIRE	?Register_R7_is_cg_reg
+	REQUIRE	?Register_R8_is_cg_reg
+	REQUIRE	?Register_R9_is_cg_reg
+	SBIW	R29 : R28,4
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R7 : R6,R19 : R18
+	MOVW	R25 : R24,R21 : R20
+	CLR	R4
+	CLR	R5
+	RJMP	??xsputn_1
+??xsputn_2:
+	CP	R24,R8
+	CPC	R25,R9
+	BRGE	??xsputn_3
+	MOVW	R9 : R8,R25 : R24
+??xsputn_3:
+	MOVW	R17 : R16,R27 : R26
+	CALL	??pptr
+	MOVW	R21 : R20,R9 : R8
+	MOVW	R19 : R18,R7 : R6
+	CALL	??copy
+	ADD	R6,R8
+	ADC	R7,R9
+	ADD	R4,R8
+	ADC	R5,R9
+	SUB	R24,R8
+	SBC	R25,R9
+	MOVW	R19 : R18,R9 : R8
+	MOVW	R17 : R16,R27 : R26
+	CALL	??pbump
+??xsputn_1:
+	CPI	R24,1
+	LDI	R16,0
+	CPC	R25,R16
+	BRLT	??xsputn_4
+	MOVW	R17 : R16,R27 : R26
+	CALL	??pptr
+	OR	R16,R17
+	BREQ	??xsputn_5
+	MOVW	R17 : R16,R27 : R26
+	CALL	??epptr
+	MOVW	R9 : R8,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	CALL	??pptr
+	SUB	R8,R16
+	SBC	R9,R17
+	LDI	R16,1
+	CP	R8,R16
+	LDI	R16,0
+	CPC	R9,R16
+	BRGE	??xsputn_2
+??xsputn_5:
+	MOV	R30,R26
+	MOV	R31,R27
+	LDD	R8,Z+25
+	LDD	R9,Z+26
+	LDI	R16,2
+	ADD	R8,R16
+	LDI	R16,0
+	ADC	R9,R16
+	MOVW	R17 : R16,R7 : R6
+	CALL	??to_int_type
+	MOVW	R19 : R18,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	MOV	R30,R8
+	MOV	R31,R9
+	LD	R20,Z
+	LDD	R21,Z+1
+	MOVW	R31 : R30,R21 : R20
+	ICALL
+	STD	Y+2,R16
+	STD	Y+3,R17
+	CALL	??eof
+	ST	Y,R16
+	STD	Y+1,R17
+	MOVW	R19 : R18,R29 : R28
+	SUBI	R18,254
+	SBCI	R19,255
+	MOVW	R17 : R16,R29 : R28
+	CALL	??eq_int_type
+	TST	R16
+	BRNE	??xsputn_4
+	LDI	R16,1
+	ADD	R6,R16
+	LDI	R16,0
+	ADC	R7,R16
+	LDI	R16,1
+	ADD	R4,R16
+	LDI	R16,0
+	ADC	R5,R16
+	SBIW	R25 : R24,1
+	RJMP	??xsputn_1
+??xsputn_4:
+	MOVW	R17 : R16,R5 : R4
+	ADIW	R29 : R28,4
+	LDI	R30,10
+	JMP	?EPILOGUE_B10_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc fpos streambuf::seekoff(streambuf *, streambuf::off_type, ios_base::seekdir, ios_base::openmode);
+??seekoff:
+        FUNCALL ??seekoff, ??fpos
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R25
+	ST	-Y,R24
+	SBIW	R29 : R28,14
+	MOVW	R25 : R24,R17 : R16
+	LDI	R30,LOW(_BADOFF)
+	LDI	R31,(_BADOFF) >> 8
+	LD	R20,Z
+	LDD	R21,Z+1
+	LDD	R22,Z+2
+	LDD	R23,Z+3
+	MOVW	R17 : R16,R29 : R28
+	CALL	??fpos
+	MOVW	R19 : R18,R29 : R28
+	MOVW	R17 : R16,R25 : R24
+	MOVW	R31 : R30,R19 : R18
+	LDI	R20,14
+	LDI	R21,0
+	CALL	?ML_SRAM_SRAM_16_L07
+	MOVW	R17 : R16,R25 : R24
+	ADIW	R29 : R28,14
+	LD	R24,Y+
+	LD	R25,Y+
+	ADIW	R29 : R28,3
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc fpos streambuf::seekpos(streambuf *, streambuf::pos_type, ios_base::openmode);
+??seekpos:
+        FUNCALL ??seekpos, ??fpos
+        LOCFRAME CSTACK, 30, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R25
+	ST	-Y,R24
+	SBIW	R29 : R28,14
+	MOVW	R25 : R24,R17 : R16
+	LDI	R30,LOW(_BADOFF)
+	LDI	R31,(_BADOFF) >> 8
+	LD	R20,Z
+	LDD	R21,Z+1
+	LDD	R22,Z+2
+	LDD	R23,Z+3
+	MOVW	R17 : R16,R29 : R28
+	CALL	??fpos
+	MOVW	R19 : R18,R29 : R28
+	MOVW	R17 : R16,R25 : R24
+	MOVW	R31 : R30,R19 : R18
+	LDI	R20,14
+	LDI	R21,0
+	CALL	?ML_SRAM_SRAM_16_L07
+	MOVW	R17 : R16,R25 : R24
+	ADIW	R29 : R28,14
+	LD	R24,Y+
+	LD	R25,Y+
+	ADIW	R29 : R28,14
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc streambuf *streambuf::setbuf(streambuf *, char *, streamsize);
+??setbuf:
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc int streambuf::sync(streambuf *);
+??sync:
+	LDI	R16,0
+	LDI	R17,0
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void streambuf::imbue(streambuf *, locale const &);
+??imbue:
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void ios::~ios(ios *, int);
+`?~ios`:
+        FUNCALL `?~ios`, `?~ios_base`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~ios`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~ios_1`
+	LDI	R16,LOW(??__vtbl_13)
+	LDI	R17,(??__vtbl_13) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+17,R16
+	STD	Z+18,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~ios_base`
+	BST	R24,0
+	BRTC	`?~ios_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~ios_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void ostream::~ostream(ostream *, int);
+`?~ostream`:
+        FUNCALL `?~ostream`, `?~ios`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~ostream`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~ostream_1`
+	LDI	R16,LOW(??__vtbl_14)
+	LDI	R17,(??__vtbl_14) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+17,R16
+	STD	Z+18,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~ios`
+	BST	R24,0
+	BRTC	`?~ostream_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~ostream_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void istream::~istream(istream *, int);
+`?~istream`:
+        FUNCALL `?~istream`, `?~ios`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~istream`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~istream_1`
+	LDI	R16,LOW(??__vtbl_15)
+	LDI	R17,(??__vtbl_15) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+17,R16
+	STD	Z+18,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~ios`
+	BST	R24,0
+	BRTC	`?~istream_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~istream_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+;     7 
+;     8 
+;     9 #pragma language=extended
+;    10 volatile char c_var;
+;    11 volatile int  i_var;
+;    12 volatile static char cTest;
+;    13 volatile static int iTest;
+;    14 
+;    15 //*********************************
+;    16 
+;    17 typedef union  
+;    18   { int i,j;
+;    19   } U;
+;    20 
+;    21 enum day 
+;    22   { sp1 , sp2, sp3 } workday;
+;    23   
+;    24 struct s
+;    25   { 
+;    26     char tag; 
+;    27     struct
+;    28     { long l ;
+;    29       float f; 
+;    30     };
+;    31   } st ;
+;    32   
+;    33 typedef struct ByteErr
+;    34   { 
+;    35     unsigned char Byte;
+;    36     unsigned char Err;
+;    37      
+;    38   } Byte_Err ;
+;    39     
+;    40 static volatile __io struct
+;    41  {
+;    42   unsigned char  in_read:1;
+;    43   unsigned char  out_read:1;
+;    44   unsigned char  err:1;
+;    45   unsigned char  change:1;
+;    46   unsigned char  reserv:4;
+
+        ASEGN ABSOLUTE:DATA:ROOT,024H
+	DS 1
+;    47   } bit_reg @ 0x04;
+;    48 
+;    49  
+;    50 __no_init volatile  struct
+;    51  {
+;    52   unsigned char  in_read:1;
+;    53   unsigned char  out_read:1;
+;    54   unsigned char  err:1;
+;    55   unsigned char  change:1;
+;    56   unsigned char  reserv:4;
+
+        RSEG NEAR_N:DATA:ROOT(0)
+;    57   } bit_test ;
+; struct <unnamed> volatile __near bit_test;
+bit_test:
+	DS 1
+;    58   
+;    59 #pragma type_attribute=__eeprom 
+
+        RSEG EEPROM_I:XDATA:ROOT(0)
+	DW 55
+;    60 const int  ep_i_var=55 ;
+;    61 #pragma type_attribute=__eeprom 
+
+        RSEG EEPROM_I:XDATA:ROOT(0)
+;    62  char  ep_c_var;
+; char __eeprom ep_c_var;
+ep_c_var:
+	DB 0
+;    63 #pragma type_attribute=__eeprom 
+
+        RSEG EEPROM_I:XDATA:ROOT(0)
+;    64 unsigned int ep_a_var[10];
+; unsigned int __eeprom ep_a_var[10];
+ep_a_var:
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0
+;    65 
+;    66 volatile static ByteErr BR[10];
+;    67 
+;    68 /***********************************
+;    69  *    Derived class declaration    *
+;    70  ***********************************/
+
+        RSEG CODE:CODE:NOROOT(1)
+;    71 class MyBuf : public streambuf
+; __nearfunc MyBuf &MyBuf::MyBuf(MyBuf *);
+??MyBuf:
+        FUNCALL ??MyBuf, `??operator new`
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL ??MyBuf, ??streambuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	ST	-Y,R27
+	ST	-Y,R26
+	MOVW	R27 : R26,R17 : R16
+	MOV	R16,R26
+	OR	R16,R27
+	BRNE	??MyBuf_1
+	LDI	R16,27
+	LDI	R17,0
+	CALL	`??operator new`
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R17 : R16,R27 : R26
+	OR	R16,R17
+	BREQ	??MyBuf_2
+??MyBuf_1:
+	MOVW	R17 : R16,R27 : R26
+	CALL	??streambuf
+	LDI	R16,LOW(??__vtbl_16)
+	LDI	R17,(??__vtbl_16) >> 8
+	ADIW	R27 : R26,25
+	ST	X+,R16
+	ST	X,R17
+	SBIW	R27 : R26,26
+??MyBuf_2:
+	MOVW	R17 : R16,R27 : R26
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+
+        RSEG CODE:CODE:NOROOT(1)
+; __nearfunc void MyBuf::~MyBuf(MyBuf *, int);
+`?~MyBuf`:
+        FUNCALL `?~MyBuf`, `?~streambuf`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL `?~MyBuf`, `??operator delete`
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	MOVW	R27 : R26,R17 : R16
+	MOVW	R25 : R24,R19 : R18
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	`?~MyBuf_1`
+	LDI	R16,LOW(??__vtbl_16)
+	LDI	R17,(??__vtbl_16) >> 8
+	MOV	R30,R26
+	MOV	R31,R27
+	STD	Z+25,R16
+	STD	Z+26,R17
+	LDI	R18,0
+	LDI	R19,0
+	MOVW	R17 : R16,R27 : R26
+	CALL	`?~streambuf`
+	BST	R24,0
+	BRTC	`?~MyBuf_1`
+	MOVW	R17 : R16,R27 : R26
+	CALL	`??operator delete`
+`?~MyBuf_1`:
+	LDI	R30,4
+	JMP	?EPILOGUE_B4_L09
+;    72 {
+;    73 
+;    74 };
+;    75 
+;    76 
+
+        RSEG CODE:CODE:NOROOT(1)
+;    77 void main(void)
+;    78 {
+; __nearfunc void main();
+main:
+        FUNCALL main, ??MyBuf
+        LOCFRAME CSTACK, 192, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??pubsetbuf
+        LOCFRAME CSTACK, 192, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??sputc
+        LOCFRAME CSTACK, 192, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??sgetc
+        LOCFRAME CSTACK, 192, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??MyBuf
+        LOCFRAME CSTACK, 192, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??pubsetbuf
+        LOCFRAME CSTACK, 192, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+	SBIW	R29 : R28,63
+	SBIW	R29 : R28,63
+	SBIW	R29 : R28,62
+;    79 
+;    80 volatile unsigned int p;
+;    81 volatile ByteErr TempR;
+;    82 char xx[128];
+;    83 volatile  int i;
+;    84 // enum
+;    85 workday = sp1;
+	LDI	R16,0
+	STS	workday,R16
+;    86 if (workday == sp1)
+	LDS	R16,workday
+	TST	R16
+	BRNE	??main_0
+;    87 workday = sp2;
+	LDI	R16,1
+	STS	workday,R16
+	RJMP	??main_1
+;    88 else
+;    89 workday = sp3;
+??main_0:
+	LDI	R16,2
+	STS	workday,R16
+;    90 workday = sp1;
+??main_1:
+	LDI	R16,0
+	STS	workday,R16
+;    91 //typedef  myspeed t_sd;
+;    92 
+;    93 
+;    94 //
+;    95 
+;    96 for (i=0;i < 128;i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_2
+;    97 {
+;    98  xx[i]= 0;
+??main_3:
+	LDI	R18,0
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,223
+	SBCI	R17,255
+	LD	R26,Y
+	LDD	R27,Y+1
+	ADD	R26,R16
+	ADC	R27,R17
+	ST	X,R18
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_2:
+	LD	R16,Y
+	LDD	R17,Y+1
+	CPI	R16,128
+	LDI	R16,0
+	CPC	R17,R16
+	BRLT	??main_3
+;    99 };
+;   100 
+;   101 MyBuf TxBuf;
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,250
+	SBCI	R17,255
+	CALL	??MyBuf
+;   102 TxBuf.pubsetbuf(xx,128);
+	LDI	R20,128
+	LDI	R21,0
+	MOVW	R19 : R18,R29 : R28
+	SUBI	R18,223
+	SBCI	R19,255
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,250
+	SBCI	R17,255
+	CALL	??pubsetbuf
+;   103 //
+;   104 for (i=1;i<20;i++)
+	LDI	R16,1
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_4
+;   105 { 
+;   106 iTest = TxBuf.sputc('H'+i);
+??main_5:
+	LD	R18,Y
+	LDD	R19,Y+1
+	SUBI	R18,184
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,250
+	SBCI	R17,255
+	CALL	??sputc
+	LDI	R30,LOW(iTest)
+	LDI	R31,(iTest) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_4:
+	LD	R24,Y
+	LDD	R25,Y+1
+	CPI	R24,20
+	SBCI	R25,0
+	BRLT	??main_5
+;   107 };
+;   108 
+;   109 //
+;   110 cTest = TxBuf.sgetc();
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,250
+	SBCI	R17,255
+	CALL	??sgetc
+	STS	cTest,R16
+;   111 //
+;   112 
+;   113 
+;   114 MyBuf RxBuf;
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,95
+	SBCI	R17,255
+	CALL	??MyBuf
+;   115 RxBuf.pubsetbuf(xx,128);
+	LDI	R20,128
+	LDI	R21,0
+	MOVW	R19 : R18,R29 : R28
+	SUBI	R18,223
+	SBCI	R19,255
+	MOVW	R17 : R16,R29 : R28
+	SUBI	R16,95
+	SBCI	R17,255
+	CALL	??pubsetbuf
+;   116 
+;   117 //cout << "Hello\n";
+;   118 loop:
+;   119 
+;   120 // New type variable 
+;   121 st.tag = 10;
+??main_6:
+	LDI	R16,10
+	STS	`st`,R16
+;   122 st.l= 1234567;
+	LDI	R16,135
+	LDI	R17,214
+	LDI	R18,18
+	LDI	R19,0
+	LDI	R30,LOW(`st`)
+	LDI	R31,(`st`) >> 8
+	STD	Z+1,R16
+	STD	Z+2,R17
+	STD	Z+3,R18
+	STD	Z+4,R19
+;   123 st.f = 1.67;
+	LDI	R16,143
+	LDI	R17,194
+	LDI	R18,213
+	LDI	R19,63
+	LDI	R30,LOW(`st`)
+	LDI	R31,(`st`) >> 8
+	STD	Z+5,R16
+	STD	Z+6,R17
+	STD	Z+7,R18
+	STD	Z+8,R19
+;   124 
+;   125 TempR.Byte = 'A';
+	LDI	R16,65
+	STD	Y+2,R16
+;   126 TempR.Err  = 1;
+	LDI	R16,1
+	STD	Y+3,R16
+;   127 BR[1].Byte = 'V';
+	LDI	R16,86
+	STS	(BR + 2),R16
+;   128 BR[1].Err = 'H';
+	LDI	R16,72
+	STS	(BR + 3),R16
+;   129 //
+;   130 i_var = 4;
+	LDI	R16,4
+	LDI	R17,0
+	LDI	R30,LOW(i_var)
+	LDI	R31,(i_var) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;   131 i_var = ep_i_var ;
+	LDI	R16,55
+	LDI	R17,0
+	LDI	R30,LOW(i_var)
+	LDI	R31,(i_var) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;   132 ep_c_var = 't';
+	LDI	R16,116
+	LDI	R18,LOW(ep_c_var)
+	LDI	R19,(ep_c_var) >> 8
+	MOVW	R21 : R20,R19 : R18
+	CALL	__eeput8_16
+;   133 ep_a_var[1] = '1';
+	LDI	R16,49
+	LDI	R17,0
+	LDI	R18,LOW((ep_a_var + 2))
+	LDI	R19,(ep_a_var + 2) >> 8
+	MOVW	R21 : R20,R19 : R18
+	CALL	__eeput16_16
+;   134 
+;   135 bit_reg.in_read = 1;
+	SBI	0x04,0x00
+;   136 bit_reg.in_read = 0;
+	CBI	0x04,0x00
+;   137 bit_test.in_read = 0;
+	LDI	R30,LOW(bit_test)
+	LDI	R31,(bit_test) >> 8
+	LD	R16,Z
+	ANDI	R16,0xFE
+	ST	Z,R16
+;   138 bit_test.in_read = 1;
+	LDI	R30,LOW(bit_test)
+	LDI	R31,(bit_test) >> 8
+	LD	R16,Z
+	ORI	R16,0x01
+	ST	Z,R16
+;   139 
+;   140 goto loop; 
+	RJMP	??main_6
+;   141 }
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__9exception[3];
+??__vtbl:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>`:
+	DW `?~exception`/2
+	DW ??what/2
+	DW ??_Doraise/2
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_I>`:
+	DW	SFE(NEAR_I) - SFB(NEAR_I)
+	DW	SFB(NEAR_I)
+	DW	SFB(NEAR_ID)
+	REQUIRE ?need_segment_init
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__13bad_exception[3];
+??__vtbl_1:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_1`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_1`:
+	DW `?~bad_exception`/2
+	DW ??what/2
+	DW ??_Doraise_1/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__11logic_error[3];
+??__vtbl_2:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_2`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_2`:
+	DW `?~logic_error`/2
+	DW ??what_1/2
+	DW ??_Doraise_2/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__12domain_error[3];
+??__vtbl_3:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_3`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_3`:
+	DW `?~domain_error`/2
+	DW ??what_1/2
+	DW ??_Doraise_3/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__16invalid_argument[3];
+??__vtbl_4:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_4`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_4`:
+	DW `?~invalid_argument`/2
+	DW ??what_1/2
+	DW ??_Doraise_4/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__12length_error[3];
+??__vtbl_5:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_5`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_5`:
+	DW `?~length_error`/2
+	DW ??what_1/2
+	DW ??_Doraise_5/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__12out_of_range[3];
+??__vtbl_6:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_6`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_6`:
+	DW `?~out_of_range`/2
+	DW ??what_1/2
+	DW ??_Doraise_6/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__13runtime_error[3];
+??__vtbl_7:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_7`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_7`:
+	DW `?~runtime_error`/2
+	DW ??what_2/2
+	DW ??_Doraise_7/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__14overflow_error[3];
+??__vtbl_8:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_8`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_8`:
+	DW `?~overflow_error`/2
+	DW ??what_2/2
+	DW ??_Doraise_8/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__15underflow_error[3];
+??__vtbl_9:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_9`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_9`:
+	DW `?~underflow_error`/2
+	DW ??what_2/2
+	DW ??_Doraise_9/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__11range_error[3];
+??__vtbl_10:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_10`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_10`:
+	DW `?~range_error`/2
+	DW ??what_2/2
+	DW ??_Doraise_10/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__Q2_8ios_base7failure[3];
+??__vtbl_11:
+	DS 6
+	REQUIRE `?<Initializer for __vtbl>_11`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_11`:
+	DW `?~failure`/2
+	DW ??what_2/2
+	DW ??_Doraise_11/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__9streambuf[13];
+??__vtbl_12:
+	DS 26
+	REQUIRE `?<Initializer for __vtbl>_12`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_12`:
+	DW `?~streambuf`/2
+	DW ??overflow/2
+	DW ??pbackfail/2
+	DW ??showmanyc/2
+	DW ??underflow/2
+	DW ??uflow/2
+	DW ??xsgetn/2
+	DW ??xsputn/2
+	DW ??seekoff/2
+	DW ??seekpos/2
+	DW ??setbuf/2
+	DW ??sync/2
+	DW ??imbue/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__3ios[1];
+??__vtbl_13:
+	DS 2
+	REQUIRE `?<Initializer for __vtbl>_13`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_13`:
+	DW `?~ios`/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__7ostream[1];
+??__vtbl_14:
+	DS 2
+	REQUIRE `?<Initializer for __vtbl>_14`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_14`:
+	DW `?~ostream`/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__7istream[1];
+??__vtbl_15:
+	DS 2
+	REQUIRE `?<Initializer for __vtbl>_15`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_15`:
+	DW `?~istream`/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __vtbl_entry const __near __vtbl__5MyBuf[13];
+??__vtbl_16:
+	DS 26
+	REQUIRE `?<Initializer for __vtbl>_16`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for __vtbl>_16`:
+	DW `?~MyBuf`/2
+	DW ??overflow/2
+	DW ??pbackfail/2
+	DW ??showmanyc/2
+	DW ??underflow/2
+	DW ??uflow/2
+	DW ??xsgetn/2
+	DW ??xsputn/2
+	DW ??seekoff/2
+	DW ??seekpos/2
+	DW ??setbuf/2
+	DW ??sync/2
+	DW ??imbue/2
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; __dtor_rec const __near <Unnamed 01B7C63C>;
+?_0:
+	DS 6
+	REQUIRE `?<Initializer for >`
+
+        RSEG NEAR_I:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char const __near _C;
+??_C:
+	DS 1
+	REQUIRE `?<Initializer for _C>`
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for >`:
+	DW ?_1
+	DW _Ios_init0
+	DW `?~Init`/2
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; __dtor_rec const *__near <Unnamed 01B7C81C>;
+?_1:
+	DS 2
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static ios_base::Init __near _Ios_init0;
+_Ios_init0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; char volatile __near c_var;
+c_var:
+	DS 1
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; int volatile __near i_var;
+i_var:
+	DS 2
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static char volatile __near cTest;
+cTest:
+	DS 1
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static int volatile __near iTest;
+iTest:
+	DS 2
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; day __near workday;
+workday:
+	DS 1
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; s __near st;
+`st`:
+	DS 9
+
+        RSEG NEAR_Z:DATA:ROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static ByteErr volatile __near BR[10];
+BR:
+	DS 20
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_Z>`:
+	DW	SFE(NEAR_Z) - SFB(NEAR_Z)
+	DW	SFB(NEAR_Z)
+	DW	0
+	REQUIRE ?need_segment_init
+
+        RSEG NEAR_ID:CODE:ROOT(0)
+`?<Initializer for _C>`:
+	DB 0
+
+        RSEG DIFUNCT:CODE:ROOT(0)
+	REQUIRE ?call_ctors
+	DW	??__sti__Test_cpp_ccc03e22/2
+
+        END
+; 
+;     63 bytes in segment ABSOLUTE
+;   3212 bytes in segment CODE
+;      2 bytes in segment DIFUNCT
+;     23 bytes in segment EEPROM_I
+;     12 bytes in segment INITTAB
+;    137 bytes in segment NEAR_I
+;    137 bytes in segment NEAR_ID
+;      1 byte  in segment NEAR_N
+;     39 bytes in segment NEAR_Z
+; 
+;    524 bytes of CODE memory (+ 2839 bytes shared)
+;    176 bytes of DATA memory (+ 64 bytes shared)
+;     23 bytes of XDATA memory
+;
+;Errors: none
+;Warnings: none

@@ -1,0 +1,324 @@
+        ===============================
+         Read Me File for CLIB V3.34H
+        ===============================
+
+Updated:        990521
+
+
+========
+Contents
+========
+
+  1.    Important Information for CLIB V3.xx Users
+  2.    Manual Corrections and Updates
+  3.    Known Problems in Current Version
+  4.    Program Corrections and Updates
+
+
+========================
+1. Important Information
+========================
+
+        * This readme file contains information that are valid for two 
+          products, the normal package included with a compiler (all
+          standard include files and some c files) and the whole source
+          for the library.
+          
+3.34D   * In previous versions of this file, some bugs in
+          section 4 were put under the version for which
+          they were reported.
+          Now, all bugs (for all listed versions) are described
+          under the version in which they were fixed.
+
+3.34A   * printf, CHANGED BEHAVIOR:
+          When using REDUCED_SUPPORT (_small_write) in
+          _formatted_write, %X, %x and %o previously zero-padded
+          the output. Now, leading zeros are removed.
+
+3.33F   * printf, CHANGED BEHAVIOUR:
+          When using REDUCED_SUPPORT in _formatted_write,
+          %x previously printed capitals, 
+          e.g., printf("%x", 0x1f2a); outputs "0x1F2A".
+          While correcting this, support was included for %X
+          to allow the same output as before. h and l modifiers
+          are also supported in REDUCED_SUPPORT but can easily be
+          removed when not necessary.
+          
+
+=================================
+2. Manual Corrections and Updates
+=================================
+
+3.33C
+      * The exp10 function is not described in manuals produced before 
+        08 Nov -96.
+
+      Include file:    math.h
+      Declaration:     double exp10(double arg)
+      Parameters:      arg    A doubel value
+      Return value:    a double with the value 10^arg
+      Description:     Computes the value 10^arg
+
+
+====================================
+3. Known Problems in Current Version
+====================================
+
+===================================
+4. Program Corrections and Updates
+===================================
+
+3.34H 990520
+
+        * stdarg.h, va_start() for ICC7700, ICC8051 ver 1 - 3.10
+          Inserted a cast to void *
+
+        * frmwri.c (small_write version)
+          %d for negative values now prints correctly.
+
+        * strtol.c, strtoul.c
+          Overflow is now correctly identified. 
+        
+3.34G 990215
+
+        * atol.c, atoi.c, atof.c, free.c
+          Slight optimization.
+
+        * ctype.h, iccext.h, icclbutl.h math.h, setjmp.h, stdio.h, stdlib.h,
+          string.h
+          Deleted parameter names on function declarations.
+
+        * All files
+          Style changed whereever applicable, untabified.
+
+3.34F 981124
+
+        * malloc.c,realloc.c,heap.c,memstruc.i 
+          Deleted align_on macro, and rewrote alignment code.
+
+        * malloc.c, realloc.c
+          Changed style of coding.
+
+3.34E   981116
+
+        * sysmac.h
+          __IAR_SYSTEMS_ICC__ set to 3 now allowed.
+
+        * wchar_t in stddef.h is now set to __WCHAR_T_TYPE__, if defined.
+
+3.34D   980918
+
+        * scanf: frmrd.c
+          frmrd ignored formatter string L-modifier when 
+		  int was larger than short.
+          [CLIB0017]
+
+        * malloc.c
+          PTR_ATTRIBUTE was missing in align_on macro.
+          [CLIB0016]
+
+        * heap.c
+          PTR_ATTRIBUTE replaced by MEM_ATTRIBUTE for "char
+          bulk_storage[MALLOC_BUFSIZE]".
+          [CLIB0015]
+
+        * exp.c, log.c
+          test __IAR_SYSTEMS_ICC__ instead of __IAR_SYSTEMS_ICC.
+
+        * qsort.c
+          QSORT_MAXSIZE can be defined externally.
+
+        * scanf.c
+          SCANF_MAXLINE can be defined externally.
+
+        * ctype.h,iccext.h,iccbutl.h,stdarg.h
+          Includes sysmac.h.
+
+        * ctype.h, iccext.h,iccfloat.h,icclbutl.h,math.h,setjmp.h,stdarg.h,
+          stdlib.h,string.h,sysmac.h
+          Uses __INTRINSIC macro.
+
+        * stdarg.h
+          Test for __IAR_SYSTEMS_ICC__ >= 2 (before == 2).
+
+        * stdio.h
+          Removed unused pragma.
+
+        * stdio.h
+          Removed sysmac.h include.
+
+        * sysmac.h
+          Corrected definition of __IAR_SYSTEMS_ICC__.
+
+3.34C   980701
+
+        * math.h,tan.c
+          Confusing constant name: '_INVPI' = 4/pi, changed to 1/pi.
+          [CLIB0014]
+
+        * strtol.c,strtoul.c
+          When string contained zeros only, e.g., "0000", **endptr
+          was '0', not '\0' as it should.
+          [CLIB0013]
+
+3.34B
+
+        * stdarg.h
+          __va_start() supplied by some compilers. Two flavors of va_arg()
+          available.
+
+        * stddef.h
+          Changed definition of offsetof() macro.
+
+3.34A   980431
+
+        * printf: frmwri.c (_small_write), intwri.c
+          The small formatter did not output the correct value
+          for 32 bit numbers when using %o.
+          [CLIB0012]
+
+        * qsort.c
+          The internal buffer pointer pointed wrong when calling qsort
+          more than once.
+          [CLIB0011]
+
+        * printf: frmwri.c (_small_write)
+          The small formatter zero-padded output when using
+          %x, %X and %o.
+          [CLIB0010]
+
+        * sysmac.h is a new include file that governs target dependent
+          options in the library. A lot of files need to include this.
+
+        * isxxx.c
+          #pragma function=intrinsic(0) removed.
+
+        * cosh.c,exp.c,exp10.c,log.c,pow.c,satan.c,sinh.c,sinus.c,sqrt.c,
+          tan.c,tanh.c,float.h,iccfloat.h,math.h
+          Uses __FLOAT_SIZE__ and __DOUBLE_SIZE__ now.
+          float.h uses __LONG_DOUBLE_SIZE__ as well.
+
+        * limits.h
+          Uses __INT_SIZE__. Max and min supplied by compiler 
+          (e.g. CHAR_MAX...).
+
+        * setjmp.h
+          Uses __JMP_BUF_ELEMENT_TYPE__ and __JMP_BUF_NUM_ELEMENTS__.
+
+        * stddef.h,stdio.h,stdlib.h,string.h
+          size_t and ptrdiff_t defined in sysmac.h.
+
+        * frmrd.c,frmwri.c,intwri.c
+          Uses VAPTR macro now.
+
+3.33H   980119
+
+        * scanf: frmrd.c
+          sscanf("ABC", "%s%n", myStr, &myInt) returned with myInt == 0,
+          i.e., zero characters scanned when reaching the %n.
+          [CLIB0009]
+
+        * printf: frmwri.c (reduced_support)
+          Modified va_arg() fetch for h-modifier to remove 32-bit target bug.
+
+3.33G   970910
+
+        * printf: frmwri.c
+          Detail improvements to ANSI compliance:
+          + ("%0*d",-3,0) produced "000" instead of "0  ".
+          + ("%#.0o",0) should produce one zero.
+          + unsigned conversions did not ignore the "+" flag.
+          + unsigned conversions did not ignore the " " flag.
+          + ("%#.2o",1) padded one extra zero.
+          
+        * printf: frmwri.c
+          Zero field width supplied as a argument, printf("%*.0f", 0, 1.654),
+          will not produce any output. The correct output should be "1".
+          [CLIB0006]
+
+        * strtod.c
+          When string contains zeros only, e.g., "0000", **endptr
+          will be '0', not '\0' as it should.
+          [CLIB0007]
+
+        * stdarg.h
+          Some of the older IAR compilers for chip with word alignment on 
+          stack generated a faulty address in some cases if an 8-bit object
+          was given as the parameter to the 'va_start' macro.
+          [CLIB0008]
+
+3.33F   970527
+
+        * printf: frmwri.c
+          Zero precision, printf("%.0d",0), prints out a "0" instead of
+          nothing. ANSI says that if the argument is zero then nothing should
+          be printed if the precision is zero.
+          [CLIB0005]
+
+        * printf: frmwri.c (reduced_support)
+          %x and %X added. h and l modifiers added.
+
+3.33E   970417
+
+        * Some minor adjustments in 'stdarg.h'.
+
+        * An uninitialized variable in 'libtest.c' could make the test crash.
+
+3.33D   970320
+
+        * stdio.h
+          Two new functions have been added 'vprintf' and 'vsprintf'.
+
+          vprintf : Works as 'printf' with the variable argument list of
+                    'printf(...)' replaced with a 'va_list' argument.
+
+          vsprintf: Works as 'sprintf' with the variable argument list of
+                    'sprintf(...)' replaced with a 'va_list' argument.
+
+          For more information about these functions, see the ANSI standard
+          definition.
+
+        * stdarg.h
+          The function/macro 'va_end' does now return ((void)0) as default.
+          [CLIB0002]
+
+        * printf/scanf: frmwri.c, frmrd.c
+          When using pointer formatter ( %p ) the default format for scanf 
+          was decimal number and the default format for printf was 
+          hexadecimal number. The scanf has been changed to have hexadecimal
+          number as default. 
+          [CLIB0003]
+
+        * scanf: frmrd.c
+          'scanf' assumed that 'short' was the same as 'int' and therefore
+          scanned a 32-bit value when the formatter "%h" was given.
+          [CLIB0004]
+
+3.33C   961219
+
+        * printf: (and releated functions)
+          The printf functions default precision is set to 6 digits. In
+          earlier version printf could write seven or more digits.
+
+        * printf:(and releated functions)
+          When:
+                - the conversion specifier is d or i 
+                - the field with is set to zero
+                - the value to be printed is zero
+          then there should be no character written.
+          In earlier version a zero will be written but not in this version.
+
+        * scanf:(and releated functions)
+          When scanning for a float/doulbe number the buffer pointer would 
+          not be updated to point out the next character to be read. The 
+          pointer still point out the last character read. This means that 
+          the last digit in the float/double number will the next character 
+          to be read.
+
+        * math.h:
+          The declaration of exp10 is missing.
+          Should be: MEMORY_ATTRIBUTE double exp10 (double __arg);
+
+=============================
+End of Read Me File for CLIB
+=============================

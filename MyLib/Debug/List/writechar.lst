@@ -1,0 +1,96 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             23/Aug/2002  12:20:16 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\MiniRobot_CODE\SRC\writechar.c                #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\MyLib\Debug\Obj\ -I         #
+#                    C:\AVR_CC\AVR\INC\ -lC C:\AVR_CC\MyLib\Debug\List\ -lA  #
+#                    C:\AVR_CC\MyLib\Debug\List\ --ec++ -e -y                #
+#                    --initializers_in_flash -s9 --no_cse --no_inline        #
+#                    --no_code_motion --no_cross_call --no_clustering        #
+#                    --library_module --debug C:\AVR_CC\MiniRobot_CODE\SRC\w #
+#                    ritechar.c                                              #
+#    List file    =  C:\AVR_CC\MyLib\Debug\List\writechar.lst                #
+#    Object file  =  C:\AVR_CC\MyLib\Debug\Obj\writechar.r90                 #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          /*******************
+      2           *
+      3           * Copyright 1999 IAR Systems.  All rights reserved.
+      4           *
+      5           * $Revision: 1.1 $
+      6           *
+      7           * This is the default implementation of the __writechar function used
+      8           * by the standard library.  This implementation sends characters
+      9           * written to the file descriptors associated with stdout and stderr
+     10           * to the debugger.  Replace one of __write and __writechar with a
+     11           * system-specific implementation.
+     12           *
+     13           ********************/
+     14          
+     15          #include <stdio.h>
+     16          #include <yfuns.h>
+     17          
+     18          _STD_BEGIN
+     19          
+
+   \                                 In segment CODE, align 2, keep-with-next
+     20          int (__writechar)(int Handle, unsigned char c)
+     21          {
+     22            unsigned char *MyPORTA;
+     23            unsigned char *MyDDRA;
+     24            MyPORTA = (unsigned char *) 0x3B;
+     25            MyDDRA  = (unsigned char *) 0x3A;
+     26            if (Handle == 1 || Handle == 2)
+   \   __intrinsic __nearfunc int __writechar(int, unsigned char);
+   \                     __writechar:
+   \   00000000   3001                       CPI     R16,1
+   \   00000002   E030                       LDI     R19,0
+   \   00000004   0713                       CPC     R17,R19
+   \   00000006   F019                       BREQ    ??__writechar_0
+   \   00000008   3002                       CPI     R16,2
+   \   0000000A   4010                       SBCI    R17,0
+   \   0000000C   F449                       BRNE    ??__writechar_1
+     27            {
+     28              *MyDDRA  =0xff; // PORTA bits outs
+   \                     ??__writechar_0:
+   \   0000000E   EF0F                       LDI     R16,255
+   \   00000010   BB0A                       OUT     0x1A,R16
+     29              *MyPORTA =~c;   
+   \   00000012   2F02                       MOV     R16,R18
+   \   00000014   9500                       COM     R16
+   \   00000016   BB0B                       OUT     0x1B,R16
+     30              return __putchar(c);
+   \   00000018   2F02                       MOV     R16,R18
+   \   0000001A   E010                       LDI     R17,0
+   \   0000001C   ........                   JMP     __putchar
+     31            }
+     32            else
+     33            {
+     34              return -1;
+   \                     ??__writechar_1:
+   \   00000020   EF0F                       LDI     R16,255
+   \   00000022   EF1F                       LDI     R17,255
+   \   00000024   9508                       RET
+     35            }
+     36          }
+     37          
+     38          _STD_END
+
+   Maximum stack usage in bytes:
+
+     Function        CSTACK  RSTACK
+     --------        ------  ------
+     __writechar         0       2 
+       -> __putchar      0       2 
+
+ 
+     38 bytes in segment CODE
+ 
+     38 bytes of CODE memory
+
+Errors: none
+Warnings: none

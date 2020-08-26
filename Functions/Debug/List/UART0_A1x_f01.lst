@@ -1,0 +1,306 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             04/Sep/2002  10:41:43 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\Functions\UART0_A1x_f01.c                     #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\Functions\Debug\Obj\ -I     #
+#                    C:\AVR_CC\AVR\SRC\CLIB\INC\ -lC                         #
+#                    C:\AVR_CC\Functions\Debug\List\ -lA                     #
+#                    C:\AVR_CC\Functions\Debug\List\ -e -y                   #
+#                    --initializers_in_flash -z3 --no_cse --no_inline        #
+#                    --no_code_motion --no_cross_call --no_clustering        #
+#                    --debug -DENABLE_BIT_DEFINITIONS                        #
+#                    C:\AVR_CC\Functions\UART0_A1x_f01.c                     #
+#    List file    =  C:\AVR_CC\Functions\Debug\List\UART0_A1x_f01.lst        #
+#    Object file  =  C:\AVR_CC\Functions\Debug\Obj\UART0_A1x_f01.r90         #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          #include "iom161.h"
+
+   \                                 In segment ABSOLUTE, at 0x2a
+   \   union <unnamed> volatile __io _A_UCSR0B;
+   \                     _A_UCSR0B:
+   \   00000000                              DS 1
+      2          #include "stdio.h"
+      3          #include "uart0_A1x.h"
+      4          #include "uart0_A1x_decl.h"
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned int const __flash fSpeedBaud_UART0;
+   \                     fSpeedBaud_UART0:
+   \   00000000   2580                       DW 9600
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fModeU2X0;
+   \                     fModeU2X0:
+   \   00000000   00                         DB 0
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fModeCHR90;
+   \                     fModeCHR90:
+   \   00000000   00                         DB 0
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fCheckParity_UART0;
+   \                     fCheckParity_UART0:
+   \   00000000   00                         DB 0
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fContrStream_UART0;
+   \                     fContrStream_UART0:
+   \   00000000   00                         DB 0
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_DTR0;
+   \                     fEnb_DTR0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fBit_DTR0;
+   \                     fBit_DTR0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_DSR0;
+   \                     fEnb_DSR0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fBit_DSR0;
+   \                     fBit_DSR0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_RTS0;
+   \                     fEnb_RTS0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fBit_RTS0;
+   \                     fBit_RTS0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_CTS0;
+   \                     fEnb_CTS0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fBit_CTS0;
+   \                     fBit_CTS0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fSym_XON;
+   \                     fSym_XON:
+   \   00000000   11                         DB 17
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fSym_XOFF;
+   \                     fSym_XOFF:
+   \   00000000   13                         DB 19
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_XON_XOFF_Tx_UART0;
+   \                     fEnb_XON_XOFF_Tx_UART0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_XON_XOFF_Rx_UART0;
+   \                     fEnb_XON_XOFF_Rx_UART0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_Echo_UART0;
+   \                     fEnb_Echo_UART0:
+   \   00000000   01                         DB 1
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fModeMPCM0;
+   \                     fModeMPCM0:
+   \   00000000   00                         DB 0
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   unsigned char const __flash fEnb_Err_UART0;
+   \                     fEnb_Err_UART0:
+   \   00000000   00                         DB 0
+
+   \                                 In segment EEPROM_I, align 1, keep-with-next
+   \   unsigned char __eeprom S3e;
+   \                     S3e:
+   \   00000000   00                         DB 0
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S4e;
+   \                     S4e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S5e;
+   \                     S5e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S16e;
+   \                     S16e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S18e;
+   \                     S18e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S21e;
+   \                     S21e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S22e;
+   \                     S22e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S23e;
+   \                     S23e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S39e;
+   \                     S39e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near S51e;
+   \                     S51e:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static unsigned char volatile __near TxBuf_UART0[32];
+   \                     TxBuf_UART0:
+   \   00000000                              DS 32
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static unsigned char volatile __near TxHead_UART0;
+   \                     TxHead_UART0:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static unsigned char volatile __near TxTail_UART0;
+   \                     TxTail_UART0:
+   \   00000000                              DS 1
+      5          
+      6          
+      7          
+
+   \                                 In segment CODE, align 2, keep-with-next
+      8          void TransmitByte( unsigned char data )
+      9                  {
+     10                  unsigned char tmphead;
+     11                  /* calculate buffer index */
+     12                  //tmphead = ( TxHead_UART0 + 1 ) & TX_BUFFER_MASK_UART0;
+     13                  tmphead = (TxHead_UART0+1) & TX_BUFFER_MASK_UART0;
+   \   __nearfunc void TransmitByte(unsigned char);
+   \                     TransmitByte:
+   \   00000000   9120....                   LDS     R18,TxHead_UART0
+   \   00000004   9523                       INC     R18
+   \   00000006   712F                       ANDI    R18,0x1F
+     14                          /* wait for free space in buffer */
+     15          
+     16                  while ( tmphead == TxTail_UART0 )
+   \                     ??TransmitByte_0:
+   \   00000008   9110....                   LDS     R17,TxTail_UART0
+   \   0000000C   1721                       CP      R18,R17
+   \   0000000E   F3E1                       BREQ    ??TransmitByte_0
+     17                          ;
+     18                  TxBuf_UART0[tmphead] = data; /* store data in buffer */
+   \   00000010   E030                       LDI     R19,0
+   \   00000012   01F9                       MOVW    R31 : R30,R19 : R18
+   \   00000014   ....                       SUBI    R30,LOW((-(TxBuf_UART0) & 0xFFFF))
+   \   00000016   ....                       SBCI    R31,(-(TxBuf_UART0) & 0xFFFF) >> 8
+   \   00000018   8300                       ST      Z,R16
+     19                  TxHead_UART0 = tmphead; /* store new index */
+   \   0000001A   9320....                   STS     TxHead_UART0,R18
+     20                  UCSR0B |= (1<<UDRIE0); /* enable UDRE interrupt */
+   \   0000001E   9A55                       SBI     0x0A,0x05
+     21                  }
+   \   00000020   9508                       RET
+     22          
+
+   \                                 In segment CODE, align 2, keep-with-next
+     23          void main(void)
+     24          {
+   \   __nearfunc void main();
+   \                     main:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+     25            int i;
+     26            unsigned char data='U'; 
+   \   00000004   E585                       LDI     R24,85
+     27            for (;;)
+     28            {
+     29             /*--------------------------*/
+     30            /*   Test for function UART0 */
+     31            /*
+     32          
+     33            void TransmitByte( unsigned char data )
+     34          
+     35                1 byte  in segment ABSOLUTE
+     36               48 bytes in segment CODE
+     37                1 byte  in segment EEPROM_I
+     38                6 bytes in segment INITTAB
+     39               21 bytes in segment NEAR_F
+     40               43 bytes in segment NEAR_Z
+     41           
+     42               69 bytes of CODE memory (+ 6 bytes shared)
+     43               43 bytes of DATA memory (+ 1 byte shared)
+     44                1 byte  of XDATA memory
+     45            */
+     46            TransmitByte(data);
+   \                     ??main_0:
+   \   00000006   2F08                       MOV     R16,R24
+   \   00000008   ....                       RCALL   TransmitByte
+     47            /* End Test */
+     48            i++;
+   \   0000000A   9611                       ADIW    R27 : R26,1
+   \   0000000C   CFFC                       RJMP    ??main_0
+     49            /* Test Modul for A1x.c */
+     50            };
+     51          }
+
+   Maximum stack usage in bytes:
+
+     Function           CSTACK  RSTACK
+     --------           ------  ------
+     TransmitByte           0       0 
+     main                   4       2 
+       -> TransmitByte      4       2 
+
+ 
+      1 byte  in segment ABSOLUTE
+     48 bytes in segment CODE
+      1 byte  in segment EEPROM_I
+      6 bytes in segment INITTAB
+     21 bytes in segment NEAR_F
+     43 bytes in segment NEAR_Z
+ 
+     69 bytes of CODE memory (+ 6 bytes shared)
+     43 bytes of DATA memory (+ 1 byte shared)
+      1 byte  of XDATA memory
+
+Errors: none
+Warnings: none

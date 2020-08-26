@@ -1,0 +1,2049 @@
+        NAME Scan_CMD
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG NEAR_I:DATA:NOROOT(0)
+        RSEG NEAR_ID:CODE:NOROOT(0)
+        RSEG NEAR_Z:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        EXTERN ?need_segment_init
+        EXTERN ?PROLOGUE10_L09
+        EXTERN ?Register_R4_is_cg_reg
+        EXTERN ?Register_R5_is_cg_reg
+        EXTERN ?Register_R6_is_cg_reg
+        EXTERN ?Register_R7_is_cg_reg
+        EXTERN ?Register_R8_is_cg_reg
+        EXTERN ?Register_R9_is_cg_reg
+        EXTERN Reset_UART0
+        FUNCTION Reset_UART0,0202H
+        EXTERN Init_S_UART0
+        FUNCTION Init_S_UART0,0202H
+        EXTERN printf
+        FUNCTION printf,0202H
+        EXTERN sprintf
+        FUNCTION sprintf,0202H
+        EXTERN test_cmd_s
+        FUNCTION test_cmd_s,0202H
+        EXTERN out_err_msg
+        FUNCTION out_err_msg,0202H
+        EXTERN strlen_c
+        FUNCTION strlen_c,0202H
+        EXTERN strchr_c
+        FUNCTION strchr_c,0202H
+        EXTERN strcat_c
+        FUNCTION strcat_c,0202H
+        EXTERN strcpy
+        FUNCTION strcpy,010202H
+        EXTERN strcmp_c
+        FUNCTION strcmp_c,0202H
+        EXTERN memset
+        FUNCTION memset,010202H
+        EXTERN getchar_K
+        FUNCTION getchar_K,0202H
+        EXTERN strtok
+        FUNCTION strtok,010202H
+        EXTERN ?S_MUL_L02
+
+        PUBWEAK `?<Segment init: NEAR_I>`
+        PUBWEAK `?<Segment init: NEAR_Z>`
+        PUBLIC Dict_CMD
+        PUBWEAK _A_DDRA
+        PUBWEAK _A_PORTA
+        PUBLIC main
+        FUNCTION main,0a1a03H
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+;     1 /*********************************************
+;     2 * Programm:       SCAN_CMD.c                 *
+;     3 *                                            *
+;     4 *  Note:  For projekt MINIROBIT BUILDING     *
+;     5 *                                            *
+;     6 * Name:  Module Code adapted from Atmel AVR  *
+;     7 *        Application for Amega161            *
+;     8 *                                            *
+;     9 *                                            *
+;    10 * Edit data:     01.10.02£. 16:06:23         *
+;    11 * Last data:     14.10.02£. 13:33:25         *
+;    12 * Version:       0.02                        *
+;    13 **********************************************/
+;    14 
+;    15 #include "iom161.h"
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03aH
+; union <unnamed> volatile __io _A_DDRA;
+_A_DDRA:
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03bH
+; union <unnamed> volatile __io _A_PORTA;
+_A_PORTA:
+	DS 1
+;    16 #include "stdio.h"
+;    17 #include "ctype.h"
+;    18 #include "string.h"
+;    19 #include "scan_cmd.h"
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static char __near BUF_CMD[42];
+BUF_CMD:
+	DS 42
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near Head_CMD;
+Head_CMD:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static char __near BUF_TEST[42];
+BUF_TEST:
+	DS 42
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static pars __near CMD_PAR[5];
+CMD_PAR:
+	DS 55
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; dic __flash Dict_CMD[6];
+Dict_CMD:
+	DB "x"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0
+	DB 1
+	DB "Fuction display X"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0
+	DB "y"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0
+	DB 1
+	DB "Fuction display Y"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0
+	DB "z"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0
+	DB 1
+	DB "Fuction display Z"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0
+	DB "list"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0
+	DB 0
+	DB "Function list functions"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB "view"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0
+	DB 1
+	DB "Fuction view"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0
+	DB "print"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0
+	DB 2
+	DB "Function print"
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0, 0, 0, 0, 0, 0, 0, 0
+	DB 0
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static char volatile __near MODE_OUT_MSG;
+MODE_OUT_MSG:
+	DS 1
+;    20 #include "c:\AVR_CC\UART_MOD\uart0_A1x_ext_func.h"
+;    21 
+;    22 
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    23 static volatile int point_err;
+; static int volatile __near point_err;
+point_err:
+	DS 2
+;    24 
+;    25  /* Debug test SCAN_CMD for module */
+;    26 #define TEST_SCAN_CMD
+;    27 
+;    28 #ifdef TEST_SCAN_CMD
+;    29 
+;    30  /* main - a simple test program*/
+
+        RSEG CODE:CODE:NOROOT(1)
+;    31 void main( void )
+;    32      {
+; __nearfunc void main();
+main:
+        FUNCALL main, Reset_UART0
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, Init_S_UART0
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, sprintf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, test_cmd_s
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, sprintf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, test_cmd_s
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, sprintf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, test_cmd_s
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, sprintf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, test_cmd_s
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, sprintf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, test_cmd_s
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strlen_c
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strchr_c
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strcat_c
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strcpy
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strcmp_c
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, memset
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, memset
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, getchar_K
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strcpy
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strtok
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, test_cmd_s
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strlen_c
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strtok
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strcpy
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strtok
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, strtok
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, out_err_msg
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 19, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, printf
+        LOCFRAME CSTACK, 21, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE10_L09
+	REQUIRE	?Register_R4_is_cg_reg
+	REQUIRE	?Register_R5_is_cg_reg
+	REQUIRE	?Register_R6_is_cg_reg
+	REQUIRE	?Register_R7_is_cg_reg
+	REQUIRE	?Register_R8_is_cg_reg
+	REQUIRE	?Register_R9_is_cg_reg
+	SBIW	R29 : R28,9
+;    33         static unsigned char cRet;
+;    34         volatile long int l_i;
+;    35         volatile unsigned int i,j;
+;    36         static int iByte, iRet;
+;    37         volatile char cFlg;
+;    38         int flgerr = 0;
+	LDI	R24,0
+	LDI	R25,0
+;    39         int point_dict;
+;    40         char *p;
+;    41         char *pt;
+;    42 
+;    43         MODE_OUT_MSG = 1;  // full print message errors
+	LDI	R16,1
+	STS	MODE_OUT_MSG,R16
+;    44 
+;    45         /*-----------------------*/
+;    46         /* 2. Init UART0         */
+;    47         Reset_UART0();
+	CALL	Reset_UART0
+;    48         Init_S_UART0(57600); // 57600 default
+	LDI	R16,0
+	LDI	R17,225
+	CALL	Init_S_UART0
+;    49 
+;    50         /*-------------------*/
+;    51         /* 4. Begin programm */
+;    52         _SEI(); // enable global interrupt
+        sei
+;    53 
+;    54         iRet = printf("Test ver 0.02 for Scan_CMD \n\r");
+	LDI	R16,LOW(`?<Constant "Test ver 0.02 for Sca...">`)
+	LDI	R17,(`?<Constant "Test ver 0.02 for Sca...">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    55 
+;    56         l_i=0;
+	LDI	R16,0
+	LDI	R17,0
+	LDI	R18,0
+	LDI	R19,0
+	STD	Y+5,R16
+	STD	Y+6,R17
+	STD	Y+7,R18
+	STD	Y+8,R19
+;    57         i = 0;
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+;    58         cRet = 0;
+	LDI	R16,0
+	STS	??cRet,R16
+;    59 
+;    60         /* line string test */
+;    61         iRet = sprintf(BUF_TEST,"print1,2\n");
+	LDI	R18,LOW(`?<Constant "print1,2\\n">`)
+	LDI	R19,(`?<Constant "print1,2\\n">`) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	sprintf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    62         /*ERR 1 test test_cmd_s() */
+;    63         iRet = test_cmd_s(BUF_TEST, &point_err);
+	LDI	R18,LOW(point_err)
+	LDI	R19,(point_err) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	test_cmd_s
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    64         out_err_msg(BUF_TEST,iRet, &point_err, 866);
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	LD	R18,Z
+	LDD	R19,Z+1
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	out_err_msg
+;    65 
+;    66         /* line string test */
+;    67         iRet = sprintf(BUF_TEST,"print1,2\n");
+	LDI	R18,LOW(`?<Constant "print1,2\\n">`)
+	LDI	R19,(`?<Constant "print1,2\\n">`) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	sprintf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    68         /*ERR 2 test test_cmd_s() */
+;    69         iRet = test_cmd_s(BUF_TEST, &point_err);
+	LDI	R18,LOW(point_err)
+	LDI	R19,(point_err) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	test_cmd_s
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    70         out_err_msg(BUF_TEST,iRet, &point_err, 866);
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	LD	R18,Z
+	LDD	R19,Z+1
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	out_err_msg
+;    71 
+;    72         /* line string test */
+;    73         iRet = sprintf(BUF_TEST,"print(1,2\n");
+	LDI	R18,LOW(`?<Constant "print(1,2\\n">`)
+	LDI	R19,(`?<Constant "print(1,2\\n">`) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	sprintf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    74         /*ERR 3 test test_cmd_s() */
+;    75         iRet = test_cmd_s(BUF_TEST, &point_err);
+	LDI	R18,LOW(point_err)
+	LDI	R19,(point_err) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	test_cmd_s
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    76         out_err_msg(BUF_TEST,iRet, &point_err, 866);
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	LD	R18,Z
+	LDD	R19,Z+1
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	out_err_msg
+;    77 
+;    78         /* line string test */
+;    79         iRet = sprintf(BUF_TEST,"print)1,2(\n");
+	LDI	R18,LOW(`?<Constant "print)1,2(\\n">`)
+	LDI	R19,(`?<Constant "print)1,2(\\n">`) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	sprintf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    80         /*ERR 4 test test_cmd_s() */
+;    81         iRet = test_cmd_s(BUF_TEST, &point_err);
+	LDI	R18,LOW(point_err)
+	LDI	R19,(point_err) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	test_cmd_s
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    82         out_err_msg(BUF_TEST,iRet, &point_err, 866);
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	LD	R18,Z
+	LDD	R19,Z+1
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	out_err_msg
+;    83 
+;    84         /* line string test */
+;    85         iRet = sprintf(BUF_TEST,"view(1)\n");
+	LDI	R18,LOW(`?<Constant "view(1)\\n">`)
+	LDI	R19,(`?<Constant "view(1)\\n">`) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	sprintf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    86         /*ERR 5 test test_cmd_s() */
+;    87         iRet = test_cmd_s(BUF_TEST, &point_err);
+	LDI	R18,LOW(point_err)
+	LDI	R19,(point_err) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	test_cmd_s
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    88         out_err_msg(BUF_TEST,iRet, &point_err, 866);
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	LD	R18,Z
+	LDD	R19,Z+1
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	out_err_msg
+;    89 
+;    90         iRet = printf("\n\r'Ok\n\rEnd Test out_err_msg() \n\r");
+	LDI	R16,LOW(`?<Constant "\\n\\r\\'Ok\\n\\rEnd Test out_e...">`)
+	LDI	R17,(`?<Constant "\\n\\r\\'Ok\\n\\rEnd Test out_e...">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;    91 
+;    92 
+;    93         /* test Read from Dictionary CMD */
+;    94         cRet = Dict_CMD[0].pars;
+	LDI	R30,LOW((Dict_CMD + 20))
+	LDI	R31,(Dict_CMD + 20) >> 8
+	LPM	R16,Z
+	STS	??cRet,R16
+;    95         cRet = cRet+0;
+	LDS	R16,??cRet
+	STS	??cRet,R16
+;    96 
+;    97         /* read name from Dictionary CMD */
+;    98         for (i=0;i<=((BUFFER_SIZE_CMD/2)-1);i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_0
+;    99         {
+;   100         BUF_TEST[i] = Dict_CMD[1].name[i]; ;
+??main_1:
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R18,LOW((Dict_CMD + 61))
+	LDI	R19,(Dict_CMD + 61) >> 8
+	LD	R30,Y
+	LDD	R31,Y+1
+	ADD	R30,R18
+	ADC	R31,R19
+	LPM	R18,Z
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(BUF_TEST) & 0xFFFF))
+	SBCI	R31,(-(BUF_TEST) & 0xFFFF) >> 8
+	ST	Z,R18
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_0:
+	LD	R24,Y
+	LDD	R25,Y+1
+	CPI	R24,20
+	SBCI	R25,0
+	BRCS	??main_1
+;   101         };
+;   102 
+;   103         /* read name from Dictionary CMD */
+;   104         for (i=0;i<=((BUFFER_SIZE_CMD)-1);i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_2
+;   105         {
+;   106         BUF_TEST[i] = Dict_CMD[1].info_name[i]; ;
+??main_3:
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R18,LOW((Dict_CMD + 82))
+	LDI	R19,(Dict_CMD + 82) >> 8
+	LD	R30,Y
+	LDD	R31,Y+1
+	ADD	R30,R18
+	ADC	R31,R19
+	LPM	R18,Z
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(BUF_TEST) & 0xFFFF))
+	SBCI	R31,(-(BUF_TEST) & 0xFFFF) >> 8
+	ST	Z,R18
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_2:
+	LD	R24,Y
+	LDD	R25,Y+1
+	CPI	R24,40
+	SBCI	R25,0
+	BRCS	??main_3
+;   107         };
+;   108 
+;   109         /* init test array test[] */
+;   110         Head_CMD = 0;
+	LDI	R16,0
+	STS	Head_CMD,R16
+;   111         for (i=0;i<=(BUFFER_SIZE_CMD-1);i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_4
+;   112         {
+;   113         BUF_TEST[i] = 0;
+??main_5:
+	LDI	R16,0
+	LD	R18,Y
+	LDD	R19,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(BUF_TEST) & 0xFFFF))
+	SBCI	R31,(-(BUF_TEST) & 0xFFFF) >> 8
+	ST	Z,R16
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_4:
+	LD	R24,Y
+	LDD	R25,Y+1
+	CPI	R24,40
+	SBCI	R25,0
+	BRCS	??main_5
+;   114         };
+;   115 
+;   116         /*test strlen_uc() */
+;   117         iRet = strlen_c(BUF_TEST);
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strlen_c
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;   118 
+;   119         /*test strchr_uc() */
+;   120         p = strchr_c(BUF_TEST,'(');
+	LDI	R18,40
+	LDI	R19,0
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strchr_c
+	MOVW	R27 : R26,R17 : R16
+;   121         iRet = *p;
+	LD	R16,X
+	LDI	R17,0
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;   122 
+;   123         /*test strcat_uc() */
+;   124         p = strcat_c(BUF_TEST,BUF_CMD);
+	LDI	R18,LOW(BUF_CMD)
+	LDI	R19,(BUF_CMD) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strcat_c
+	MOVW	R27 : R26,R17 : R16
+;   125 
+;   126         /* test strcmp_uc*/
+;   127         p = strcpy(BUF_CMD, BUF_TEST); // Copy BUF_TEST
+	LDI	R18,LOW(BUF_TEST)
+	LDI	R19,(BUF_TEST) >> 8
+	LDI	R16,LOW(BUF_CMD)
+	LDI	R17,(BUF_CMD) >> 8
+	CALL	strcpy
+	MOVW	R27 : R26,R17 : R16
+;   128         iRet = strcmp_c(BUF_TEST,BUF_CMD); // Comparate str1 and str2
+	LDI	R18,LOW(BUF_CMD)
+	LDI	R19,(BUF_CMD) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strcmp_c
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	RJMP	??main_6
+;   129 
+;   130 
+;   131         /* Read command and call functions */
+;   132 
+;   133     /* Begin */
+;   134     do
+;   135      {
+;   136 
+;   137         /* test new function getchar() and prints stdin */
+;   138         /* Reset point for BUFFER BUF_CMD */
+;   139         Head_CMD = 0; // point begin
+;   140         memset(BUF_CMD, 0, BUFFER_SIZE_CMD);    // erase buffer
+;   141         memset(BUF_TEST, 0, BUFFER_SIZE_CMD);   // erase buffer
+;   142 
+;   143         /* Output welcome */
+;   144         if (MODE_OUT_MSG == 1)
+;   145          {
+;   146          iRet = printf("%c ",'>');
+;   147          };
+;   148 
+;   149 
+;   150         do
+;   151          {
+;   152           /* Input from stdin */
+;   153           iByte = getchar_K();     // new size buffer 40 yes
+;   154           /* Save elements BUF_CMD */
+;   155           BUF_CMD[Head_CMD] = (unsigned char) iByte;
+;   156           Head_CMD++;
+;   157             if ( Head_CMD > (BUFFER_SIZE_CMD-1) )
+;   158              {
+;   159               Head_CMD--; // end buffer
+;   160              };
+;   161             if (iByte == 0x0A)  // ^J LF
+;   162              {
+;   163               /* char end string command */
+;   164               iRet = printf("\r");
+;   165              };
+;   166          }
+;   167         while ( iByte != 0x0A);
+;   168 
+;   169         /* copy string BUF_CDM to BUF_TEST */
+;   170         p = strcpy(BUF_TEST, BUF_CMD);
+;   171 
+;   172         /* erase '\n' and '\r' */
+;   173         p = strtok (BUF_TEST,"\n\r");
+;   174 
+;   175         /* test print buffers */
+;   176 
+;   177      /* test print BUF_CMD
+;   178         iRet = printf("BUF_CMD: ");
+;   179         iRet = printf("%s", BUF_CMD);
+;   180         iRet = printf("\n\r");
+;   181      */
+;   182 
+;   183      /* test BUF_TEST
+;   184         iRet = printf("BUF_TEST: ");
+;   185         iRet = printf("%s", BUF_TEST);
+;   186         iRet = printf("\n\r");
+;   187      */
+;   188 
+;   189         /* test syntax command and output message */
+;   190         flgerr = test_cmd_s(BUF_TEST, &point_err);
+;   191 
+;   192         /* if ERROR then Print message error */
+;   193          if (flgerr > 0)
+;   194          {
+;   195           if (MODE_OUT_MSG == 1)
+;   196           {
+;   197           out_err_msg(BUF_TEST, flgerr, &point_err, 866);
+;   198           }
+;   199           else
+;   200           {
+;   201           iRet = printf("%d",flgerr);
+;   202           };
+;   203          };
+;   204 
+;   205     if ( flgerr == 0)
+;   206      {
+;   207         /* test name, counter parametrs and range */
+;   208          iRet = strlen_c(BUF_TEST);
+;   209          j = 0; //counter symbols ','
+;   210          for (i=0;i<=iRet;i++)
+;   211          {
+;   212           if (BUF_TEST[i] == ',' )
+;   213           {
+;   214           j++;  // increment counter
+;   215           };
+;   216          }; // return j counter symbol ','
+;   217 
+;   218      /* test
+;   219         iRet = printf("\n\r Count',': ");
+;   220         iRet = printf("%d",j);
+;   221         iRet = printf("\n\r");
+;   222      */
+;   223 
+;   224 
+;   225         iRet = 0;       // erase point Dict_CMD
+;   226 
+;   227          do
+;   228           {
+;   229           p = strtok(BUF_TEST,"(),");
+;   230 
+;   231           /* name in dict_CMD[] and name BUF_TEST */
+;   232                 for (i=0;i<=((COUNT_CMD)-1);i++)
+;   233                 {
+;   234                         flgerr = 0; // erase flag
+;   235                         for (j=0;j<=((BUFFER_SIZE_CMD/2)-1);j++)
+;   236                         {
+;   237                                 if ( Dict_CMD[i].name[j] == 0)
+;   238                                 {
+;   239                                   if ( j == 0)
+;   240                                   {
+;   241                                   flgerr = flgerr | 1 ;
+;   242                                   };
+;   243                                   if ( BUF_TEST[j] != 0)
+;   244                                   {
+;   245                                   flgerr = flgerr | 1 ;
+;   246                                   };
+;   247                                 break;
+;   248                                 };
+;   249 
+;   250                                 if ( BUF_TEST[j] != Dict_CMD[i].name[j])
+;   251                                 {
+;   252                                 flgerr = flgerr | 1 ;
+;   253                                 };
+;   254                         };
+;   255                    if (flgerr == 0)
+;   256                    {
+;   257                    point_dict = i; // store pointer for Name Function of Dict_CMD
+;   258                    break;    // EXIT for
+;   259                    };
+;   260                 flgerr = 255;     // No name command in Dict_CMD[i]
+;   261                 };
+;   262 
+;   263           if ( flgerr == 255)
+;   264           {
+;   265                 if (MODE_OUT_MSG == 1)
+;   266                 {
+;   267                 point_err = 0;  // print '^' position
+??main_7:
+	LDI	R16,0
+	LDI	R17,0
+	LDI	R30,LOW(point_err)
+	LDI	R31,(point_err) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;   268                 out_err_msg(BUF_TEST, flgerr, &point_err, 866);
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	MOVW	R19 : R18,R25 : R24
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	out_err_msg
+??main_6:
+	LDI	R16,0
+	STS	Head_CMD,R16
+	LDI	R20,40
+	LDI	R21,0
+	LDI	R18,0
+	LDI	R19,0
+	LDI	R16,LOW(BUF_CMD)
+	LDI	R17,(BUF_CMD) >> 8
+	CALL	memset
+	LDI	R20,40
+	LDI	R21,0
+	LDI	R18,0
+	LDI	R19,0
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	memset
+	LDS	R16,MODE_OUT_MSG
+	CPI	R16,1
+	BRNE	??main_8
+	LDI	R16,62
+	LDI	R17,0
+	ST	-Y,R17
+	ST	-Y,R16
+	LDI	R16,LOW(`?<Constant "%c ">`)
+	LDI	R17,(`?<Constant "%c ">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+??main_8:
+	CALL	getchar_K
+	LDI	R30,LOW(??iByte)
+	LDI	R31,(??iByte) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	LDI	R30,LOW(??iByte)
+	LDI	R31,(??iByte) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	LDS	R18,Head_CMD
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(BUF_CMD) & 0xFFFF))
+	SBCI	R31,(-(BUF_CMD) & 0xFFFF) >> 8
+	ST	Z,R16
+	LDI	R30,LOW(Head_CMD)
+	LDI	R31,(Head_CMD) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+	LDS	R16,Head_CMD
+	CPI	R16,40
+	BRCS	??main_9
+	LDI	R30,LOW(Head_CMD)
+	LDI	R31,(Head_CMD) >> 8
+	LD	R16,Z
+	DEC	R16
+	ST	Z,R16
+??main_9:
+	LDI	R30,LOW(??iByte)
+	LDI	R31,(??iByte) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,10
+	LDI	R16,0
+	CPC	R17,R16
+	BRNE	??main_10
+	LDI	R16,LOW(`?<Constant "\\r">`)
+	LDI	R17,(`?<Constant "\\r">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+??main_10:
+	LDI	R30,LOW(??iByte)
+	LDI	R31,(??iByte) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,10
+	LDI	R16,0
+	CPC	R17,R16
+	BRNE	??main_8
+	LDI	R18,LOW(BUF_CMD)
+	LDI	R19,(BUF_CMD) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strcpy
+	MOVW	R27 : R26,R17 : R16
+	LDI	R18,LOW(`?<Constant "\\n\\r">`)
+	LDI	R19,(`?<Constant "\\n\\r">`) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strtok
+	MOVW	R27 : R26,R17 : R16
+	LDI	R18,LOW(point_err)
+	LDI	R19,(point_err) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	test_cmd_s
+	MOVW	R25 : R24,R17 : R16
+	CPI	R24,1
+	LDI	R16,0
+	CPC	R25,R16
+	BRLT	??main_11
+	LDS	R16,MODE_OUT_MSG
+	CPI	R16,1
+	BRNE	??main_12
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	MOVW	R19 : R18,R25 : R24
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	out_err_msg
+	RJMP	??main_11
+??main_12:
+	ST	-Y,R25
+	ST	-Y,R24
+	LDI	R16,LOW(`?<Constant "%d">`)
+	LDI	R17,(`?<Constant "%d">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+??main_11:
+	MOV	R16,R24
+	OR	R16,R25
+	BREQ	??main_13
+	RJMP	??main_6
+??main_13:
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strlen_c
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_14
+??main_15:
+	LD	R16,Y
+	LDD	R17,Y+1
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(BUF_TEST) & 0xFFFF))
+	SBCI	R31,(-(BUF_TEST) & 0xFFFF) >> 8
+	LD	R16,Z
+	CPI	R16,44
+	BRNE	??main_16
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+2,R16
+	STD	Y+3,R17
+??main_16:
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_14:
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	LD	R18,Y
+	LDD	R19,Y+1
+	CP	R16,R18
+	CPC	R17,R19
+	BRCC	??main_15
+	LDI	R16,0
+	LDI	R17,0
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+??main_17:
+	LDI	R18,LOW(`?<Constant "(),">`)
+	LDI	R19,(`?<Constant "(),">`) >> 8
+	LDI	R16,LOW(BUF_TEST)
+	LDI	R17,(BUF_TEST) >> 8
+	CALL	strtok
+	MOVW	R27 : R26,R17 : R16
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_18
+??main_19:
+	LDI	R24,255
+	LDI	R25,0
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_18:
+	LD	R16,Y
+	LDD	R17,Y+1
+	CPI	R16,6
+	SBCI	R17,0
+	BRCS	??main_20
+	RJMP	??main_21
+??main_20:
+	LDI	R24,0
+	LDI	R25,0
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+	RJMP	??main_22
+??main_23:
+	LDD	R18,Y+2
+	LDD	R19,Y+3
+	LD	R16,Y
+	LDD	R17,Y+1
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(BUF_TEST) & 0xFFFF))
+	SBCI	R31,(-(BUF_TEST) & 0xFFFF) >> 8
+	LD	R6,Z
+	LDI	R18,LOW(Dict_CMD)
+	MOV	R8,R18
+	LDI	R18,(Dict_CMD) >> 8
+	MOV	R9,R18
+	LDI	R20,61
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R8
+	ADC	R17,R9
+	LDD	R30,Y+2
+	LDD	R31,Y+3
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R16,Z
+	CP	R6,R16
+	BREQ	??main_24
+	ORI	R24,0x01
+	LDI	R16,1
+	LDI	R17,0
+??main_24:
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+2,R16
+	STD	Y+3,R17
+??main_22:
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	CPI	R16,20
+	SBCI	R17,0
+	BRCC	??main_25
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R18,LOW(Dict_CMD)
+	MOV	R6,R18
+	LDI	R18,(Dict_CMD) >> 8
+	MOV	R7,R18
+	LDI	R20,61
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R6
+	ADC	R17,R7
+	LDD	R30,Y+2
+	LDD	R31,Y+3
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R16,Z
+	TST	R16
+	BRNE	??main_23
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	OR	R16,R17
+	BRNE	??main_26
+	ORI	R24,0x01
+	LDI	R16,1
+	LDI	R17,0
+??main_26:
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(BUF_TEST) & 0xFFFF))
+	SBCI	R31,(-(BUF_TEST) & 0xFFFF) >> 8
+	LD	R16,Z
+	TST	R16
+	BREQ	??main_25
+	ORI	R24,0x01
+	LDI	R16,1
+	LDI	R17,0
+??main_25:
+	MOV	R16,R24
+	OR	R16,R25
+	BREQ	??main_27
+	RJMP	??main_19
+??main_27:
+	LD	R4,Y
+	LDD	R5,Y+1
+??main_21:
+	CPI	R24,255
+	LDI	R16,0
+	CPC	R25,R16
+	BRNE	??main_28
+	LDS	R16,MODE_OUT_MSG
+	CPI	R16,1
+	BRNE	??main_29
+	RJMP	??main_7
+;   269                 }
+;   270                 else
+;   271                 {
+;   272                 iRet = printf("%d", flgerr);
+??main_29:
+	ST	-Y,R25
+	ST	-Y,R24
+	LDI	R16,LOW(`?<Constant "%d">`)
+	LDI	R17,(`?<Constant "%d">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	RJMP	??main_6
+;   273                 };
+;   274                 break; // EXIT do
+;   275           };
+;   276 
+;   277           /* read parametrs from BUF_TEST */
+;   278           j = 0; // counter parametrs
+??main_28:
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+;   279 
+;   280           /* test */
+;   281           // iRet = printf("\n\r MODE_OUT_MSG= %d",MODE_OUT_MSG)
+;   282 
+;   283           for (i=0;i<=CMD_PAR_MAX-1;i++) //  erase id=0
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_30
+;   284           {
+;   285           CMD_PAR[i].id = 0;
+??main_31:
+	CLR	R6
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R20,11
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(CMD_PAR) & 0xFFFF))
+	SBCI	R31,(-(CMD_PAR) & 0xFFFF) >> 8
+	ST	Z,R6
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_30:
+	LD	R16,Y
+	LDD	R17,Y+1
+	CPI	R16,5
+	SBCI	R17,0
+	BRCS	??main_31
+;   286           };  // end for
+;   287 
+;   288        /* test
+;   289           iRet = printf("\n\r ->");
+;   290           iRet = printf("%s", p);
+;   291           iRet = printf("\n\r");
+;   292        */
+;   293           for (i=0;i<=(CMD_PAR_MAX-1);i++)  // read parameter
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_32
+;   294           {
+;   295           p = strtok(NULL,",)\n"); // Read next parametr
+;   296                 if ( p == 0)
+;   297                 {
+;   298                 break; // EXIT for
+;   299                 };
+;   300                 CMD_PAR[i].id = (char) i;              // store id parameter
+??main_33:
+	LD	R6,Y
+	LDD	R7,Y+1
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R20,11
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(CMD_PAR) & 0xFFFF))
+	SBCI	R31,(-(CMD_PAR) & 0xFFFF) >> 8
+	ST	Z,R6
+;   301                 pt = strcpy( CMD_PAR[i].par, p);       // store parametr
+	MOVW	R19 : R18,R27 : R26
+	MOVW	R27 : R26,R19 : R18
+	LDI	R16,LOW((CMD_PAR + 1))
+	MOV	R6,R16
+	LDI	R16,(CMD_PAR + 1) >> 8
+	MOV	R7,R16
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R20,11
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R6
+	ADC	R17,R7
+	MOVW	R19 : R18,R27 : R26
+	CALL	strcpy
+;   302                 j++;                                   // increment counter
+	LDD	R18,Y+2
+	LDD	R19,Y+3
+	SUBI	R18,255
+	SBCI	R19,255
+	STD	Y+2,R18
+	STD	Y+3,R19
+	LD	R18,Y
+	LDD	R19,Y+1
+	SUBI	R18,255
+	SBCI	R19,255
+	ST	Y,R18
+	STD	Y+1,R19
+??main_32:
+	LD	R16,Y
+	LDD	R17,Y+1
+	CPI	R16,5
+	SBCI	R17,0
+	BRCC	??main_34
+	LDI	R18,LOW(`?<Constant ",)\\n">`)
+	LDI	R19,(`?<Constant ",)\\n">`) >> 8
+	LDI	R16,0
+	LDI	R17,0
+	CALL	strtok
+	MOVW	R27 : R26,R17 : R16
+	MOV	R16,R26
+	OR	R16,R27
+	BRNE	??main_33
+;   303 
+;   304        /* test print
+;   305           iRet = strlen_c( p );
+;   306           iRet = printf("\n\r MODE_OUT_MSG= %d",MODE_OUT_MSG)
+;   307           iRet = printf("\n\r~ len= %d", iRet);
+;   308           iRet = printf("\n\r~ point= %d", p);
+;   309           iRet = printf(" %s", p);
+;   310           iRet = printf("~ \n\r");
+;   311           iRet = printf("j= %d ~",j);
+;   312           iRet = printf("\n\r");
+;   313        */
+;   314 
+;   315           }; // end for
+;   316 
+;   317        /* test print
+;   318           iRet = Dict_CMD[point_dict].pars - (char)j;
+;   319           iRet = printf("~ sub= %d",( Dict_CMD[point_dict].pars - (char)j ));
+;   320           iRet = printf("\n\r pars=  %d", Dict_CMD[point_dict].pars);
+;   321           iRet = printf("\n\r j= %d ",j);
+;   322           iRet = printf("~  \n\r");
+;   323        */
+;   324 
+;   325           if ( ( Dict_CMD[point_dict].pars - (char)j != 0 ) || (p != 0) )
+??main_34:
+	LDI	R16,LOW((Dict_CMD + 20))
+	MOV	R6,R16
+	LDI	R16,(Dict_CMD + 20) >> 8
+	MOV	R7,R16
+	MOVW	R17 : R16,R5 : R4
+	LDI	R20,61
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R6
+	ADC	R17,R7
+	MOVW	R31 : R30,R17 : R16
+	LPM	R18,Z
+	LDI	R19,0
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	LDI	R17,0
+	SUB	R18,R16
+	SBC	R19,R17
+	BRNE	??main_35
+	MOV	R16,R26
+	OR	R16,R27
+	BREQ	??main_36
+;   326           {
+;   327           flgerr = 254;     // Errors counter parametrs in Dict_CMD[i]
+??main_35:
+	LDI	R24,254
+	LDI	R25,0
+;   328           };
+;   329                 if ( p!= 0) // end function strtok()
+??main_36:
+	OR	R26,R27
+	BREQ	??main_37
+;   330                 {
+;   331                 do
+;   332                 {
+;   333                 p = strtok(NULL,",)\n"); // Read next parametr
+??main_38:
+	LDI	R18,LOW(`?<Constant ",)\\n">`)
+	LDI	R19,(`?<Constant ",)\\n">`) >> 8
+	LDI	R16,0
+	LDI	R17,0
+	CALL	strtok
+	MOVW	R27 : R26,R17 : R16
+;   334                 }
+;   335                 while(p);
+	OR	R26,R27
+	BRNE	??main_38
+;   336                 };
+;   337 
+;   338           if ( flgerr == 254)
+??main_37:
+	CPI	R24,254
+	LDI	R16,0
+	CPC	R25,R16
+	BRNE	??main_39
+;   339           {
+;   340                 if (MODE_OUT_MSG == 1)
+	LDS	R16,MODE_OUT_MSG
+	CPI	R16,1
+	BRNE	??main_40
+;   341                 {
+;   342                 point_err++ ;  // position print symbol '^' to On parameters
+	LDI	R30,LOW(point_err)
+	LDI	R31,(point_err) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Z,R16
+	STD	Z+1,R17
+;   343                 out_err_msg(BUF_CMD, flgerr, &point_err, 866);
+	LDI	R22,98
+	LDI	R23,3
+	LDI	R20,LOW(point_err)
+	LDI	R21,(point_err) >> 8
+	MOVW	R19 : R18,R25 : R24
+	LDI	R16,LOW(BUF_CMD)
+	LDI	R17,(BUF_CMD) >> 8
+	CALL	out_err_msg
+	RJMP	??main_6
+;   344                 }
+;   345                 else
+;   346                 {
+;   347                 iRet = printf("%d", flgerr);
+??main_40:
+	ST	-Y,R25
+	ST	-Y,R24
+	LDI	R16,LOW(`?<Constant "%d">`)
+	LDI	R17,(`?<Constant "%d">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	RJMP	??main_6
+;   348                 };
+;   349                 break; // EXIT do
+;   350           };
+;   351 
+;   352 
+;   353           if (flgerr == 0)      //
+??main_39:
+	MOV	R16,R24
+	OR	R16,R25
+	BREQ	??main_41
+	RJMP	??main_17
+;   354           {
+;   355           /* Call function from Dict_CMD */
+;   356           switch( point_dict ) // number function
+??main_41:
+	MOVW	R31 : R30,R5 : R4
+	ADIW	R31 : R30,0
+	BREQ	??main_42
+	SBIW	R31 : R30,1
+	BREQ	??main_43
+	SBIW	R31 : R30,2
+	BREQ	??main_44
+	RJMP	??main_45
+;   357           {
+;   358           case 0: // x()
+;   359                 DDRA = 0xff;  // mode output
+??main_42:
+	LDI	R16,255
+	OUT	0x1A,R16
+;   360                 PORTA = 0x00; // ON lingh
+	LDI	R16,0
+	OUT	0x1B,R16
+	RJMP	??main_45
+;   361           break;
+;   362           case 1: // y()
+;   363                 DDRA = 0xff;  // mode output
+??main_43:
+	LDI	R16,255
+	OUT	0x1A,R16
+;   364                 PORTA = 0xff; // OFF lingh
+	LDI	R16,255
+	OUT	0x1B,R16
+	RJMP	??main_45
+;   365           break;
+;   366           case 2: // z()
+;   367           break;
+;   368           case 3: // list()  - print names function
+;   369                 iRet = printf("\n\r- Dictionary functions for KEY_DISP ver 0.01 -");
+??main_44:
+	LDI	R16,LOW(`?<Constant "\\n\\r- Dictionary functi...">`)
+	LDI	R17,(`?<Constant "\\n\\r- Dictionary functi...">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;   370                 for (i=0;i<=COUNT_CMD-1;i++)
+	LDI	R16,0
+	LDI	R17,0
+	ST	Y,R16
+	STD	Y+1,R17
+	RJMP	??main_46
+;   371                 {
+;   372                         iRet = printf("\n\r\t");
+;   373                         for (j=0;j<=BUFFER_SIZE_CMD/2-1;j++)
+;   374                         {
+;   375                         if (Dict_CMD[i].name[j]==0) break; // EXIT for j
+;   376                         iRet = printf("%c", Dict_CMD[i].name[j]);
+;   377                         };
+;   378                 iRet = printf("() - ");
+;   379                         for (j=0;j<=BUFFER_SIZE_CMD/2-1;j++)
+;   380                         {
+;   381                         if (Dict_CMD[i].info_name[j]==0) break; // EXIT for j
+;   382                         iRet = printf("%c", Dict_CMD[i].info_name[j]);
+??main_47:
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R26,LOW(Dict_CMD)
+	LDI	R27,(Dict_CMD) >> 8
+	LDI	R20,61
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R26
+	ADC	R17,R27
+	SUBI	R16,235
+	SBCI	R17,255
+	LDD	R30,Y+2
+	LDD	R31,Y+3
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R16,Z
+	LDI	R17,0
+	ST	-Y,R17
+	ST	-Y,R16
+	LDI	R16,LOW(`?<Constant "%c">`)
+	LDI	R17,(`?<Constant "%c">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+2,R16
+	STD	Y+3,R17
+??main_48:
+	LDD	R26,Y+2
+	LDD	R27,Y+3
+	SBIW	R27 : R26,20
+	BRCC	??main_49
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R26,LOW(Dict_CMD)
+	LDI	R27,(Dict_CMD) >> 8
+	LDI	R20,61
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R26
+	ADC	R17,R27
+	SUBI	R16,235
+	SBCI	R17,255
+	LDD	R30,Y+2
+	LDD	R31,Y+3
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R16,Z
+	TST	R16
+	BRNE	??main_47
+??main_49:
+	LD	R16,Y
+	LDD	R17,Y+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Y,R16
+	STD	Y+1,R17
+??main_46:
+	LD	R26,Y
+	LDD	R27,Y+1
+	SBIW	R27 : R26,6
+	BRCS	??main_50
+	RJMP	??main_51
+??main_50:
+	LDI	R16,LOW(`?<Constant "\\n\\r	">`)
+	LDI	R17,(`?<Constant "\\n\\r	">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+	RJMP	??main_52
+??main_53:
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R26,LOW(Dict_CMD)
+	LDI	R27,(Dict_CMD) >> 8
+	LDI	R20,61
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R26
+	ADC	R17,R27
+	LDD	R30,Y+2
+	LDD	R31,Y+3
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R16,Z
+	LDI	R17,0
+	ST	-Y,R17
+	ST	-Y,R16
+	LDI	R16,LOW(`?<Constant "%c">`)
+	LDI	R17,(`?<Constant "%c">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+2,R16
+	STD	Y+3,R17
+??main_52:
+	LDD	R26,Y+2
+	LDD	R27,Y+3
+	SBIW	R27 : R26,20
+	BRCC	??main_54
+	LD	R16,Y
+	LDD	R17,Y+1
+	LDI	R26,LOW(Dict_CMD)
+	LDI	R27,(Dict_CMD) >> 8
+	LDI	R20,61
+	LDI	R21,0
+	CALL	?S_MUL_L02
+	ADD	R16,R26
+	ADC	R17,R27
+	LDD	R30,Y+2
+	LDD	R31,Y+3
+	ADD	R30,R16
+	ADC	R31,R17
+	LPM	R16,Z
+	TST	R16
+	BRNE	??main_53
+??main_54:
+	LDI	R16,LOW(`?<Constant "() - ">`)
+	LDI	R17,(`?<Constant "() - ">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	LDI	R16,0
+	LDI	R17,0
+	STD	Y+2,R16
+	STD	Y+3,R17
+	RJMP	??main_48
+;   383                         };
+;   384                 };
+;   385                 iRet = printf("\n\r\n\r\n\r");
+??main_51:
+	LDI	R16,LOW(`?<Constant "\\n\\r\\n\\r\\n\\r">`)
+	LDI	R17,(`?<Constant "\\n\\r\\n\\r\\n\\r">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+;   386           break;
+;   387           case 4: // view()
+;   388           break;
+;   389           case 5: // print()
+;   390           break;
+;   391           default:
+;   392           break;
+;   393           };
+;   394 
+;   395                 if (MODE_OUT_MSG == 1)
+??main_45:
+	LDS	R16,MODE_OUT_MSG
+	CPI	R16,1
+	BRNE	??main_55
+;   396                 {
+;   397                 iRet = printf("Ok!\n\r");
+	LDI	R16,LOW(`?<Constant "Ok!\\n\\r">`)
+	LDI	R17,(`?<Constant "Ok!\\n\\r">`) >> 8
+	CALL	printf
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	RJMP	??main_6
+;   398                 }
+;   399                 else
+;   400                 {
+;   401                 iRet = printf("%d", flgerr);
+??main_55:
+	ST	-Y,R25
+	ST	-Y,R24
+	LDI	R16,LOW(`?<Constant "%d">`)
+	LDI	R17,(`?<Constant "%d">`) >> 8
+	CALL	printf
+	ADIW	R29 : R28,2
+	LDI	R30,LOW(??iRet)
+	LDI	R31,(??iRet) >> 8
+	ST	Z,R16
+	STD	Z+1,R17
+	RJMP	??main_6
+;   402                 };
+;   403 
+;   404           break;        // EXIT do
+;   405           };
+;   406           }
+;   407 
+;   408           while(1); // forever
+;   409 
+;   410      };  /* End if (flgerr == 0) */
+;   411 
+;   412         // ?? output message error if flgerr > 0
+;   413         // ?? call function
+;   414 
+;   415      }
+;   416     while ( 1 );  /* forever */
+;   417   }
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near cRet;
+??cRet:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; int __near iByte;
+??iByte:
+	DS 2
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; int __near iRet;
+??iRet:
+	DS 2
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "Ok!\n\r">[6];
+`?<Constant "Ok!\\n\\r">`:
+	DS 6
+	REQUIRE `?<Initializer for <Constant "Ok!\\n\\r">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "Ok!\\n\\r">>`:
+	DB "Ok!\012\015"
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_I>`:
+	DW	SFE(NEAR_I) - SFB(NEAR_I)
+	DW	SFB(NEAR_I)
+	DW	SFB(NEAR_ID)
+	REQUIRE ?need_segment_init
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "\n\r\n\r\n\r">[7];
+`?<Constant "\\n\\r\\n\\r\\n\\r">`:
+	DS 7
+	REQUIRE `?<Initializer for <Constant "\\n\\r\\n\\r\\n\\r">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "\\n\\r\\n\\r\\n\\r">>`:
+	DB "\012\015\012\015\012\015"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "() - ">[6];
+`?<Constant "() - ">`:
+	DS 6
+	REQUIRE `?<Initializer for <Constant "() - ">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "() - ">>`:
+	DB "() - "
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "%c">[3];
+`?<Constant "%c">`:
+	DS 3
+	REQUIRE `?<Initializer for <Constant "%c">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "%c">>`:
+	DB "%c"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "\n\r	">[4];
+`?<Constant "\\n\\r	">`:
+	DS 4
+	REQUIRE `?<Initializer for <Constant "\\n\\r	">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "\\n\\r	">>`:
+	DB "\012\015	"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "\n\r- Dictionary functi...">[49];
+`?<Constant "\\n\\r- Dictionary functi...">`:
+	DS 49
+	REQUIRE `?<Initializer for <Constant "\\n\\r- Dictionary `
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "\\n\\r- Dictionary `:
+	DB "\012\015- Dictionary functions for KEY_DISP ver 0.01 -"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant ",)\n">[4];
+`?<Constant ",)\\n">`:
+	DS 4
+	REQUIRE `?<Initializer for <Constant ",)\\n">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant ",)\\n">>`:
+	DB ",)\012"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "(),">[4];
+`?<Constant "(),">`:
+	DS 4
+	REQUIRE `?<Initializer for <Constant "(),">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "(),">>`:
+	DB "(),"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "%d">[3];
+`?<Constant "%d">`:
+	DS 3
+	REQUIRE `?<Initializer for <Constant "%d">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "%d">>`:
+	DB "%d"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "\n\r">[3];
+`?<Constant "\\n\\r">`:
+	DS 3
+	REQUIRE `?<Initializer for <Constant "\\n\\r">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "\\n\\r">>`:
+	DB "\012\015"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "\r">[2];
+`?<Constant "\\r">`:
+	DS 2
+	REQUIRE `?<Initializer for <Constant "\\r">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "\\r">>`:
+	DB "\015"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "%c ">[4];
+`?<Constant "%c ">`:
+	DS 4
+	REQUIRE `?<Initializer for <Constant "%c ">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "%c ">>`:
+	DB "%c "
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "\n\r\'Ok\n\rEnd Test out_e...">[33];
+`?<Constant "\\n\\r\\'Ok\\n\\rEnd Test out_e...">`:
+	DS 33
+	REQUIRE `?<Initializer for <Constant "\\n\\r\\'Ok\\n\\rEnd T`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "\\n\\r\\'Ok\\n\\rEnd T`:
+	DB "\012\015'Ok\012\015End Test out_err_msg() \012\015"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "view(1)\n">[9];
+`?<Constant "view(1)\\n">`:
+	DS 9
+	REQUIRE `?<Initializer for <Constant "view(1)\\n">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "view(1)\\n">>`:
+	DB "view(1)\012"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "print)1,2(\n">[12];
+`?<Constant "print)1,2(\\n">`:
+	DS 12
+	REQUIRE `?<Initializer for <Constant "print)1,2(\\n">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "print)1,2(\\n">>`:
+	DB "print)1,2(\012"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "print(1,2\n">[11];
+`?<Constant "print(1,2\\n">`:
+	DS 11
+	REQUIRE `?<Initializer for <Constant "print(1,2\\n">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "print(1,2\\n">>`:
+	DB "print(1,2\012"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "print1,2\n">[10];
+`?<Constant "print1,2\\n">`:
+	DS 10
+	REQUIRE `?<Initializer for <Constant "print1,2\\n">>`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "print1,2\\n">>`:
+	DB "print1,2\012"
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+; char __near <Constant "Test ver 0.02 for Sca...">[30];
+`?<Constant "Test ver 0.02 for Sca...">`:
+	DS 30
+	REQUIRE `?<Initializer for <Constant "Test ver 0.02 for`
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "Test ver 0.02 for`:
+	DB "Test ver 0.02 for Scan_CMD \012\015"
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_Z>`:
+	DW	SFE(NEAR_Z) - SFB(NEAR_Z)
+	DW	SFB(NEAR_Z)
+	DW	0
+	REQUIRE ?need_segment_init
+
+        END
+;   418 
+;   419 #endif
+; 
+;      2 bytes in segment ABSOLUTE
+;   2152 bytes in segment CODE
+;     12 bytes in segment INITTAB
+;    366 bytes in segment NEAR_F
+;    200 bytes in segment NEAR_I
+;    200 bytes in segment NEAR_ID
+;    148 bytes in segment NEAR_Z
+; 
+;   2718 bytes of CODE memory (+ 12 bytes shared)
+;    348 bytes of DATA memory (+ 2 bytes shared)
+;
+;Errors: none
+;Warnings: 3

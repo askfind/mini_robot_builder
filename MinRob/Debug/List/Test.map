@@ -1,0 +1,1 @@
+Error[e16]: Segment TINY_I (size: 0x12b align: 0) is too long for segment definition. At least 0x8b more bytes needed. The problem occurred while processing the segment placement command "-Z(DATA)TINY_I,TINY_Z,TINY_N=_..X_SRAM_BASE-_..X_SRAM_TEND", where at the moment of placement the available memory ranges were "60-ff"

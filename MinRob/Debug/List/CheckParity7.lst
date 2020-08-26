@@ -1,0 +1,2880 @@
+                                - CheckParity7 -                      Page    1
+
+###############################################################################
+#                                                                             #
+#     IAR Systems AVR Assembler V2.26C/WIN 30/Sep/2002  01:03:58              #
+#     Copyright 2001 IAR Systems. All rights reserved.                        #
+#                                                                             #
+#           Target option =  Relative jumps do not wrap                       #
+#           Source file   =  C:\AVR_CC\UART_MOD\CheckParity7.s90              #
+#           List file     =  C:\AVR_CC\MiniRobot_CODE\Debug\List\CheckParity7.lst#
+#           Object file   =  C:\AVR_CC\MiniRobot_CODE\Debug\Obj\CheckParity7.r90#
+#           Command line  =  -v3 -OC:\AVR_CC\MiniRobot_CODE\Debug\Obj\ -s+    #
+#                            -w+ -r -IC:\AVR_CC\AVR\SRC\CLIB\INC\ -M<>        #
+#                            -LC:\AVR_CC\MiniRobot_CODE\Debug\List\ -cAOM -i  #
+#                            -B -p80 -t8 -xDI2 -u_enhancedCore                #
+#                            C:\AVR_CC\UART_MOD\CheckParity7.s90              #
+#                                                                             #
+###############################################################################
+
+      1    00000000              NAME CheckParity7
+
+      2    00000000              #include "iom161.h"
+
+      1    00000000              /*********************************************
+                                 *******************************
+
+      2    00000000               **             - iom161.h -
+
+      3    00000000               **
+
+      4    00000000               **     This file declares the internal
+                                  register addresses for ATmega161.
+
+      5    00000000               **
+
+      6    00000000               **     Used with iccAVR and aAVR.
+
+      7    00000000               **
+
+      8    00000000               **     Copyright IAR Systems 1999. All rights
+                                  reserved.
+
+      9    00000000               **
+
+     10    00000000               **     $Name: V2_26B V2_25B V2.21H V2.21G
+                                  V2_25A V2_21B $
+
+     11    00000000               **
+
+     12    00000000               *********************************************
+                                 ******************************/
+
+     13    00000000              
+
+     14    00000000              #include "iomacro.h"
+
+      1    00000000              /*********************************************
+                                 *****************
+
+      2    00000000               **             - iomacro.h -
+
+      3    00000000               **
+
+      4    00000000               **     This file defines the Special Function
+                                  Register Macros
+
+      5    00000000               **     for Atmel AT90S.
+
+      6    00000000               **
+
+      7    00000000               **     Used with iccAVR and aAVR.
+
+      8    00000000               **
+
+      9    00000000               **     Copyright IAR Systems 1999. All rights
+                                  reserved.
+
+     10    00000000               **
+
+     11    00000000               **     $Name: $
+                                - CheckParity7 -                      Page    2
+
+
+     12    00000000               **
+
+     13    00000000               *********************************************
+                                 *****************/
+
+     14    00000000              
+
+     15    00000000              #ifndef __IOMACRO_H
+
+     16    00000000              #define __IOMACRO_H
+
+     17    00000000              
+
+     18    00000000              #define TID_GUARD(proc) ((__TID__ & 0x7FF0) !=
+                                  ((90 << 8) | ((proc) << 4)))
+
+     19    00000000              
+
+     20    00000000              #if !(__IAR_SYSTEMS_ICC__ > 2) && !defined(__I
+                                 AR_SYSTEMS_ASM__)
+
+     21    00000000              #error This file should only be compiled with
+                                  iccavr or aavr.
+
+     22    00000000              #endif /* !(__IAR_SYSTEMS_ICC__ > 2) &&
+                                  !defined __IAR_SYSTEMS_ASM__ */
+
+     23    00000000              
+
+     24    00000000              /* The assembler uses a special set of
+                                  macros... */
+
+     25    00000000              #ifdef __IAR_SYSTEMS_ASM__
+
+     26    00000000              
+
+     27    00000000              /* Byte sized SFRs */
+
+     28    00000000              #define SFR_B_BITS(_NAME,_ADDR,_A,_B,_C,_D,_E,
+                                 _F,_G,_H)\
+
+     30    00000000              #define SFR_B2_BITS(_NAME1,_NAME2,_ADDR,_A,_B,
+                                 _C,_D,_E,_F,_G,_H)\
+
+     32    00000000              
+
+     33    00000000              ASMSFRB2 MACRO
+
+     34    00000000                      sfrb    \1 = \3
+
+     35    00000000                      sfrb    \2 = \3
+
+     36    00000000                      ENDM
+
+     37    00000000              
+
+     38    00000000              
+
+     39    00000000              /* Word sized SFRs, needs to be expanded into
+                                  an assembler macro first. */
+
+     40    00000000              #define SFR_W_BITS(_NAME, _ADDR, _A,_B,_C,_D,_
+                                 E,_F,_G,_H, _I,_J,_K,_L,_M,_N,_O,_P)\
+
+     42    00000000              
+
+     43    00000000              ASMSFRW MACRO
+
+     44    00000000                      sfrw    \1  = \2
+
+     45    00000000                      sfrb    \1L = (\2+0)
+
+     46    00000000                      sfrb    \1H = (\2+1)
+
+     47    00000000                      ENDM
+
+     48    00000000              
+                                - CheckParity7 -                      Page    3
+
+
+     49    00000000              #endif /* __IAR_SYSTEMS_ASM__ */
+
+     50    00000000              
+
+     51    00000000              #ifdef __ICCAVR__
+
+     61    00000000                            _NAME ## _ ## _H:1;
+
+     69    00000000                  } @ _ADDR;
+
+     80    00000000                  } @ _ADDR;
+
+     87    00000000                  } @ _ADDR;
+
+    104    00000000                  } @ _ADDR;
+
+    106    00000000              #endif /* __ICCAVR__ */
+
+    107    00000000              
+
+    108    00000000              #define SFR_B(_NAME, _ADDR) SFR_B_BITS(_NAME,
+                                  _ADDR, \
+
+    110    00000000              #define SFR_B2(_NAME1, _NAME2, _ADDR)
+                                  SFR_B2_BITS(_NAME1, _NAME2, _ADDR, \
+
+    112    00000000              #define SFR_B_EXT(_NAME, _ADDR) SFR_B_BITS_EXT
+                                 (_NAME, _ADDR, \
+
+    114    00000000              
+
+    115    00000000              #define SFR_W(_NAME, _ADDR)  SFR_W_BITS(_NAME,
+                                  _ADDR, \
+
+    118    00000000              
+
+    119    00000000              #endif /* __IOMACRO_H */
+
+     15    00000000              
+
+     16    00000000              #if TID_GUARD(3)
+
+     17    00000000              #error This file should only be compiled with
+                                  iccavr or aavr whith processor option
+                                  -v3
+
+     18    00000000              #endif /* TID_GUARD(3) */
+
+     19    00000000              
+
+     20    00000000              /* Include the SFR part if this file has not
+                                  been included before,
+
+     21    00000000               * OR this file is included by the assembler
+                                  (SFRs must be defined in
+
+     22    00000000               * each assembler module). */
+
+     23    00000000              #if !defined(__IOM161_H) || defined(__IAR_SYST
+                                 EMS_ASM__)
+
+     24    00000000              
+
+     25    00000000              #pragma language=extended
+
+     26    00000000              
+
+     27    00000000              /*==========================*/
+
+     28    00000000              /* Predefined SFR Addresses */
+
+     29    00000000              /*==========================*/
+
+     30    00000000              
+
+     31    00000000              SFR_B(UBRR1,  0x00) /* UART1 Baud Rate
+                                  Register */
+                                - CheckParity7 -                      Page    4
+
+
+     32    00000000              SFR_B(UCSR1B, 0x01) /* UART1 Control and
+                                  Status Register */
+
+     33    00000000              SFR_B(UCSR1A, 0x02) /* UART1 Control and
+                                  Status Register */
+
+     34    00000000              SFR_B(UDR1,   0x03) /* UART1 I/O Data Register
+                                  */
+
+     35    00000000              SFR_B(PINE,   0x05) /* Input Pins, Port E
+                                  */
+
+     36    00000000              SFR_B(DDRE,   0x06) /* Data Direction
+                                  Register, Port E */
+
+     37    00000000              SFR_B(PORTE,  0x07) /* Data Register, Port E
+                                  */
+
+     38    00000000              SFR_B(ACSR,   0x08) /* Analog Comparator
+                                  Control and Status Register */
+
+     39    00000000              SFR_B(UBRR0,  0x09) /* UART0 Baud Rate
+                                  Register */
+
+     40    00000000              SFR_B(UCSR0B, 0x0A) /* UART0 Control and
+                                  Status Register */
+
+     41    00000000              SFR_B(UCSR0A, 0x0B) /* UART0 Control and
+                                  Status Register */
+
+     42    00000000              SFR_B(UDR0,   0x0C) /* UART0 I/O Data Register
+                                  */
+
+     43    00000000              SFR_B(SPCR,   0x0D) /* SPI Control Register
+                                  */
+
+     44    00000000              SFR_B(SPSR,   0x0E) /* SPI Status Register
+                                  */
+
+     45    00000000              SFR_B(SPDR,   0x0F) /* SPI I/O Data Register
+                                  */
+
+     46    00000000              SFR_B(PIND,   0x10) /* Input Pins, Port D
+                                  */
+
+     47    00000000              SFR_B(DDRD,   0x11) /* Data Direction
+                                  Register, Port D */
+
+     48    00000000              SFR_B(PORTD,  0x12) /* Data Register, Port D
+                                  */
+
+     49    00000000              SFR_B(PINC,   0x13) /* Input Pins, Port C
+                                  */
+
+     50    00000000              SFR_B(DDRC,   0x14) /* Data Direction
+                                  Register, Port C */
+
+     51    00000000              SFR_B(PORTC,  0x15) /* Data Register, Port C
+                                  */
+
+     52    00000000              SFR_B(PINB,   0x16) /* Input Pins, Port B
+                                  */
+
+     53    00000000              SFR_B(DDRB,   0x17) /* Data Direction
+                                  Register, Port B */
+
+     54    00000000              SFR_B(PORTB,  0x18) /* Data Register, Port B
+                                  */
+
+     55    00000000              SFR_B(PINA,   0x19) /* Input Pins, Port A
+                                  */
+
+     56    00000000              SFR_B(DDRA,   0x1A) /* Data Direction
+                                  Register, Port A */
+
+     57    00000000              SFR_B(PORTA,  0x1B) /* Data Register, Port A
+                                  */
+                                - CheckParity7 -                      Page    5
+
+
+     58    00000000              SFR_B(EECR,   0x1C) /* EEPROM Control Register
+                                  */
+
+     59    00000000              SFR_B(EEDR,   0x1D) /* EEPROM Data Register
+                                  */
+
+     60    00000000              SFR_W(EEAR,   0x1E) /* EEPROM Address Register
+                                  */
+
+     60.1  00000000                      sfrw    EEAR  = 0x1E
+
+     60.2  00000000                      sfrb    EEARL = (0x1E+0)
+
+     60.3  00000000                      sfrb    EEARH = (0x1E+1)
+
+     60.4  00000000                      ENDM
+
+     61    00000000              SFR_B(UBRRHI, 0x20) /* UART Baud Register HIgh
+                                  */
+
+     62    00000000              SFR_B(WDTCR,  0x21) /* Watchdog Timer Control
+                                  Register */
+
+     63    00000000              SFR_B(OCR2,   0x22) /* Timer/Counter2 Output
+                                  Compare Register */
+
+     64    00000000              SFR_B(TCNT2,  0x23) /* Timer/Counter2 (8-bit)
+                                  */
+
+     65    00000000              SFR_W(ICR1,   0x24) /* Timer/Counter1 Input
+                                  Capture Register */
+
+     65.1  00000000                      sfrw    ICR1  = 0x24
+
+     65.2  00000000                      sfrb    ICR1L = (0x24+0)
+
+     65.3  00000000                      sfrb    ICR1H = (0x24+1)
+
+     65.4  00000000                      ENDM
+
+     66    00000000              SFR_B(ASSR,   0x26) /* Asynchronous mode
+                                  StatuS Register */
+
+     67    00000000              SFR_B(TCCR2,  0x27) /* Timer/Counter2 Control
+                                  Register */
+
+     68    00000000              SFR_W(OCR1B,  0x28) /* Timer/Counter1 Output
+                                  Compare Register B */
+
+     68.1  00000000                      sfrw    OCR1B  = 0x28
+
+     68.2  00000000                      sfrb    OCR1BL = (0x28+0)
+
+     68.3  00000000                      sfrb    OCR1BH = (0x28+1)
+
+     68.4  00000000                      ENDM
+
+     69    00000000              SFR_W(OCR1A,  0x2A) /* Timer/Counter1 Output
+                                  Compare Register A */
+
+     69.1  00000000                      sfrw    OCR1A  = 0x2A
+
+     69.2  00000000                      sfrb    OCR1AL = (0x2A+0)
+
+     69.3  00000000                      sfrb    OCR1AH = (0x2A+1)
+
+     69.4  00000000                      ENDM
+
+     70    00000000              SFR_W(TCNT1,  0x2C) /* Timer/Counter1
+                                  */
+
+     70.1  00000000                      sfrw    TCNT1  = 0x2C
+
+     70.2  00000000                      sfrb    TCNT1L = (0x2C+0)
+
+     70.3  00000000                      sfrb    TCNT1H = (0x2C+1)
+
+                                - CheckParity7 -                      Page    6
+
+     70.4  00000000                      ENDM
+
+     71    00000000              SFR_B(TCCR1B, 0x2E) /* Timer/Counter1 Control
+                                  Register B */
+
+     72    00000000              SFR_B(TCCR1A, 0x2F) /* Timer/Counter1 Control
+                                  Register A */
+
+     73    00000000              SFR_B(SFIOR,  0x30) /* Special Function IO
+                                  Register */
+
+     74    00000000              SFR_B(OCR0,   0x31) /* Timer/Counter0 Output
+                                  Compare Register */
+
+     75    00000000              SFR_B(TCNT0,  0x32) /* Timer/Counter0 (8-bit)
+                                  */
+
+     76    00000000              SFR_B(TCCR0,  0x33) /* Timer/Counter0 Control
+                                  Register */
+
+     77    00000000              SFR_B(MCUSR,  0x34) /* MCU general Status
+                                  Register */
+
+     78    00000000              SFR_B(MCUCR,  0x35) /* MCU general Control
+                                  Register */
+
+     79    00000000              SFR_B(EMCUCR, 0x36) /* Extended MCU general
+                                  Control Register */
+
+     80    00000000              SFR_B(SPMCR,  0x37) /* Store Program Memory
+                                  Control Register */
+
+     81    00000000              SFR_B(TIFR,   0x38) /* Timer/Counter Interrupt
+                                  Flag Register */
+
+     82    00000000              SFR_B(TIMSK,  0x39) /* Timer/Counter Interrupt
+                                  MaSK Register */
+
+     83    00000000              SFR_B(GIFR,   0x3A) /* General Interrupt Flag
+                                  Register */
+
+     84    00000000              SFR_B(GIMSK,  0x3B) /* General Interrupt MaSK
+                                  register */
+
+     85    00000000              SFR_W(SP,     0x3D) /* Stack Pointer
+                                  */
+
+     85.1  00000000                      sfrw    SP  = 0x3D
+
+     85.2  00000000                      sfrb    SPL = (0x3D+0)
+
+     85.3  00000000                      sfrb    SPH = (0x3D+1)
+
+     85.4  00000000                      ENDM
+
+     86    00000000              SFR_B(SREG,   0x3F) /* Status REGister
+                                  */
+
+     87    00000000              
+
+     88    00000000              #ifndef __IOM161_H
+
+     89    00000000              #define __IOM161_H
+
+     90    00000000              
+
+     91    00000000              /* SFRs are local in assembler modules (so
+                                  this file may need to be */
+
+     92    00000000              /* included in more than one module in the
+                                  same source file), */
+
+     93    00000000              /* but #defines must only be made once per
+                                  source file. */
+
+     94    00000000              
+
+     95    00000000              /*==============================*/
+                                - CheckParity7 -                      Page    7
+
+
+     96    00000000              /* Interrupt Vector Definitions */
+
+     97    00000000              /*==============================*/
+
+     98    00000000              
+
+     99    00000000              /* NB! vectors are specified as byte addresses
+                                  */
+
+    100    00000000              
+
+    101    00000000              #define RESET_vect        (0x00)
+
+    102    00000000              #define INT0_vect         (0x04)
+
+    103    00000000              #define INT1_vect         (0x08)
+
+    104    00000000              #define INT2_vect         (0x0C)
+
+    105    00000000              #define TIMER2_COMP_vect  (0x10)
+
+    106    00000000              #define TIMER2_OVF_vect   (0x14)
+
+    107    00000000              #define TIMER1_CAPT_vect  (0x18)
+
+    108    00000000              #define TIMER1_COMPA_vect (0x1C)
+
+    109    00000000              #define TIMER1_COMPB_vect (0x20)
+
+    110    00000000              #define TIMER1_OVF_vect   (0x24)
+
+    111    00000000              #define TIMER0_COMP_vect  (0x28)
+
+    112    00000000              #define TIMER0_OVF_vect   (0x2C)
+
+    113    00000000              #define SPI_STC_vect      (0x30)
+
+    114    00000000              #define UART0_RX_vect     (0x34)
+
+    115    00000000              #define UART1_RX_vect     (0x38)
+
+    116    00000000              #define UART0_UDRE_vect   (0x3C)
+
+    117    00000000              #define UART1_UDRE_vect   (0x40)
+
+    118    00000000              #define UART0_TX_vect     (0x44)
+
+    119    00000000              #define UART1_TX_vect     (0x48)
+
+    120    00000000              #define EE_RDY_vect       (0x4C)
+
+    121    00000000              #define ANA_COMP_vect     (0x50)
+
+    122    00000000              
+
+    123    00000000              #ifdef __IAR_SYSTEMS_ASM__   
+
+    124    00000000              #ifndef ENABLE_BIT_DEFINITIONS
+
+    125    00000000              #define  ENABLE_BIT_DEFINITIONS
+
+    126    00000000              #endif /* ENABLE_BIT_DEFINITIONS */
+
+    127    00000000              #endif /* __IAR_SYSTEMS_ASM__ */
+
+    128    00000000              
+
+    129    00000000              #ifdef ENABLE_BIT_DEFINITIONS
+
+    130    00000000              
+
+    131    00000000              
+
+    132    00000000              /* Bit definitions for use with the IAR
+                                  Assembler   
+
+    133    00000000                 The Register Bit names are represented by
+                                - CheckParity7 -                      Page    8
+
+                                  their bit number (0-7).
+
+    134    00000000              */                                            
+                                     
+
+    135    00000000              
+
+    136    00000000              /* MCU Status Register */ 
+
+    137    00000000              #define WDRF      3
+
+    138    00000000              #define BORF      2
+
+    139    00000000              #define EXTRF     1
+
+    140    00000000              #define PORF      0
+
+    141    00000000              
+
+    142    00000000              /* General Interrupt MaSK register */
+
+    143    00000000              #define INT1      7
+
+    144    00000000              #define INT0      6
+
+    145    00000000              #define INT2      5
+
+    146    00000000              
+
+    147    00000000              /* General Interrupt Flag Register */
+
+    148    00000000              #define INTF1     7
+
+    149    00000000              #define INTF0     6
+
+    150    00000000              #define INTF2     5
+
+    151    00000000              
+
+    152    00000000              /* Timer/Counter Interrupt MaSK register */
+                                  
+
+    153    00000000              #define TOIE1     7
+
+    154    00000000              #define OCIE1A    6
+
+    155    00000000              #define OCIE1B    5
+
+    156    00000000              #define TOIE2     4
+
+    157    00000000              #define TICIE1    3
+
+    158    00000000              #define OCIE2     2
+
+    159    00000000              #define TOIE0     1
+
+    160    00000000              #define OCIE0     0
+
+    161    00000000               
+
+    162    00000000              /* Timer/Counter Interrupt Flag Register
+                                  */
+
+    163    00000000              #define TOV1        7
+
+    164    00000000              #define OCF1A       6
+
+    165    00000000              #define OCF1B       5
+
+    166    00000000              #define TOV2        4
+
+    167    00000000              #define ICF1        3
+
+    168    00000000              #define OCF2        2
+
+    169    00000000              #define TOV0        1      
+
+    170    00000000              #define OCF0        0
+                                - CheckParity7 -                      Page    9
+
+
+    171    00000000               
+
+    172    00000000              /* MCU general Control Register */
+
+    173    00000000              #define SRE         7
+
+    174    00000000              #define SRW10       6
+
+    175    00000000              #define SE          5
+
+    176    00000000              #define SM1         4
+
+    177    00000000              #define ISC11       3
+
+    178    00000000              #define ISC10       2
+
+    179    00000000              #define ISC01       1
+
+    180    00000000              #define ISC00       0
+
+    181    00000000              
+
+    182    00000000              /* Extended MCU general Control Register
+                                  */
+
+    183    00000000              #define SM0         7
+
+    184    00000000              #define SRL2        6
+
+    185    00000000              #define SRL1        5
+
+    186    00000000              #define SRL0        4
+
+    187    00000000              #define SRW01       3
+
+    188    00000000              #define SRW00       2
+
+    189    00000000              #define SRW11       1
+
+    190    00000000              #define ISC2        0
+
+    191    00000000              
+
+    192    00000000              /* Special Function IO Register */
+
+    193    00000000              #define PSR2        1
+
+    194    00000000              #define PSR10       0
+
+    195    00000000              
+
+    196    00000000              /* Timer/Counter0 Control Register */
+
+    197    00000000              #define FOC0        7
+
+    198    00000000              #define PWM0        6
+
+    199    00000000              #define COM01       5
+
+    200    00000000              #define COM00       4
+
+    201    00000000              #define CTC0        3
+
+    202    00000000              #define CS02        2
+
+    203    00000000              #define CS01        1
+
+    204    00000000              #define CS00        0
+
+    205    00000000              
+
+    206    00000000              /* Timer/Counter2 Control Register */
+
+    207    00000000              #define FOC2        7
+
+    208    00000000              #define PWM2        6
+
+                                - CheckParity7 -                      Page   10
+
+    209    00000000              #define COM21       5
+
+    210    00000000              #define COM20       4
+
+    211    00000000              #define CTC2        3
+
+    212    00000000              #define CS22        2
+
+    213    00000000              #define CS21        1
+
+    214    00000000              #define CS20        0
+
+    215    00000000              
+
+    216    00000000              /* Asyncronous Status Register */
+
+    217    00000000              #define AS2         3
+
+    218    00000000              #define TCN2UB      2
+
+    219    00000000              #define OCR2UB      1
+
+    220    00000000              #define TCR2UB      0
+
+    221    00000000              
+
+    222    00000000              /* Timer/Counter 0 Control Register A */
+                                  
+
+    223    00000000              #define COM1A1      7
+
+    224    00000000              #define COM1A0      6
+
+    225    00000000              #define COM1B1      5
+
+    226    00000000              #define COM1B0      4
+
+    227    00000000              #define FOC1A       3
+
+    228    00000000              #define FOC1B       2
+
+    229    00000000              #define PWM11       1
+
+    230    00000000              #define PWM10       0
+
+    231    00000000              
+
+    232    00000000              /* Timer/Counter 0 Control Register B */
+                                  
+
+    233    00000000              #define ICNC1       7
+
+    234    00000000              #define ICES1       6
+
+    235    00000000              #define CTC1        3
+
+    236    00000000              #define CS12        2
+
+    237    00000000              #define CS11        1
+
+    238    00000000              #define CS10        0
+
+    239    00000000              
+
+    240    00000000              /* Watchdog Timer Control Register */
+                                  
+
+    241    00000000              #define WDTOE       4
+
+    242    00000000              #define WDE         3
+
+    243    00000000              #define WDP2        2
+
+    244    00000000              #define WDP1        1
+
+    245    00000000              #define WDP0        0
+
+    246    00000000                
+                                - CheckParity7 -                      Page   11
+
+
+    247    00000000              /* EEPROM Control Register */
+
+    248    00000000              #define EERIE       3
+
+    249    00000000              #define EEMWE       2
+
+    250    00000000              #define EEWE        1
+
+    251    00000000              #define EERE        0
+
+    252    00000000              
+
+    253    00000000              /* SPI Control Register */
+
+    254    00000000              #define SPIE        7
+
+    255    00000000              #define SPE         6
+
+    256    00000000              #define DORD        5
+
+    257    00000000              #define MSTR        4
+
+    258    00000000              #define CPOL        3
+
+    259    00000000              #define CPHA        2
+
+    260    00000000              #define SPR1        1
+
+    261    00000000              #define SPR0        0
+
+    262    00000000              
+
+    263    00000000              /* SPI Status Register */
+
+    264    00000000              #define SPIF        7
+
+    265    00000000              #define WCOL        6
+
+    266    00000000              #define SPI2X       0
+
+    267    00000000              
+
+    268    00000000              /* UART0 Control and Status Register A
+                                  */
+
+    269    00000000              #define RXC0        7
+
+    270    00000000              #define TXC0        6
+
+    271    00000000              #define UDRE0       5
+
+    272    00000000              #define FE0         4
+
+    273    00000000              #define OVR0        3
+
+    274    00000000              #define U2X0        1
+
+    275    00000000              #define MPCM0       0
+
+    276    00000000              
+
+    277    00000000              /* UART0 Control and Status Register B
+                                  */
+
+    278    00000000              #define RXCIE0      7
+
+    279    00000000              #define TXCIE0      6
+
+    280    00000000              #define UDRIE0      5
+
+    281    00000000              #define RXEN0       4
+
+    282    00000000              #define TXEN0       3
+
+    283    00000000              #define CHR90       2
+
+    284    00000000              #define RXB80       1
+                                - CheckParity7 -                      Page   12
+
+
+    285    00000000              #define TXB80       0
+
+    286    00000000              
+
+    287    00000000              /* UART1 Control and Status Register A
+                                  */
+
+    288    00000000              #define RXC1        7
+
+    289    00000000              #define TXC1        6
+
+    290    00000000              #define UDRE1       5
+
+    291    00000000              #define FE1         4
+
+    292    00000000              #define OVR1        3
+
+    293    00000000              #define U2X1        1
+
+    294    00000000              #define MPCM1       0
+
+    295    00000000              
+
+    296    00000000              /* UART1 Control and Status Register B
+                                  */
+
+    297    00000000              #define RXCIE1      7
+
+    298    00000000              #define TXCIE1      6
+
+    299    00000000              #define UDRIE1      5
+
+    300    00000000              #define RXEN1       4
+
+    301    00000000              #define TXEN1       3
+
+    302    00000000              #define CHR91       2
+
+    303    00000000              #define RXB81       1
+
+    304    00000000              #define TXB81       0
+
+    305    00000000              
+
+    306    00000000              /* Analog Comparator Control And Status
+                                  Register */
+
+    307    00000000              #define ACD         7
+
+    308    00000000              #define AINBG       6
+
+    309    00000000              #define ACO         5
+
+    310    00000000              #define ACI         4
+
+    311    00000000              #define ACIE        3
+
+    312    00000000              #define ACIC        2
+
+    313    00000000              #define ACIS1       1
+
+    314    00000000              #define ACIS0       0
+
+    315    00000000              
+
+    316    00000000              /* SPM Control Register */
+
+    317    00000000              #define BLBSET      3
+
+    318    00000000              #define PGWRT       2
+
+    319    00000000              #define PGERS       1
+
+    320    00000000              #define SPMEN       0
+
+    321    00000000              
+
+                                - CheckParity7 -                      Page   13
+
+    322    00000000              /* Data Register, Port A */
+
+    323    00000000              #define    PA7          7
+
+    324    00000000              #define    PA6          6
+
+    325    00000000              #define    PA5          5
+
+    326    00000000              #define    PA4          4
+
+    327    00000000              #define    PA3          3
+
+    328    00000000              #define    PA2          2
+
+    329    00000000              #define    PA1          1
+
+    330    00000000              #define    PA0          0
+
+    331    00000000               
+
+    332    00000000              /* Data Direction Register, Port A */
+                                  
+
+    333    00000000              #define    DDA7         7
+
+    334    00000000              #define    DDA6         6
+
+    335    00000000              #define    DDA5         5
+
+    336    00000000              #define    DDA4         4
+
+    337    00000000              #define    DDA3         3
+
+    338    00000000              #define    DDA2         2
+
+    339    00000000              #define    DDA1         1
+
+    340    00000000              #define    DDA0         0
+
+    341    00000000                 
+
+    342    00000000              /* Input Pins, Port A */ 
+
+    343    00000000              #define    PINA7        7
+
+    344    00000000              #define    PINA6        6
+
+    345    00000000              #define    PINA5        5
+
+    346    00000000              #define    PINA4        4
+
+    347    00000000              #define    PINA3        3
+
+    348    00000000              #define    PINA2        2
+
+    349    00000000              #define    PINA1        1
+
+    350    00000000              #define    PINA0        0
+
+    351    00000000               
+
+    352    00000000              /* Data Register, Port B */ 
+
+    353    00000000              #define    PB7          7
+
+    354    00000000              #define    PB6          6
+
+    355    00000000              #define    PB5          5
+
+    356    00000000              #define    PB4          4
+
+    357    00000000              #define    PB3          3
+
+    358    00000000              #define    PB2          2
+
+    359    00000000              #define    PB1          1
+
+    360    00000000              #define    PB0          0
+                                - CheckParity7 -                      Page   14
+
+
+    361    00000000               
+
+    362    00000000              /* Data Direction Register, Port B */
+
+    363    00000000              #define    DDB7         7
+
+    364    00000000              #define    DDB6         6
+
+    365    00000000              #define    DDB5         5
+
+    366    00000000              #define    DDB4         4
+
+    367    00000000              #define    DDB3         3
+
+    368    00000000              #define    DDB2         2
+
+    369    00000000              #define    DDB1         1
+
+    370    00000000              #define    DDB0         0
+
+    371    00000000                                    
+
+    372    00000000              /* Input Pins, Port B */
+
+    373    00000000              #define    PINB7        7
+
+    374    00000000              #define    PINB6        6
+
+    375    00000000              #define    PINB5        5
+
+    376    00000000              #define    PINB4        4
+
+    377    00000000              #define    PINB3        3
+
+    378    00000000              #define    PINB2        2
+
+    379    00000000              #define    PINB1        1
+
+    380    00000000              #define    PINB0        0
+
+    381    00000000               
+
+    382    00000000              /* Data Register, Port C */
+
+    383    00000000              #define    PC7          7
+
+    384    00000000              #define    PC6          6
+
+    385    00000000              #define    PC5          5
+
+    386    00000000              #define    PC4          4
+
+    387    00000000              #define    PC3          3
+
+    388    00000000              #define    PC2          2
+
+    389    00000000              #define    PC1          1
+
+    390    00000000              #define    PC0          0
+
+    391    00000000               
+
+    392    00000000              /* Data Register, Port D */
+
+    393    00000000              #define    PD7          7
+
+    394    00000000              #define    PD6          6
+
+    395    00000000              #define    PD5          5
+
+    396    00000000              #define    PD4          4
+
+    397    00000000              #define    PD3          3
+
+    398    00000000              #define    PD2          2
+
+    399    00000000              #define    PD1          1
+                                - CheckParity7 -                      Page   15
+
+
+    400    00000000              #define    PD0          0
+
+    401    00000000                                                       
+                                  
+
+    402    00000000              /* Data Direction Register, Port D */
+
+    403    00000000              #define    DDD7         7
+
+    404    00000000              #define    DDD6         6
+
+    405    00000000              #define    DDD5         5
+
+    406    00000000              #define    DDD4         4
+
+    407    00000000              #define    DDD3         3
+
+    408    00000000              #define    DDD2         2
+
+    409    00000000              #define    DDD1         1
+
+    410    00000000              #define    DDD0         0
+
+    411    00000000               
+
+    412    00000000              /* Input Pins, Port D */
+
+    413    00000000              #define    PIND7        7
+
+    414    00000000              #define    PIND6        6
+
+    415    00000000              #define    PIND5        5
+
+    416    00000000              #define    PIND4        4
+
+    417    00000000              #define    PIND3        3
+
+    418    00000000              #define    PIND2        2
+
+    419    00000000              #define    PIND1        1
+
+    420    00000000              #define    PIND0        0
+
+    421    00000000               
+
+    422    00000000              /* Data Register, Port E */
+
+    423    00000000              #define    PE2          2
+
+    424    00000000              #define    PE1          1
+
+    425    00000000              #define    PE0          0
+
+    426    00000000               
+
+    427    00000000              /* Data Direction Register, Port E */
+
+    428    00000000              #define    DDE2         2
+
+    429    00000000              #define    DDE1         1
+
+    430    00000000              #define    DDE0         0
+
+    431    00000000               
+
+    432    00000000              /* Input Pins, Port E */
+
+    433    00000000              #define    PINE2        2
+
+    434    00000000              #define    PINE1        1
+
+    435    00000000              #define    PINE0        0
+
+    436    00000000               
+
+    437    00000000              /* Pointer definition */
+
+                                - CheckParity7 -                      Page   16
+
+    438    00000000              #define    XL       r26
+
+    439    00000000              #define    XH       r27
+
+    440    00000000              #define    YL       r28
+
+    441    00000000              #define    YH       r29
+
+    442    00000000              #define    ZL       r30
+
+    443    00000000              #define    ZH       r31
+
+    444    00000000              
+
+    445    00000000              /* Constants */
+
+    446    00000000              #define    RAMEND   0x045F    /* Last On-Chip
+                                  SRAM Location */
+
+    447    00000000              #define    XRAMEND  0xFFFF
+
+    448    00000000              #define    E2END    0x01FF
+
+    449    00000000              #define    FLASHEND 0x3FFF
+
+    450    00000000               
+
+    451    00000000              #endif /* ENABLE_BIT_DEFINITIONS */
+
+    452    00000000              #endif /* __IOM161_H (define part) */
+
+    453    00000000              
+
+    454    00000000              #pragma language=default
+
+    455    00000000              
+
+    456    00000000              #endif /* __IOM161_H (SFR part) */
+
+      3    00000000              PUBLIC CheckParity7 ; Declare symbols to be
+                                                      exported to C function
+
+      4    00000000              
+
+      5    00000000                RSEG CODE         ; This code is relocatable
+                                 , RSEG
+
+      6    00000000              
+
+      7    00000000              CheckParity7:        ; Label, start execution
+                                  here
+
+      8    00000000 2711           clr R17           ; Zero flag SREG C=0
+                                                      
+
+      9    00000002 2722           clr R18           ; Zero R18 is test parity 
+                                                               
+
+     10    00000004 E017           LDI R17,7         ; count 7  
+
+     11    00000006              loop1_7:
+
+     12    00000006 9507           ROR R16           ; rotate b0 -> C
+
+     13    00000008 F408           brcc loop2_7      ; if (C=0) then goto
+                                                      loop2
+
+     14    0000000A 9520           com R18           ; change is neg
+
+     15    0000000C              loop2_7:
+
+     16    0000000C 951A           dec R17           ;
+
+     17    0000000E 2311           tst R17
+
+     18    00000010 F7D1           brne loop1_7      ; if (Z=0) then loop1
+
+     19    00000012 2F02           mov R16,R18       ; rerutn calculate if
+                                - CheckParity7 -                      Page   17
+
+                                                      (R18=0) then parity
+
+     20    00000014                                  ;                  else no
+                                  parity    
+
+     21    00000014 9508           ret               ; Return to the main
+                                                      function
+
+     22    00000016                END
+
+
+
+
+
+EOF                  DELIMITER 
+
+\n                   DELIMITER 
+
+                     DELIMITER 
+
+!                    OPERATOR 
+
+!=                   OPERATOR 
+
+%                    OPERATOR 
+
+&                    OPERATOR 
+
+&&                   OPERATOR 
+
+(                    OPERATOR 
+
+(                    DELIMITER 
+
+)                    OPERATOR 
+
+)                    DELIMITER 
+
+*                    OPERATOR 
+
++                    OPERATOR 
+
+,                    DELIMITER 
+
+-                    OPERATOR 
+
+.                    Target symbol: 24 
+
+.                    DELIMITER 
+
+/                    OPERATOR 
+
+:                    DELIMITER 
+
+;                    DELIMITER 
+
+;                    Target symbol: 23 
+
+<                    OPERATOR 
+
+<<                   OPERATOR 
+
+<=                   OPERATOR 
+
+<>                   OPERATOR 
+
+<>                   DELIMITER 
+
+=                    OPERATOR 
+
+=                    DELIMITER 
+
+=                    DIRECTIVE 
+
+==                   OPERATOR 
+
+>                    OPERATOR 
+
+                                - CheckParity7 -                      Page   18
+
+>=                   OPERATOR 
+
+>>                   OPERATOR 
+
+ACD                  #define, value: 7, line:     307:1  
+
+ACI                  #define, value: 4, line:     310:1  
+
+ACIC                 #define, value: 2, line:     312:1  
+
+ACIE                 #define, value: 3, line:     311:1  
+
+ACIS0                #define, value: 0, line:     314:1  
+
+ACIS1                #define, value: 1, line:     313:1  
+
+ACO                  #define, value: 5, line:     309:1  
+
+ADC                  MNEMONIC 
+
+ADD                  MNEMONIC 
+
+ADIW                 MNEMONIC 
+
+AINBG                #define, value: 6, line:     308:1  
+
+ALIAS                DIRECTIVE 
+
+ALIGN                DIRECTIVE 
+
+ANA_COMP_vect        #define, value: (0x50), line:     121:1  
+
+AND                  OPERATOR 
+
+AND                  MNEMONIC 
+
+ANDI                 MNEMONIC 
+
+ARGFRAME             DIRECTIVE 
+
+AS2                  #define, value: 3, line:     217:1  
+
+ASEG                 DIRECTIVE 
+
+ASMSFRB2             MACRO 
+
+ASMSFRW              MACRO 
+
+ASR                  MNEMONIC 
+
+ASSIGN               DIRECTIVE 
+
+BCLR                 MNEMONIC 
+
+BIT                  SEGMENT TYPE 
+
+BITAND               OPERATOR 
+
+BITNOT               OPERATOR 
+
+BITOR                OPERATOR 
+
+BITXOR               OPERATOR 
+
+BLBSET               #define, value: 3, line:     317:1  
+
+BLD                  MNEMONIC 
+
+BLOCK                DIRECTIVE 
+
+BORF                 #define, value: 2, line:     138:1  
+
+BRBC                 MNEMONIC 
+
+BRBS                 MNEMONIC 
+
+BRCC                 MNEMONIC 
+
+                                - CheckParity7 -                      Page   19
+
+BRCS                 MNEMONIC 
+
+BREQ                 MNEMONIC 
+
+BRGE                 MNEMONIC 
+
+BRHC                 MNEMONIC 
+
+BRHS                 MNEMONIC 
+
+BRID                 MNEMONIC 
+
+BRIE                 MNEMONIC 
+
+BRLO                 MNEMONIC 
+
+BRLT                 MNEMONIC 
+
+BRMI                 MNEMONIC 
+
+BRNE                 MNEMONIC 
+
+BRPL                 MNEMONIC 
+
+BRSH                 MNEMONIC 
+
+BRTC                 MNEMONIC 
+
+BRTS                 MNEMONIC 
+
+BRVC                 MNEMONIC 
+
+BRVS                 MNEMONIC 
+
+BSET                 MNEMONIC 
+
+BST                  MNEMONIC 
+
+BYTE                 Target symbol: 524288 
+
+BYTE2                OPERATOR 
+
+BYTE3                OPERATOR 
+
+CALL                 MNEMONIC 
+
+CASEOFF              DIRECTIVE 
+
+CASEON               DIRECTIVE 
+
+CBI                  MNEMONIC 
+
+CBR                  MNEMONIC 
+
+CHR90                #define, value: 2, line:     283:1  
+
+CHR91                #define, value: 2, line:     302:1  
+
+CLC                  MNEMONIC 
+
+CLH                  MNEMONIC 
+
+CLI                  MNEMONIC 
+
+CLN                  MNEMONIC 
+
+CLR                  MNEMONIC 
+
+CLS                  MNEMONIC 
+
+CLT                  MNEMONIC 
+
+CLV                  MNEMONIC 
+
+CLZ                  MNEMONIC 
+
+CODE                 SEGMENT TYPE 
+
+                                - CheckParity7 -                      Page   20
+
+COL                  DIRECTIVE 
+
+COM                  MNEMONIC 
+
+COM00                #define, value: 4, line:     200:1  
+
+COM01                #define, value: 5, line:     199:1  
+
+COM1A0               #define, value: 6, line:     224:1  
+
+COM1A1               #define, value: 7, line:     223:1  
+
+COM1B0               #define, value: 4, line:     226:1  
+
+COM1B1               #define, value: 5, line:     225:1  
+
+COM20                #define, value: 4, line:     210:1  
+
+COM21                #define, value: 5, line:     209:1  
+
+COMMON               DIRECTIVE 
+
+CONST                SEGMENT TYPE 
+
+CONST                DIRECTIVE 
+
+CP                   MNEMONIC 
+
+CPC                  MNEMONIC 
+
+CPHA                 #define, value: 2, line:     259:1  
+
+CPI                  MNEMONIC 
+
+CPOL                 #define, value: 3, line:     258:1  
+
+CPSE                 MNEMONIC 
+
+CS00                 #define, value: 0, line:     204:1  
+
+CS01                 #define, value: 1, line:     203:1  
+
+CS02                 #define, value: 2, line:     202:1  
+
+CS10                 #define, value: 0, line:     238:1  
+
+CS11                 #define, value: 1, line:     237:1  
+
+CS12                 #define, value: 2, line:     236:1  
+
+CS20                 #define, value: 0, line:     214:1  
+
+CS21                 #define, value: 1, line:     213:1  
+
+CS22                 #define, value: 2, line:     212:1  
+
+CTC0                 #define, value: 3, line:     201:1  
+
+CTC1                 #define, value: 3, line:     235:1  
+
+CTC2                 #define, value: 3, line:     211:1  
+
+DATA                 SEGMENT TYPE 
+
+DATE                 OPERATOR 
+
+DB                   DIRECTIVE 
+
+DC16                 DIRECTIVE 
+
+DC24                 DIRECTIVE 
+
+DC32                 DIRECTIVE 
+
+DC8                  DIRECTIVE 
+
+DD                   DIRECTIVE 
+
+                                - CheckParity7 -                      Page   21
+
+DDA0                 #define, value: 0, line:     340:1  
+
+DDA1                 #define, value: 1, line:     339:1  
+
+DDA2                 #define, value: 2, line:     338:1  
+
+DDA3                 #define, value: 3, line:     337:1  
+
+DDA4                 #define, value: 4, line:     336:1  
+
+DDA5                 #define, value: 5, line:     335:1  
+
+DDA6                 #define, value: 6, line:     334:1  
+
+DDA7                 #define, value: 7, line:     333:1  
+
+DDB0                 #define, value: 0, line:     370:1  
+
+DDB1                 #define, value: 1, line:     369:1  
+
+DDB2                 #define, value: 2, line:     368:1  
+
+DDB3                 #define, value: 3, line:     367:1  
+
+DDB4                 #define, value: 4, line:     366:1  
+
+DDB5                 #define, value: 5, line:     365:1  
+
+DDB6                 #define, value: 6, line:     364:1  
+
+DDB7                 #define, value: 7, line:     363:1  
+
+DDD0                 #define, value: 0, line:     410:1  
+
+DDD1                 #define, value: 1, line:     409:1  
+
+DDD2                 #define, value: 2, line:     408:1  
+
+DDD3                 #define, value: 3, line:     407:1  
+
+DDD4                 #define, value: 4, line:     406:1  
+
+DDD5                 #define, value: 5, line:     405:1  
+
+DDD6                 #define, value: 6, line:     404:1  
+
+DDD7                 #define, value: 7, line:     403:1  
+
+DDE0                 #define, value: 0, line:     430:1  
+
+DDE1                 #define, value: 1, line:     429:1  
+
+DDE2                 #define, value: 2, line:     428:1  
+
+DEC                  MNEMONIC 
+
+DEFINE               DIRECTIVE 
+
+DORD                 #define, value: 5, line:     256:1  
+
+DP                   DIRECTIVE 
+
+DS                   DIRECTIVE 
+
+DS16                 DIRECTIVE 
+
+DS24                 DIRECTIVE 
+
+DS32                 DIRECTIVE 
+
+DS8                  DIRECTIVE 
+
+DW                   DIRECTIVE 
+
+E2END                #define, value: 0x01FF, line:     448:1  
+
+EEMWE                #define, value: 2, line:     249:1  
+
+                                - CheckParity7 -                      Page   22
+
+EERE                 #define, value: 0, line:     251:1  
+
+EERIE                #define, value: 3, line:     248:1  
+
+EEWE                 #define, value: 1, line:     250:1  
+
+EE_RDY_vect          #define, value: (0x4C), line:     120:1  
+
+ELPM                 MNEMONIC 
+
+ELSE                 DIRECTIVE 
+
+ELSEIF               DIRECTIVE 
+
+ENABLE_BIT_DEFINITIONS #define, value: , line:     125:1  
+
+END                  DIRECTIVE 
+
+ENDIF                DIRECTIVE 
+
+ENDM                 DIRECTIVE 
+
+ENDMOD               DIRECTIVE 
+
+ENDR                 DIRECTIVE 
+
+EOR                  MNEMONIC 
+
+EQ                   OPERATOR 
+
+EQU                  DIRECTIVE 
+
+ESPM                 MNEMONIC 
+
+EVEN                 DIRECTIVE 
+
+EXITM                DIRECTIVE 
+
+EXPORT               DIRECTIVE 
+
+EXTERN               DIRECTIVE 
+
+EXTRF                #define, value: 1, line:     139:1  
+
+FAR                  SEGMENT TYPE 
+
+FARCODE              SEGMENT TYPE 
+
+FARCONST             SEGMENT TYPE 
+
+FARDATA              SEGMENT TYPE 
+
+FE0                  #define, value: 4, line:     272:1  
+
+FE1                  #define, value: 4, line:     291:1  
+
+FLASHEND             #define, value: 0x3FFF, line:     449:1  
+
+FMUL                 MNEMONIC 
+
+FMULS                MNEMONIC 
+
+FMULSU               MNEMONIC 
+
+FOC0                 #define, value: 7, line:     197:1  
+
+FOC1A                #define, value: 3, line:     227:1  
+
+FOC1B                #define, value: 2, line:     228:1  
+
+FOC2                 #define, value: 7, line:     207:1  
+
+FUNCALL              DIRECTIVE 
+
+FUNCTION             DIRECTIVE 
+
+GE                   OPERATOR 
+
+                                - CheckParity7 -                      Page   23
+
+GT                   OPERATOR 
+
+H                    Target symbol: 0 
+
+HIGH                 OPERATOR 
+
+HUGE                 SEGMENT TYPE 
+
+HUGECODE             SEGMENT TYPE 
+
+HUGECONST            SEGMENT TYPE 
+
+HUGEDATA             SEGMENT TYPE 
+
+HWRD                 OPERATOR 
+
+ICALL                MNEMONIC 
+
+ICES1                #define, value: 6, line:     234:1  
+
+ICF1                 #define, value: 3, line:     167:1  
+
+ICNC1                #define, value: 7, line:     233:1  
+
+IDATA                SEGMENT TYPE 
+
+IF                   DIRECTIVE 
+
+IJMP                 MNEMONIC 
+
+IMPORT               DIRECTIVE 
+
+IN                   MNEMONIC 
+
+INC                  MNEMONIC 
+
+INT0                 #define, value: 6, line:     144:1  
+
+INT0_vect            #define, value: (0x04), line:     102:1  
+
+INT1                 #define, value: 7, line:     143:1  
+
+INT1_vect            #define, value: (0x08), line:     103:1  
+
+INT2                 #define, value: 5, line:     145:1  
+
+INT2_vect            #define, value: (0x0C), line:     104:1  
+
+INTF0                #define, value: 6, line:     149:1  
+
+INTF1                #define, value: 7, line:     148:1  
+
+INTF2                #define, value: 5, line:     150:1  
+
+ISC00                #define, value: 0, line:     180:1  
+
+ISC01                #define, value: 1, line:     179:1  
+
+ISC10                #define, value: 2, line:     178:1  
+
+ISC11                #define, value: 3, line:     177:1  
+
+ISC2                 #define, value: 0, line:     190:1  
+
+JMP                  MNEMONIC 
+
+L                    Target symbol: 0 
+
+LD                   MNEMONIC 
+
+LDD                  MNEMONIC 
+
+LDI                  MNEMONIC 
+
+LDS                  MNEMONIC 
+
+LE                   OPERATOR 
+
+                                - CheckParity7 -                      Page   24
+
+LIBRARY              DIRECTIVE 
+
+LIMIT                DIRECTIVE 
+
+LOCAL                DIRECTIVE 
+
+LOCFRAME             DIRECTIVE 
+
+LOW                  OPERATOR 
+
+LPM                  MNEMONIC 
+
+LSL                  MNEMONIC 
+
+LSR                  MNEMONIC 
+
+LSTCND               DIRECTIVE 
+
+LSTCOD               DIRECTIVE 
+
+LSTEXP               DIRECTIVE 
+
+LSTMAC               DIRECTIVE 
+
+LSTOUT               DIRECTIVE 
+
+LSTPAG               DIRECTIVE 
+
+LSTREP               DIRECTIVE 
+
+LSTXRF               DIRECTIVE 
+
+LT                   OPERATOR 
+
+LWRD                 OPERATOR 
+
+MACRO                DIRECTIVE 
+
+MOD                  OPERATOR 
+
+MODULE               DIRECTIVE 
+
+MOV                  MNEMONIC 
+
+MOVW                 MNEMONIC 
+
+MPCM0                #define, value: 0, line:     275:1  
+
+MPCM1                #define, value: 0, line:     294:1  
+
+MSTR                 #define, value: 4, line:     257:1  
+
+MUL                  MNEMONIC 
+
+MULS                 MNEMONIC 
+
+MULSU                MNEMONIC 
+
+NAME                 DIRECTIVE 
+
+NE                   OPERATOR 
+
+NEAR                 SEGMENT TYPE 
+
+NEARCODE             SEGMENT TYPE 
+
+NEARCONST            SEGMENT TYPE 
+
+NEARDATA             SEGMENT TYPE 
+
+NEG                  MNEMONIC 
+
+NOP                  MNEMONIC 
+
+NOROOT               SEGMENT TYPE 
+
+NOT                  OPERATOR 
+
+                                - CheckParity7 -                      Page   25
+
+NPAGE                SEGMENT TYPE 
+
+OCF0                 #define, value: 0, line:     170:1  
+
+OCF1A                #define, value: 6, line:     164:1  
+
+OCF1B                #define, value: 5, line:     165:1  
+
+OCF2                 #define, value: 2, line:     168:1  
+
+OCIE0                #define, value: 0, line:     160:1  
+
+OCIE1A               #define, value: 6, line:     154:1  
+
+OCIE1B               #define, value: 5, line:     155:1  
+
+OCIE2                #define, value: 2, line:     158:1  
+
+OCR2UB               #define, value: 1, line:     219:1  
+
+OR                   OPERATOR 
+
+OR                   MNEMONIC 
+
+ORG                  DIRECTIVE 
+
+ORI                  MNEMONIC 
+
+OUT                  MNEMONIC 
+
+OVR0                 #define, value: 3, line:     273:1  
+
+OVR1                 #define, value: 3, line:     292:1  
+
+PA0                  #define, value: 0, line:     330:1  
+
+PA1                  #define, value: 1, line:     329:1  
+
+PA2                  #define, value: 2, line:     328:1  
+
+PA3                  #define, value: 3, line:     327:1  
+
+PA4                  #define, value: 4, line:     326:1  
+
+PA5                  #define, value: 5, line:     325:1  
+
+PA6                  #define, value: 6, line:     324:1  
+
+PA7                  #define, value: 7, line:     323:1  
+
+PAGE                 DIRECTIVE 
+
+PAGSIZ               DIRECTIVE 
+
+PB0                  #define, value: 0, line:     360:1  
+
+PB1                  #define, value: 1, line:     359:1  
+
+PB2                  #define, value: 2, line:     358:1  
+
+PB3                  #define, value: 3, line:     357:1  
+
+PB4                  #define, value: 4, line:     356:1  
+
+PB5                  #define, value: 5, line:     355:1  
+
+PB6                  #define, value: 6, line:     354:1  
+
+PB7                  #define, value: 7, line:     353:1  
+
+PC0                  #define, value: 0, line:     390:1  
+
+PC1                  #define, value: 1, line:     389:1  
+
+PC2                  #define, value: 2, line:     388:1  
+
+PC3                  #define, value: 3, line:     387:1  
+
+                                - CheckParity7 -                      Page   26
+
+PC4                  #define, value: 4, line:     386:1  
+
+PC5                  #define, value: 5, line:     385:1  
+
+PC6                  #define, value: 6, line:     384:1  
+
+PC7                  #define, value: 7, line:     383:1  
+
+PD0                  #define, value: 0, line:     400:1  
+
+PD1                  #define, value: 1, line:     399:1  
+
+PD2                  #define, value: 2, line:     398:1  
+
+PD3                  #define, value: 3, line:     397:1  
+
+PD4                  #define, value: 4, line:     396:1  
+
+PD5                  #define, value: 5, line:     395:1  
+
+PD6                  #define, value: 6, line:     394:1  
+
+PD7                  #define, value: 7, line:     393:1  
+
+PE0                  #define, value: 0, line:     425:1  
+
+PE1                  #define, value: 1, line:     424:1  
+
+PE2                  #define, value: 2, line:     423:1  
+
+PGERS                #define, value: 1, line:     319:1  
+
+PGWRT                #define, value: 2, line:     318:1  
+
+PINA0                #define, value: 0, line:     350:1  
+
+PINA1                #define, value: 1, line:     349:1  
+
+PINA2                #define, value: 2, line:     348:1  
+
+PINA3                #define, value: 3, line:     347:1  
+
+PINA4                #define, value: 4, line:     346:1  
+
+PINA5                #define, value: 5, line:     345:1  
+
+PINA6                #define, value: 6, line:     344:1  
+
+PINA7                #define, value: 7, line:     343:1  
+
+PINB0                #define, value: 0, line:     380:1  
+
+PINB1                #define, value: 1, line:     379:1  
+
+PINB2                #define, value: 2, line:     378:1  
+
+PINB3                #define, value: 3, line:     377:1  
+
+PINB4                #define, value: 4, line:     376:1  
+
+PINB5                #define, value: 5, line:     375:1  
+
+PINB6                #define, value: 6, line:     374:1  
+
+PINB7                #define, value: 7, line:     373:1  
+
+PIND0                #define, value: 0, line:     420:1  
+
+PIND1                #define, value: 1, line:     419:1  
+
+PIND2                #define, value: 2, line:     418:1  
+
+PIND3                #define, value: 3, line:     417:1  
+
+PIND4                #define, value: 4, line:     416:1  
+
+PIND5                #define, value: 5, line:     415:1  
+
+                                - CheckParity7 -                      Page   27
+
+PIND6                #define, value: 6, line:     414:1  
+
+PIND7                #define, value: 7, line:     413:1  
+
+PINE0                #define, value: 0, line:     435:1  
+
+PINE1                #define, value: 1, line:     434:1  
+
+PINE2                #define, value: 2, line:     433:1  
+
+POP                  MNEMONIC 
+
+PORF                 #define, value: 0, line:     140:1  
+
+PROGRAM              DIRECTIVE 
+
+PSR10                #define, value: 0, line:     194:1  
+
+PSR2                 #define, value: 1, line:     193:1  
+
+PUBLIC               DIRECTIVE 
+
+PUBWEAK              DIRECTIVE 
+
+PUSH                 MNEMONIC 
+
+PWM0                 #define, value: 6, line:     198:1  
+
+PWM10                #define, value: 0, line:     230:1  
+
+PWM11                #define, value: 1, line:     229:1  
+
+PWM2                 #define, value: 6, line:     208:1  
+
+R0                   REGISTER 
+
+R1                   REGISTER 
+
+R10                  REGISTER 
+
+R11                  REGISTER 
+
+R12                  REGISTER 
+
+R13                  REGISTER 
+
+R14                  REGISTER 
+
+R15                  REGISTER 
+
+R16                  REGISTER 
+
+R17                  REGISTER 
+
+R18                  REGISTER 
+
+R19                  REGISTER 
+
+R2                   REGISTER 
+
+R20                  REGISTER 
+
+R21                  REGISTER 
+
+R22                  REGISTER 
+
+R23                  REGISTER 
+
+R24                  REGISTER 
+
+R25                  REGISTER 
+
+R26                  REGISTER 
+
+R27                  REGISTER 
+
+R28                  REGISTER 
+
+                                - CheckParity7 -                      Page   28
+
+R29                  REGISTER 
+
+R3                   REGISTER 
+
+R30                  REGISTER 
+
+R31                  REGISTER 
+
+R4                   REGISTER 
+
+R5                   REGISTER 
+
+R6                   REGISTER 
+
+R7                   REGISTER 
+
+R8                   REGISTER 
+
+R9                   REGISTER 
+
+RADIX                DIRECTIVE 
+
+RAMEND               #define, value: 0x045F, line:     446:1  
+
+RCALL                MNEMONIC 
+
+READ                 Target symbol: 2048 
+
+REGISTER             SEGMENT TYPE 
+
+REORDER              SEGMENT TYPE 
+
+REPT                 DIRECTIVE 
+
+REPTC                DIRECTIVE 
+
+REPTI                DIRECTIVE 
+
+REQUIRE              DIRECTIVE 
+
+RESET_vect           #define, value: (0x00), line:     101:1  
+
+RET                  MNEMONIC 
+
+RETI                 MNEMONIC 
+
+RJMP                 MNEMONIC 
+
+ROL                  MNEMONIC 
+
+ROOT                 SEGMENT TYPE 
+
+ROR                  MNEMONIC 
+
+RSEG                 DIRECTIVE 
+
+RTMODEL              DIRECTIVE 
+
+RXB80                #define, value: 1, line:     284:1  
+
+RXB81                #define, value: 1, line:     303:1  
+
+RXC0                 #define, value: 7, line:     269:1  
+
+RXC1                 #define, value: 7, line:     288:1  
+
+RXCIE0               #define, value: 7, line:     278:1  
+
+RXCIE1               #define, value: 7, line:     297:1  
+
+RXEN0                #define, value: 4, line:     281:1  
+
+RXEN1                #define, value: 4, line:     300:1  
+
+SBC                  MNEMONIC 
+
+SBCI                 MNEMONIC 
+
+                                - CheckParity7 -                      Page   29
+
+SBI                  MNEMONIC 
+
+SBIC                 MNEMONIC 
+
+SBIS                 MNEMONIC 
+
+SBIW                 MNEMONIC 
+
+SBR                  MNEMONIC 
+
+SBRC                 MNEMONIC 
+
+SBRS                 MNEMONIC 
+
+SC1                  MNEMONIC 
+
+SC2                  MNEMONIC 
+
+SE                   #define, value: 5, line:     175:1  
+
+SEC                  MNEMONIC 
+
+SEH                  MNEMONIC 
+
+SEI                  MNEMONIC 
+
+SEN                  MNEMONIC 
+
+SER                  MNEMONIC 
+
+SES                  MNEMONIC 
+
+SET                  MNEMONIC 
+
+SEV                  MNEMONIC 
+
+SEZ                  MNEMONIC 
+
+SFB                  OPERATOR 
+
+SFE                  OPERATOR 
+
+SFRB                 DIRECTIVE 
+
+SFRTYPE              DIRECTIVE 
+
+SFRW                 DIRECTIVE 
+
+SFR_B                #define,            line:     109:2       31:1     32:1     33:1     34:1
+                                                                     35:1     36:1     37:1     38:1
+                                                                     39:1     40:1     41:1     42:1
+                                                                     43:1     44:1     45:1     46:1
+                                                                     47:1     48:1     49:1     50:1
+                                                                     51:1     52:1     53:1     54:1
+                                                                     55:1     56:1     57:1     58:1
+                                                                     59:1     61:1     62:1     63:1
+                                                                     64:1     66:1     67:1     71:1
+                                                                     72:1     73:1     74:1     75:1
+                                                                     76:1     77:1     78:1     79:1
+                                                                     80:1     81:1     82:1     83:1
+                                                                     84:1     86:1
+
+SFR_B2               #define,            line:     111:2  
+
+SFR_B2_BITS          #define,            line:      31:2  
+
+SFR_B_BITS           #define,            line:      29:2       31:1     32:1     33:1     34:1
+                                                                     35:1     36:1     37:1     38:1
+                                                                     39:1     40:1     41:1     42:1
+                                                                     43:1     44:1     45:1     46:1
+                                                                     47:1     48:1     49:1     50:1
+                                                                     51:1     52:1     53:1     54:1
+                                                                     55:1     56:1     57:1     58:1
+                                                                     59:1     61:1     62:1     63:1
+                                                                     64:1     66:1     67:1     71:1
+                                                                     72:1     73:1     74:1     75:1
+                                                                     76:1     77:1     78:1     79:1
+                                                                     80:1     81:1     82:1     83:1
+                                - CheckParity7 -                      Page   30
+
+                                                                     84:1     86:1
+
+SFR_B_BITS_EXT       Target symbol: 0 
+
+SFR_B_EXT            #define,            line:     113:2  
+
+SFR_W                #define,            line:     117:2       60:1     65:1     68:1     69:1
+                                                                     70:1     85:1
+
+SFR_W_BITS           #define,            line:      41:2       60:1     65:1     68:1     69:1
+                                                                     70:1     85:1
+
+SHL                  OPERATOR 
+
+SHR                  OPERATOR 
+
+SIZEOF               OPERATOR 
+
+SLEEP                MNEMONIC 
+
+SM0                  #define, value: 7, line:     183:1  
+
+SM1                  #define, value: 4, line:     176:1  
+
+SORT                 SEGMENT TYPE 
+
+SPE                  #define, value: 6, line:     255:1  
+
+SPI2X                #define, value: 0, line:     266:1  
+
+SPIE                 #define, value: 7, line:     254:1  
+
+SPIF                 #define, value: 7, line:     264:1  
+
+SPI_STC_vect         #define, value: (0x30), line:     113:1  
+
+SPM                  MNEMONIC 
+
+SPMEN                #define, value: 0, line:     320:1  
+
+SPR0                 #define, value: 0, line:     261:1  
+
+SPR1                 #define, value: 1, line:     260:1  
+
+SRE                  #define, value: 7, line:     173:1  
+
+SRL0                 #define, value: 4, line:     186:1  
+
+SRL1                 #define, value: 5, line:     185:1  
+
+SRL2                 #define, value: 6, line:     184:1  
+
+SRW00                #define, value: 2, line:     188:1  
+
+SRW01                #define, value: 3, line:     187:1  
+
+SRW10                #define, value: 6, line:     174:1  
+
+SRW11                #define, value: 1, line:     189:1  
+
+ST                   MNEMONIC 
+
+STACK                DIRECTIVE 
+
+STD                  MNEMONIC 
+
+STS                  MNEMONIC 
+
+SUB                  MNEMONIC 
+
+SUBI                 MNEMONIC 
+
+SWAP                 MNEMONIC 
+
+SYMBOL               DIRECTIVE 
+
+TCN2UB               #define, value: 2, line:     218:1  
+
+                                - CheckParity7 -                      Page   31
+
+TCR2UB               #define, value: 0, line:     220:1  
+
+TICIE1               #define, value: 3, line:     157:1  
+
+TID_GUARD            #define,            line:      18:2       16:1
+
+TIMER0_COMP_vect     #define, value: (0x28), line:     111:1  
+
+TIMER0_OVF_vect      #define, value: (0x2C), line:     112:1  
+
+TIMER1_CAPT_vect     #define, value: (0x18), line:     107:1  
+
+TIMER1_COMPA_vect    #define, value: (0x1C), line:     108:1  
+
+TIMER1_COMPB_vect    #define, value: (0x20), line:     109:1  
+
+TIMER1_OVF_vect      #define, value: (0x24), line:     110:1  
+
+TIMER2_COMP_vect     #define, value: (0x10), line:     105:1  
+
+TIMER2_OVF_vect      #define, value: (0x14), line:     106:1  
+
+TOIE0                #define, value: 1, line:     159:1  
+
+TOIE1                #define, value: 7, line:     153:1  
+
+TOIE2                #define, value: 4, line:     156:1  
+
+TOV0                 #define, value: 1, line:     169:1  
+
+TOV1                 #define, value: 7, line:     163:1  
+
+TOV2                 #define, value: 4, line:     166:1  
+
+TST                  MNEMONIC 
+
+TXB80                #define, value: 0, line:     285:1  
+
+TXB81                #define, value: 0, line:     304:1  
+
+TXC0                 #define, value: 6, line:     270:1  
+
+TXC1                 #define, value: 6, line:     289:1  
+
+TXCIE0               #define, value: 6, line:     279:1  
+
+TXCIE1               #define, value: 6, line:     298:1  
+
+TXEN0                #define, value: 3, line:     282:1  
+
+TXEN1                #define, value: 3, line:     301:1  
+
+U2X0                 #define, value: 1, line:     274:1  
+
+U2X1                 #define, value: 1, line:     293:1  
+
+UART0_RX_vect        #define, value: (0x34), line:     114:1  
+
+UART0_TX_vect        #define, value: (0x44), line:     118:1  
+
+UART0_UDRE_vect      #define, value: (0x3C), line:     116:1  
+
+UART1_RX_vect        #define, value: (0x38), line:     115:1  
+
+UART1_TX_vect        #define, value: (0x48), line:     119:1  
+
+UART1_UDRE_vect      #define, value: (0x40), line:     117:1  
+
+UDRE0                #define, value: 5, line:     271:1  
+
+UDRE1                #define, value: 5, line:     290:1  
+
+UDRIE0               #define, value: 5, line:     280:1  
+
+UDRIE1               #define, value: 5, line:     299:1  
+
+UGT                  OPERATOR 
+
+                                - CheckParity7 -                      Page   32
+
+ULT                  OPERATOR 
+
+UNTYPED              SEGMENT TYPE 
+
+VAR                  DIRECTIVE 
+
+WCOL                 #define, value: 6, line:     265:1  
+
+WDE                  #define, value: 3, line:     242:1  
+
+WDP0                 #define, value: 0, line:     245:1  
+
+WDP1                 #define, value: 1, line:     244:1  
+
+WDP2                 #define, value: 2, line:     243:1  
+
+WDR                  MNEMONIC 
+
+WDRF                 #define, value: 3, line:     137:1  
+
+WDTOE                #define, value: 4, line:     241:1  
+
+WORD                 Target symbol: 1048576 
+
+WRITE                Target symbol: 4096 
+
+X                    REGISTER 
+
+XDATA                SEGMENT TYPE 
+
+XH                   #define, value: r27, line:     439:1  
+
+XL                   #define, value: r26, line:     438:1  
+
+XOR                  OPERATOR 
+
+XRAMEND              #define, value: 0xFFFF, line:     447:1  
+
+Y                    REGISTER 
+
+YH                   #define, value: r29, line:     441:1  
+
+YL                   #define, value: r28, line:     440:1  
+
+Z                    REGISTER 
+
+ZH                   #define, value: r31, line:     443:1  
+
+ZL                   #define, value: r30, line:     442:1  
+
+ZPAGE                SEGMENT TYPE 
+
+^                    OPERATOR 
+
+_                    Target symbol: 0 
+
+_A                   Target symbol: 0 
+
+_ADDR                Target symbol: 0 
+
+_B                   Target symbol: 0 
+
+_C                   Target symbol: 0 
+
+_D                   Target symbol: 0 
+
+_E                   Target symbol: 0 
+
+_F                   Target symbol: 0 
+
+_G                   Target symbol: 0 
+
+_H                   Target symbol: 0 
+
+_I                   Target symbol: 0 
+
+_J                   Target symbol: 0 
+
+                                - CheckParity7 -                      Page   33
+
+_K                   Target symbol: 0 
+
+_L                   Target symbol: 0 
+
+_M                   Target symbol: 0 
+
+_N                   Target symbol: 0 
+
+_NAME                Target symbol: 0 
+
+_NAME1               Target symbol: 0 
+
+_NAME2               Target symbol: 0 
+
+_O                   Target symbol: 0 
+
+_P                   Target symbol: 0 
+
+__BYTEBITS           Target symbol: 0 
+
+__DATE__             #define,            line:         0  
+
+__FILE__             #define,            line:         0  
+
+__IAR_SYSTEMS_ASM    #define,            line:         0  
+
+__IAR_SYSTEMS_ASM__  #define,            line:         0  
+
+__IAR_SYSTEMS_ICC__  Target symbol: 0 
+
+__IOM161_H           #define, value: , line:      89:1  
+
+__IOMACRO_H          #define, value: , line:      16:2  
+
+__LINE__             #define,            line:         0  
+
+__TID__              #define,            line:         0       16:1
+
+__TIME__             #define,            line:         0  
+
+__VER__              #define,            line:         0  
+
+__io                 Target symbol: 0 
+
+__no_init            Target symbol: 0 
+
+__tiny               Target symbol: 0 
+
+char                 Target symbol: 0 
+
+define               PREPROCESSOR DIRECTIVE 
+
+defined              Target symbol: 0 
+
+elif                 PREPROCESSOR DIRECTIVE 
+
+else                 PREPROCESSOR DIRECTIVE 
+
+endif                PREPROCESSOR DIRECTIVE 
+
+error                PREPROCESSOR DIRECTIVE 
+
+if                   PREPROCESSOR DIRECTIVE 
+
+ifdef                PREPROCESSOR DIRECTIVE 
+
+ifndef               PREPROCESSOR DIRECTIVE 
+
+include              PREPROCESSOR DIRECTIVE 
+
+line                 PREPROCESSOR DIRECTIVE 
+
+message              PREPROCESSOR DIRECTIVE 
+
+pragma               PREPROCESSOR DIRECTIVE 
+
+proc                 Target symbol: 0 
+
+                                - CheckParity7 -                      Page   34
+
+r26                  Target symbol: 0 
+
+r27                  Target symbol: 0 
+
+r28                  Target symbol: 0 
+
+r29                  Target symbol: 0 
+
+r30                  Target symbol: 0 
+
+r31                  Target symbol: 0 
+
+short                Target symbol: 0 
+
+struct               Target symbol: 0 
+
+undef                PREPROCESSOR DIRECTIVE 
+
+union                Target symbol: 0 
+
+unsigned             Target symbol: 0 
+
+volatile             Target symbol: 0 
+
+|                    OPERATOR 
+
+||                   OPERATOR 
+
+~                    OPERATOR 
+
+
+
+Segment             Type 	Mode
+
+----------------------------------------
+
+CODE                UNTYPED  	REL 
+
+__EXTERNS           CODE  	ABS Org:0 
+
+
+
+Label               Mode   Type                   Segment    Value/Offset
+
+------------------------------------------------------------------------------
+
+ACSR                ABS    CONST UNTYP.           ASEG       8 
+
+ASSR                ABS    CONST UNTYP.           ASEG       26 
+
+Bit0                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit1                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit10               ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit11               ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit12               ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit13               ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit14               ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit15               ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit2                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit3                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit4                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit5                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit6                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit7                ABS    CONST UNTYP.           ASEG       0 
+
+                                - CheckParity7 -                      Page   35
+
+Bit8                ABS    CONST UNTYP.           ASEG       Not solved 
+
+Bit9                ABS    CONST UNTYP.           ASEG       Not solved 
+
+CheckParity7        REL    CONST PUB UNTYP.       CODE       0 
+
+DDRA                ABS    CONST UNTYP.           ASEG       1A 
+
+DDRB                ABS    CONST UNTYP.           ASEG       17 
+
+DDRC                ABS    CONST UNTYP.           ASEG       14 
+
+DDRD                ABS    CONST UNTYP.           ASEG       11 
+
+DDRE                ABS    CONST UNTYP.           ASEG       6 
+
+EEAR                ABS    CONST UNTYP.           ASEG       1E 
+
+EEARH               ABS    CONST UNTYP.           ASEG       1F 
+
+EEARL               ABS    CONST UNTYP.           ASEG       1E 
+
+EECR                ABS    CONST UNTYP.           ASEG       1C 
+
+EEDR                ABS    CONST UNTYP.           ASEG       1D 
+
+EMCUCR              ABS    CONST UNTYP.           ASEG       36 
+
+GIFR                ABS    CONST UNTYP.           ASEG       3A 
+
+GIMSK               ABS    CONST UNTYP.           ASEG       3B 
+
+ICR1                ABS    CONST UNTYP.           ASEG       24 
+
+ICR1H               ABS    CONST UNTYP.           ASEG       25 
+
+ICR1L               ABS    CONST UNTYP.           ASEG       24 
+
+MCUCR               ABS    CONST UNTYP.           ASEG       35 
+
+MCUSR               ABS    CONST UNTYP.           ASEG       34 
+
+OCR0                ABS    CONST UNTYP.           ASEG       31 
+
+OCR1A               ABS    CONST UNTYP.           ASEG       2A 
+
+OCR1AH              ABS    CONST UNTYP.           ASEG       2B 
+
+OCR1AL              ABS    CONST UNTYP.           ASEG       2A 
+
+OCR1B               ABS    CONST UNTYP.           ASEG       28 
+
+OCR1BH              ABS    CONST UNTYP.           ASEG       29 
+
+OCR1BL              ABS    CONST UNTYP.           ASEG       28 
+
+OCR2                ABS    CONST UNTYP.           ASEG       22 
+
+PINA                ABS    CONST UNTYP.           ASEG       19 
+
+PINB                ABS    CONST UNTYP.           ASEG       16 
+
+PINC                ABS    CONST UNTYP.           ASEG       13 
+
+PIND                ABS    CONST UNTYP.           ASEG       10 
+
+PINE                ABS    CONST UNTYP.           ASEG       5 
+
+PORTA               ABS    CONST UNTYP.           ASEG       1B 
+
+PORTB               ABS    CONST UNTYP.           ASEG       18 
+
+PORTC               ABS    CONST UNTYP.           ASEG       15 
+
+PORTD               ABS    CONST UNTYP.           ASEG       12 
+
+PORTE               ABS    CONST UNTYP.           ASEG       7 
+
+                                - CheckParity7 -                      Page   36
+
+SFIOR               ABS    CONST UNTYP.           ASEG       30 
+
+SP                  ABS    CONST UNTYP.           ASEG       3D 
+
+SPCR                ABS    CONST UNTYP.           ASEG       D 
+
+SPDR                ABS    CONST UNTYP.           ASEG       F 
+
+SPH                 ABS    CONST UNTYP.           ASEG       3E 
+
+SPL                 ABS    CONST UNTYP.           ASEG       3D 
+
+SPMCR               ABS    CONST UNTYP.           ASEG       37 
+
+SPSR                ABS    CONST UNTYP.           ASEG       E 
+
+SREG                ABS    CONST UNTYP.           ASEG       3F 
+
+TCCR0               ABS    CONST UNTYP.           ASEG       33 
+
+TCCR1A              ABS    CONST UNTYP.           ASEG       2F 
+
+TCCR1B              ABS    CONST UNTYP.           ASEG       2E 
+
+TCCR2               ABS    CONST UNTYP.           ASEG       27 
+
+TCNT0               ABS    CONST UNTYP.           ASEG       32 
+
+TCNT1               ABS    CONST UNTYP.           ASEG       2C 
+
+TCNT1H              ABS    CONST UNTYP.           ASEG       2D 
+
+TCNT1L              ABS    CONST UNTYP.           ASEG       2C 
+
+TCNT2               ABS    CONST UNTYP.           ASEG       23 
+
+TIFR                ABS    CONST UNTYP.           ASEG       38 
+
+TIMSK               ABS    CONST UNTYP.           ASEG       39 
+
+UBRR0               ABS    CONST UNTYP.           ASEG       9 
+
+UBRR1               ABS    CONST UNTYP.           ASEG       0 
+
+UBRRHI              ABS    CONST UNTYP.           ASEG       20 
+
+UCSR0A              ABS    CONST UNTYP.           ASEG       B 
+
+UCSR0B              ABS    CONST UNTYP.           ASEG       A 
+
+UCSR1A              ABS    CONST UNTYP.           ASEG       2 
+
+UCSR1B              ABS    CONST UNTYP.           ASEG       1 
+
+UDR0                ABS    CONST UNTYP.           ASEG       C 
+
+UDR1                ABS    CONST UNTYP.           ASEG       3 
+
+WDTCR               ABS    CONST UNTYP.           ASEG       21 
+
+loop1_7             REL    CONST UNTYP.           CODE       6 
+
+loop2_7             REL    CONST UNTYP.           CODE       C 
+
+
+
+
+
+##############################
+#          CRC:5CFA          #
+#        Errors:   0         #
+#        Warnings: 0         #
+#         Bytes: 22          #
+##############################
+
+
+
+

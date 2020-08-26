@@ -1,0 +1,92 @@
+        MODULE writechar
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        EXTERN __putchar
+        FUNCTION __putchar,010202H
+
+        PUBLIC __writechar
+        FUNCTION __writechar,031203H
+        LOCFRAME RSTACK, 2, STACK
+;     1 /*******************
+;     2  *
+;     3  * Copyright 1999 IAR Systems.  All rights reserved.
+;     4  *
+;     5  * $Revision: 1.1 $
+;     6  *
+;     7  * This is the default implementation of the __writechar function used
+;     8  * by the standard library.  This implementation sends characters
+;     9  * written to the file descriptors associated with stdout and stderr
+;    10  * to the debugger.  Replace one of __write and __writechar with a
+;    11  * system-specific implementation.
+;    12  *
+;    13  ********************/
+;    14 
+;    15 #include <stdio.h>
+;    16 #include <yfuns.h>
+;    17 
+;    18 _STD_BEGIN
+;    19 
+
+        RSEG CODE:CODE:NOROOT(1)
+;    20 int (__writechar)(int Handle, unsigned char c)
+;    21 {
+;    22   unsigned char *MyPORTA;
+;    23   unsigned char *MyDDRA;
+;    24   MyPORTA = (unsigned char *) 0x3B;
+;    25   MyDDRA  = (unsigned char *) 0x3A;
+;    26   if (Handle == 1 || Handle == 2)
+; __intrinsic __nearfunc int __writechar(int, unsigned char);
+__writechar:
+        FUNCALL __writechar, __putchar
+        LOCFRAME RSTACK, 2, STACK
+	CPI	R16,1
+	LDI	R19,0
+	CPC	R17,R19
+	BREQ	??__writechar_0
+	CPI	R16,2
+	SBCI	R17,0
+	BRNE	??__writechar_1
+;    27   {
+;    28     *MyDDRA  =0xff; // PORTA bits outs
+??__writechar_0:
+	LDI	R16,255
+	OUT	0x1A,R16
+;    29     *MyPORTA =~c;   
+	MOV	R16,R18
+	COM	R16
+	OUT	0x1B,R16
+;    30     return __putchar(c);
+	MOV	R16,R18
+	LDI	R17,0
+	JMP	__putchar
+;    31   }
+;    32   else
+;    33   {
+;    34     return -1;
+??__writechar_1:
+	LDI	R16,255
+	LDI	R17,255
+	RET
+;    35   }
+;    36 }
+
+        END
+;    37 
+;    38 _STD_END
+; 
+;     38 bytes in segment CODE
+; 
+;     38 bytes of CODE memory
+;
+;Errors: none
+;Warnings: none

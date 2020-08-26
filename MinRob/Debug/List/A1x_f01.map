@@ -1,0 +1,467 @@
+                              - Cross-reference -                      Page    1
+
+################################################################################
+#                                                                              #
+#      IAR Universal Linker V4.53B/WIN                                         #
+#                                                                              #
+#           Link time     =  04/Sep/2002  14:19:36                             #
+#           Target CPU    =  A90                                               #
+#           List file     =  C:\AVR_CC\Functions\Debug\List\A1x_f01.map        #
+#           Output file 1 =  C:\AVR_CC\Functions\Debug\Exe\A1x_f01.d90         #
+#                            Format: debug                                     #
+#                            UBROF version 8.0.2                               #
+#                            Using library modules for C-SPY (-rt)             #
+#           Command line  =  C:\AVR_CC\Functions\Debug\Obj\CheckParity.r90     #
+#                            C:\AVR_CC\Functions\Debug\Obj\UART0_A1x_f02.r90   #
+#                            C:\AVR_CC\AVR\lib\cl3s-ec-sf.r90 -o               #
+#                            C:\AVR_CC\Functions\Debug\Exe\A1x_f01.d90 -rt     #
+#                            -l C:\AVR_CC\Functions\Debug\List\A1x_f01.map     #
+#                            -xms -p80 -IC:\AVR_CC\AVR\LIB\ -f                 #
+#                            C:\AVR_CC\AVR\src\template\cfgm161.xcl            #
+#                            (-D_..X_INTVEC_SIZE=54 -D_..X_FLASH_NEND=3FFF     #
+#                            -D_..X_FLASH_END=3FFF -D_..X_SRAM_BASE=60         #
+#                            -D_..X_SRAM_TEND=FF -D_..X_SRAM_END=45F           #
+#                            -D_..X_EEPROM_END=1FF) -D_..X_HEAP_SIZE=10        #
+#                            -D_..X_CSTACK_SIZE=20 -D_..X_RSTACK_SIZE=20       #
+#                            -e_small_write=_formatted_write                   #
+#                            -e_medium_read=_formatted_read -f                 #
+#                            C:\AVR_CC\AVR\src\template\cfg3s.xcl (-ca90       #
+#                            -w29 -Z(CODE)INTVEC=0-(_..X_INTVEC_SIZE-1)        #
+#                            -Z(CODE)TINY_F=_..X_FLASH_BASE-FF                 #
+#                            -Z(CODE)NEAR_F=_..X_FLASH_BASE-_..X_FLASH_NEND    #
+#                            -Z(CODE)SWITCH=_..X_FLASH_BASE-_..X_FLASH_NEND    #
+#                            -Z(CODE)INITTAB=_..X_FLASH_BASE-_..X_FLASH_NEND   #
+#                            -Z(CODE)DIFUNCT=_..X_FLASH_BASE-_..X_FLASH_NEND   #
+#                            -Z(CODE)CODE=_..X_FLASH_BASE-_..X_FLASH_END       #
+#                            -Z(CODE)FAR_F=[_..X_FLASH_BASE-_..X_FLASH_END]/10 #
+#                            000                                               #
+#                            -Z(CODE)HUGE_F=_..X_FLASH_BASE-_..X_FLASH_END     #
+#                            -Z(CODE)TINY_ID=_..X_FLASH_BASE-_..X_FLASH_END    #
+#                            -Z(CODE)NEAR_ID=_..X_FLASH_BASE-_..X_FLASH_END    #
+#                            -Z(CODE)CHECKSUM=_..X_FLASH_BASE-_..X_FLASH_END   #
+#                            -Z(DATA)TINY_I,TINY_Z,TINY_N=_..X_SRAM_BASE-_..X_ #
+#                            SRAM_TEND                                         #
+#                            -Z(DATA)CSTACK+_..X_CSTACK_SIZE=_..X_SRAM_BASE-_. #
+#                            .X_SRAM_END,_..X_EXT_CSTACK_BASE-_..X_EXT_CSTACK_ #
+#                            END                                               #
+#                            -Z(DATA)HEAP+_..X_HEAP_SIZE=_..X_SRAM_BASE-_..X_S #
+#                            RAM_END,_..X_EXT_SRAM_BASE-_..X_EXT_SRAM_END      #
+#                            -Z(DATA)RSTACK+_..X_RSTACK_SIZE=_..X_SRAM_BASE-_. #
+#                            .X_SRAM_END,_..X_EXT_RSTACK_BASE-_..X_EXT_RSTACK_ #
+#                            END                                               #
+#                            -Z(DATA)NEAR_I,NEAR_Z=_..X_SRAM_BASE-_..X_SRAM_EN #
+#                            D,_..X_EXT_SRAM_BASE-_..X_EXT_SRAM_END            #
+#                            -Z(DATA)NEAR_C=_..X_EXT_ROM_BASE-_..X_EXT_ROM_END #
+#                            -Z(DATA)NEAR_N=_..X_EXT_NV_BASE-_..X_EXT_NV_END   #
+#                            -Z(XDATA)EEPROM_I,EEPROM_N=1-_..X_EEPROM_END)     #
+#                            -D_..X_FLASH_BASE=_..X_INTVEC_SIZE -H1895         #
+#                            -h(CODE)0-(_..X_INTVEC_SIZE-1)                    #
+#                            -D_..X_EXT_SRAM_BASE=0 -D_..X_EXT_SRAM_END=0      #
+#                            -D_..X_EXT_ROM_BASE=0 -D_..X_EXT_ROM_END=0        #
+#                            -D_..X_EXT_NV_BASE=_..X_SRAM_BASE                 #
+#                            -D_..X_EXT_NV_END=_..X_SRAM_END                   #
+#                            -D_..X_EXT_CSTACK_BASE=_..X_SRAM_BASE             #
+#                            -D_..X_EXT_CSTACK_END=_..X_SRAM_BASE              #
+#                            -D_..X_EXT_RSTACK_BASE=_..X_SRAM_BASE             #
+#                            -D_..X_EXT_RSTACK_END=_..X_SRAM_BASE              #
+#                                                                              #
+#                        Copyright 1987-2001 IAR Systems. All rights reserved. #
+################################################################################
+
+                              - Cross-reference -                      Page    2
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+                  There are no program entries.
+
+
+
+
+                ****************************************
+                *                                      *
+                *            RUNTIME MODEL             *
+                *                                      *
+                ****************************************
+
+  __64bit_doubles = disabled
+  __cpu           = 3
+  __cpu_name      = AT90Mega161
+  __enhanced_core = enabled
+  __has_elpm      = false
+  __memory_model  = 2
+  __rt_version    = 2.30
+
+
+
+                ****************************************
+                *                                      *
+                *              MODULE MAP              *
+                *                                      *
+                ****************************************
+
+
+  DEFINED ABSOLUTE ENTRIES
+  PROGRAM MODULE, NAME : ?ABS_ENTRY_MOD
+
+Absolute parts
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _..X_EXT_RSTACK_END     00000060 
+           _..X_EXT_RSTACK_BASE    00000060 
+           _..X_EXT_CSTACK_END     00000060 
+           _..X_EXT_CSTACK_BASE    00000060 
+           _..X_EXT_NV_END         0000045F 
+           _..X_EXT_NV_BASE        00000060 
+           _..X_EXT_ROM_END        00000000 
+           _..X_EXT_ROM_BASE       00000000 
+           _..X_EXT_SRAM_END       00000000 
+           _..X_EXT_SRAM_BASE      00000000 
+           _..X_FLASH_BASE         00000054 
+           _..X_RSTACK_SIZE        00000020 
+           _..X_CSTACK_SIZE        00000020 
+           _..X_HEAP_SIZE          00000010 
+           _..X_EEPROM_END         000001FF 
+           _..X_SRAM_END           0000045F 
+           _..X_SRAM_TEND          000000FF 
+           _..X_SRAM_BASE          00000060 
+           _..X_FLASH_END          00003FFF 
+           _..X_FLASH_NEND         00003FFF 
+           _..X_INTVEC_SIZE        00000054 
+    *************************************************************************
+
+  FILE NAME : C:\AVR_CC\Functions\Debug\Obj\CheckParity.r90
+  PROGRAM MODULE, NAME : CheckParity
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: CODE 0000005A - 0000006F (16 bytes), align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CheckParity             0000005A        New_UART0_RX (UART0_A1x_f02)
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           loop1                   00000060 
+                              - Cross-reference -                      Page    3
+
+           loop2                   00000066 
+
+    *************************************************************************
+
+  FILE NAME : C:\AVR_CC\Functions\Debug\Obj\UART0_A1x_f02.r90
+  PROGRAM MODULE, NAME : UART0_A1x_f02
+
+  SEGMENTS IN THE MODULE
+  ======================
+ABSOLUTE (ABS)
+  Relative segment, address: DATA 0000002A - 0000002A (1 bytes), align: 0
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_UCSR0B               0000002A 
+    -------------------------------------------------------------------------
+ABSOLUTE (ABS)
+  Relative segment, address: DATA 0000002B - 0000002B (1 bytes), align: 0
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_UCSR0A               0000002B 
+    -------------------------------------------------------------------------
+ABSOLUTE (ABS)
+  Relative segment, address: DATA 0000002C - 0000002C (1 bytes), align: 0
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_UDR0                 0000002C 
+    -------------------------------------------------------------------------
+NEAR_Z
+  Relative segment, address: DATA 000000A0 - 000000A0 (1 bytes), align: 0
+  Segment part 26.            Intra module refs:   IncErrArr_UART0
+                                                   New_UART0_RX
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Enb_Err_UART0           000000A0 
+    -------------------------------------------------------------------------
+NEAR_Z
+  Relative segment, address: DATA 000000A1 - 000000C0 (20 bytes), align: 0
+  Segment part 38.            Intra module refs:   New_UART0_RX
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RxBuf_UART0             000000A1 
+    -------------------------------------------------------------------------
+NEAR_Z
+  Relative segment, address: DATA 000000C1 - 000000C1 (1 bytes), align: 0
+  Segment part 39.            Intra module refs:   New_UART0_RX
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RxHead_UART0            000000C1 
+    -------------------------------------------------------------------------
+NEAR_Z
+  Relative segment, address: DATA 000000C2 - 000000C2 (1 bytes), align: 0
+  Segment part 40.            Intra module refs:   New_UART0_RX
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RxTail_UART0            000000C2 
+    -------------------------------------------------------------------------
+NEAR_Z
+  Relative segment, address: DATA 000000C3 - 000000CC (a bytes), align: 0
+  Segment part 41.            Intra module refs:   IncErrArr_UART0
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Rx_Tx_Err_UART0         000000C3 
+    -------------------------------------------------------------------------
+NEAR_Z
+  Relative segment, address: DATA 000000CD - 000000D0 (4 bytes), align: 0
+  Segment part 42.            Intra module refs:   New_UART0_RX
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Count_Rx_UART0          000000CD 
+    -------------------------------------------------------------------------
+NEAR_Z
+  Relative segment, address: DATA 000000D1 - 000000D2 (2 bytes), align: 0
+  Segment part 43.            Intra module refs:   New_UART0_RX
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Count_Rx_Err_UART0      000000D1 
+    -------------------------------------------------------------------------
+                              - Cross-reference -                      Page    4
+
+CODE
+  Relative segment, address: CODE 00000070 - 0000011F (b0 bytes), align: 1
+  Segment part 46.            Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           New_UART0_RX            00000070 
+               non_banked function
+               calls direct
+               stack 1 = 00000000 ( 00000002 )
+               stack 2 = 00000000 ( 00000003 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE 00000120 - 00000143 (24 bytes), align: 1
+  Segment part 47.            Intra module refs:   New_UART0_RX
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           IncErrArr_UART0         00000120 
+               non_banked function
+               stack 1 = 00000000 ( 00000002 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE 00000144 - 0000014D (a bytes), align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           main                    00000144        ?cstartup_call_main (?C_STARTUP)
+               non_banked function
+               calls direct
+               stack 1 = 00000000 ( 00000002 )
+               stack 2 = 00000000 ( 00000002 )
+    -------------------------------------------------------------------------
+INITTAB
+  Relative segment, address: CODE 00000054 - 00000059 (6 bytes), align: 0
+  Segment part 27.            Intra module refs:   Count_Rx_Err_UART0
+                                                   Count_Rx_UART0
+                                                   Enb_Err_UART0
+                                                   RxBuf_UART0
+                                                   RxHead_UART0
+                                                   RxTail_UART0
+                                                   Rx_Tx_Err_UART0
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?<Segment init: NEAR_Z>
+                                   00000054 
+
+    *************************************************************************
+
+  FILE NAME : C:\AVR_CC\AVR\lib\cl3s-ec-sf.r90
+  PROGRAM MODULE, NAME : ?RESET
+
+  SEGMENTS IN THE MODULE
+  ======================
+INTVEC
+  Common segment, address: CODE 00000000 - 00000003 (4 bytes), align: 1
+  Segment part 0. ROOT.
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?C_STARTUP
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: CODE 0000014E, align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?C_STARTUP              0000014E        Segment part 0 (?RESET)
+           __RESTART               0000014E 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE 0000014E - 0000015D (10 bytes), align: 1
+  Segment part 4.             Intra module refs:   ?C_STARTUP
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE 0000015E - 00000161 (4 bytes), align: 1
+  Segment part 6.             Intra module refs:   Segment part 4
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?call_low_level_init    0000015E 
+    -------------------------------------------------------------------------
+                              - Cross-reference -                      Page    5
+
+CODE
+  Relative segment, address: CODE 00000162 - 00000169 (8 bytes), align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?need_segment_init      00000162        ?<Segment init: NEAR_Z> (UART0_A1x_f02)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE 0000016A - 00000179 (10 bytes), align: 1
+  Segment part 8.             Intra module refs:   ?call_low_level_init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?cstartup_call_main     0000016A 
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?S_MUL_L02
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: CODE 0000017A - 00000199 (20 bytes), align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?S_MUL_L02              0000017A        IncErrArr_UART0 (UART0_A1x_f02)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : low_level_init
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: CODE 0000019A - 0000019D (4 bytes), align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __low_level_init        0000019A        ?call_low_level_init (?C_STARTUP)
+               non_banked function
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?segment_init
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: CODE 0000019E - 000001A9 (c bytes), align: 1
+  Segment part 8.             Intra module refs:   __segment_init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __memclr                0000019E 
+               non_banked function
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE 000001AA - 000001B5 (c bytes), align: 1
+  Segment part 9.             Intra module refs:   __segment_init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __flashcpy              000001AA 
+               non_banked function
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE 000001B6 - 000001E9 (34 bytes), align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __segment_init          000001B6        ?need_segment_init (?C_STARTUP)
+               non_banked function
+               calls direct
+               stack 1 = 00000000 ( 00000002 )
+    -------------------------------------------------------------------------
+INITTAB
+  Relative segment, address: CODE 0000005A, align: 0
+  Segment part 3.             Intra module refs:   __segment_init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?<Segment part INITTAB>
+                                   0000005A 
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?__exit
+
+                              - Cross-reference -                      Page    6
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: CODE 000001EA - 000001EF (6 bytes), align: 1
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __exit                  000001EC 
+           ?C_EXIT                 000001EC 
+           ?C_FUNCALL              000001EA 
+           _exit                   000001EA        ?cstartup_call_main (?C_STARTUP)
+           exit                    000001EA        ?cstartup_call_main (?C_STARTUP)
+
+    *************************************************************************
+
+  DEFINED ABSOLUTE ENTRIES
+  PROGRAM MODULE, NAME : ?FILLER_BYTES
+
+  SEGMENTS IN THE MODULE
+  ======================
+INTVEC
+  Common segment, address: CODE 00000000 - 00000003 (4 bytes), align: 0
+    -------------------------------------------------------------------------
+?FILL1
+  Relative segment, address: CODE 00000004 - 00000053 (50 bytes), align: 0
+  Segment part 0.
+
+
+
+                ****************************************
+                *                                      *
+                *      SEGMENTS IN ADDRESS ORDER       *
+                *                                      *
+                ****************************************
+
+
+SEGMENT              SPACE   START ADDRESS    END ADDRESS      SIZE  TYPE  ALIGN
+=======              =====   =============    ===========      ====  ====  =====
+INTVEC               CODE         00000000 - 00000003             4   com    1
+?FILL1               CODE         00000004 - 00000053            50   rel    0
+SWITCH               CODE              00000054                       dse    0
+NEAR_F               CODE              00000054                       dse    0
+TINY_F               CODE              00000054                       dse    0
+INITTAB              CODE         00000054 - 00000059             6   rel    0
+DIFUNCT              CODE              0000005A                       dse    0
+CODE                 CODE         0000005A - 000001EF           196   rel    1
+FAR_F                CODE              000001F0                       dse    0
+NEAR_ID              CODE              000001F0                       dse    0
+CHECKSUM             CODE              000001F0                       dse    0
+HUGE_F               CODE              000001F0                       dse    0
+TINY_ID              CODE              000001F0                       dse    0
+NEAR_C               DATA              00000000                       dse    0
+ABSOLUTE (ABS)       DATA         0000002A - 0000002A             1   rel    0
+                     DATA         0000002B - 0000002B             1 
+                     DATA         0000002C - 0000002C             1 
+TINY_I               DATA              00000060                       dse    0
+TINY_Z               DATA              00000060                       dse    0
+TINY_N               DATA              00000060                       dse    0
+CSTACK               DATA         00000060 - 0000007F            20   dse    0
+HEAP                 DATA              00000080                       dse    0
+RSTACK               DATA         00000080 - 0000009F            20   dse    0
+NEAR_I               DATA              000000A0                       dse    0
+NEAR_Z               DATA         000000A0 - 000000D2            33   rel    0
+NEAR_N               DATA              000000D3                       dse    0
+EEPROM_N             XDATA             00000001                       dse    0
+EEPROM_I             XDATA             00000001                       dse    0
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+  416 bytes of CODE memory (80 range fill)
+  118 bytes of DATA memory
+
+Errors: none
+Warnings: none
+

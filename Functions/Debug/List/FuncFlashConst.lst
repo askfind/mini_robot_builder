@@ -1,0 +1,148 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             26/Sep/2002  16:24:49 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\Functions\FuncFlashConst.c                    #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\Functions\Debug\Obj\ -I     #
+#                    C:\AVR_CC\AVR\SRC\CLIB\INC\ -lC                         #
+#                    C:\AVR_CC\Functions\Debug\List\ -lA                     #
+#                    C:\AVR_CC\Functions\Debug\List\ -e -y                   #
+#                    --initializers_in_flash -z3 --no_cse --no_inline        #
+#                    --no_code_motion --no_cross_call --no_clustering        #
+#                    --debug -DENABLE_BIT_DEFINITIONS                        #
+#                    C:\AVR_CC\Functions\FuncFlashConst.c                    #
+#    List file    =  C:\AVR_CC\Functions\Debug\List\FuncFlashConst.lst       #
+#    Object file  =  C:\AVR_CC\Functions\Debug\Obj\FuncFlashConst.r90        #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          #include "iom161.h"
+
+   \                                 In segment ABSOLUTE, at 0x2c
+   \   union <unnamed> volatile __io _A_UDR0;
+   \                     _A_UDR0:
+   \   00000000                              DS 1
+      2          #include "stdio.h"
+      3          
+      4          /* Set and clear bits in I/O registers can also be declared as macros */
+      5          #define SetBit(ADDRESS,BIT) (ADDRESS |= (1<<BIT))
+      6          #define ClrBit(ADDRESS,BIT) (ADDRESS &= ~(1<<BIT))
+      7          /* Macro for testing of a single bit in an I/O location*/
+      8          /* Macro for testing of a single bit in an I/O location*/
+      9          #define CheckBit(ADDRESS,BIT) (ADDRESS & (1<<BIT))
+     10          
+     11          /* Use of bit-mask for status bits*/
+     12          /* Define bit macros, note that they are similar to the I/O macros*/
+     13          #define SETBIT(x,y) (x |= (y)) /* Set bit y in byte x*/
+     14          #define CLEARBIT(x,y) (x &= (~y)) /* Clear bit y in byte x*/
+     15          #define CHECKBIT(x,y) (x & (y)) /* Check bit y in byte x*/
+     16          
+     17          /* UART0 Buffer Defines */
+     18          #define RX_BUFFER_SIZE_UART0 32 /* 1,2,4,8,16,32,64,128 or 256 bytes */
+     19          #define RX_BUFFER_MASK_UART0 ( RX_BUFFER_SIZE_UART0 - 1 )
+     20          #define TX_BUFFER_SIZE_UART0 32 /* 1,2,4,8,16,32,64,128 or 256 bytes */
+     21          #define TX_BUFFER_MASK_UART0 ( TX_BUFFER_SIZE_UART0 - 1 )
+     22          
+     23          #if ( RX_BUFFER_SIZE_UART0 & RX_BUFFER_MASK_UART0 )
+     24          #message "RX buffer size is not a power of 2"
+     25          #endif
+     26          
+     27          /* Static Variables */
+     28          static volatile unsigned char RxBuf_UART0[RX_BUFFER_SIZE_UART0];
+     29          static volatile unsigned char RxHead_UART0;
+     30          static volatile unsigned char RxTail_UART0;
+     31          static volatile unsigned char TxBuf_UART0[TX_BUFFER_SIZE_UART0];
+     32          static volatile unsigned char TxHead_UART0;
+     33          static volatile unsigned char TxTail_UART0;
+     34          
+     35          #pragma type_attribute=__flash
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+     36          char max = 127;
+   \   char __flash max;
+   \                     max:
+   \   00000000   7F                         DB 127
+     37          #pragma type_attribute=__flash
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+     38          char string[] = "This string is stored in flash";
+   \   char __flash string[31];
+   \                     string:
+   \   00000000   685473697320               DB "This string is stored in flash"
+   \            72746E692067
+   \            736973206F74
+   \            657220646E69
+   \            6620616C6873
+   \            00          
+     39          
+
+   \                                 In segment CODE, align 2, keep-with-next
+     40          void main(void)
+     41          {
+     42            int i;
+     43            unsigned char c;
+                                 ^
+Warning[Pe550]: variable "c" was set but never used
+     44            i=10;
+   \   __nearfunc void main();
+   \                     main:
+   \   00000000   E00A                       LDI     R16,10
+   \   00000002   E010                       LDI     R17,0
+     45            c = (unsigned char) i;
+   \   00000004   2F20                       MOV     R18,R16
+     46            i=49;
+   \   00000006   E301                       LDI     R16,49
+   \   00000008   E010                       LDI     R17,0
+     47            c = (unsigned char) i;
+   \   0000000A   2F20                       MOV     R18,R16
+     48            
+     49          /* test 1 */
+     50          /*
+     51          char __flash *flashpointer; // Declare flash pointer
+     52          flashpointer = &string[0];// Assign pointer to flash location
+     53          */
+     54          /* 
+     55          ;      1 byte  in segment ABSOLUTE
+     56          ;     10 bytes in segment CODE
+     57          ;     32 bytes in segment NEAR_F
+     58          ; 
+     59          ;     42 bytes of CODE memory
+     60          ;      0 bytes of DATA memory (+ 1 byte shared)
+     61          */
+     62          // UDR0 = *flashpointer;      // Read data from flash and write to UART
+     63          
+     64          /* test 2 */
+     65          /*
+     66          ;      1 byte  in segment ABSOLUTE
+     67          ;     10 bytes in segment CODE
+     68          ;     32 bytes in segment NEAR_F
+     69          ; 
+     70          ;     42 bytes of CODE memory
+     71          ;      0 bytes of DATA memory (+ 1 byte shared)
+     72          */
+     73          UDR0 = string[0];
+   \   0000000C   ....                       LDI     R30,LOW(string)
+   \   0000000E   ....                       LDI     R31,(string) >> 8
+   \   00000010   9104                       LPM     R16,Z
+   \   00000012   B90C                       OUT     0x0C,R16
+     74          }
+   \   00000014   9508                       RET
+
+   Maximum stack usage in bytes:
+
+     Function  CSTACK  RSTACK
+     --------  ------  ------
+     main          0       0 
+
+ 
+      1 byte  in segment ABSOLUTE
+     22 bytes in segment CODE
+     32 bytes in segment NEAR_F
+ 
+     54 bytes of CODE memory
+      0 bytes of DATA memory (+ 1 byte shared)
+
+Errors: none
+Warnings: 1

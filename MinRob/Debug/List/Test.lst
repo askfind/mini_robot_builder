@@ -1,0 +1,2815 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             27/Aug/2002  13:41:25 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\MiniRobot_CODE\Test.cpp                       #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\MiniRobot_CODE\Debug\Obj\   #
+#                    -I C:\AVR_CC\AVR\INC\ -lC C:\AVR_CC\MiniRobot_CODE\Debu #
+#                    g\List\ -lA C:\AVR_CC\MiniRobot_CODE\Debug\List\        #
+#                    --ec++ -e -y --initializers_in_flash --root_variables   #
+#                    -z3 --no_cse --no_inline --no_code_motion               #
+#                    --no_cross_call --no_clustering --library_module        #
+#                    --debug -DENABLE_BIT_DEFINITIONS                        #
+#                    C:\AVR_CC\MiniRobot_CODE\Test.cpp                       #
+#    List file    =  C:\AVR_CC\MiniRobot_CODE\Debug\List\Test.lst            #
+#    Object file  =  C:\AVR_CC\MiniRobot_CODE\Debug\Obj\Test.r90             #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          /* Test Programm C++
+      2          */
+      3          #include <stdio.h>
+      4          #include <iom161.h>
+
+   \                                 In segment ABSOLUTE, at 0x20, root
+   \   union <unnamed> volatile __io _A_UBRR1;
+   \                     _A_UBRR1:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x21, root
+   \   union <unnamed> volatile __io _A_UCSR1B;
+   \                     _A_UCSR1B:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x22, root
+   \   union <unnamed> volatile __io _A_UCSR1A;
+   \                     _A_UCSR1A:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x23, root
+   \   union <unnamed> volatile __io _A_UDR1;
+   \                     _A_UDR1:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x25, root
+   \   union <unnamed> volatile __io _A_PINE;
+   \                     _A_PINE:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x26, root
+   \   union <unnamed> volatile __io _A_DDRE;
+   \                     _A_DDRE:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x27, root
+   \   union <unnamed> volatile __io _A_PORTE;
+   \                     _A_PORTE:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x28, root
+   \   union <unnamed> volatile __io _A_ACSR;
+   \                     _A_ACSR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x29, root
+   \   union <unnamed> volatile __io _A_UBRR0;
+   \                     _A_UBRR0:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x2a, root
+   \   union <unnamed> volatile __io _A_UCSR0B;
+   \                     _A_UCSR0B:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x2b, root
+   \   union <unnamed> volatile __io _A_UCSR0A;
+   \                     _A_UCSR0A:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x2c, root
+   \   union <unnamed> volatile __io _A_UDR0;
+   \                     _A_UDR0:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x2d, root
+   \   union <unnamed> volatile __io _A_SPCR;
+   \                     _A_SPCR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x2e, root
+   \   union <unnamed> volatile __io _A_SPSR;
+   \                     _A_SPSR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x2f, root
+   \   union <unnamed> volatile __io _A_SPDR;
+   \                     _A_SPDR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x30, root
+   \   union <unnamed> volatile __io _A_PIND;
+   \                     _A_PIND:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x31, root
+   \   union <unnamed> volatile __io _A_DDRD;
+   \                     _A_DDRD:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x32, root
+   \   union <unnamed> volatile __io _A_PORTD;
+   \                     _A_PORTD:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x33, root
+   \   union <unnamed> volatile __io _A_PINC;
+   \                     _A_PINC:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x34, root
+   \   union <unnamed> volatile __io _A_DDRC;
+   \                     _A_DDRC:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x35, root
+   \   union <unnamed> volatile __io _A_PORTC;
+   \                     _A_PORTC:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x36, root
+   \   union <unnamed> volatile __io _A_PINB;
+   \                     _A_PINB:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x37, root
+   \   union <unnamed> volatile __io _A_DDRB;
+   \                     _A_DDRB:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x38, root
+   \   union <unnamed> volatile __io _A_PORTB;
+   \                     _A_PORTB:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x39, root
+   \   union <unnamed> volatile __io _A_PINA;
+   \                     _A_PINA:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x3a, root
+   \   union <unnamed> volatile __io _A_DDRA;
+   \                     _A_DDRA:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x3b, root
+   \   union <unnamed> volatile __io _A_PORTA;
+   \                     _A_PORTA:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x3c, root
+   \   union <unnamed> volatile __io _A_EECR;
+   \                     _A_EECR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x3d, root
+   \   union <unnamed> volatile __io _A_EEDR;
+   \                     _A_EEDR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x3e, root
+   \   union <unnamed> volatile __io _A_EEAR;
+   \                     _A_EEAR:
+   \   00000000                              DS 2
+
+   \                                 In segment ABSOLUTE, at 0x40, root
+   \   union <unnamed> volatile __io _A_UBRRHI;
+   \                     _A_UBRRHI:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x41, root
+   \   union <unnamed> volatile __io _A_WDTCR;
+   \                     _A_WDTCR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x42, root
+   \   union <unnamed> volatile __io _A_OCR2;
+   \                     _A_OCR2:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x43, root
+   \   union <unnamed> volatile __io _A_TCNT2;
+   \                     _A_TCNT2:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x44, root
+   \   union <unnamed> volatile __io _A_ICR1;
+   \                     _A_ICR1:
+   \   00000000                              DS 2
+
+   \                                 In segment ABSOLUTE, at 0x46, root
+   \   union <unnamed> volatile __io _A_ASSR;
+   \                     _A_ASSR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x47, root
+   \   union <unnamed> volatile __io _A_TCCR2;
+   \                     _A_TCCR2:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x48, root
+   \   union <unnamed> volatile __io _A_OCR1B;
+   \                     _A_OCR1B:
+   \   00000000                              DS 2
+
+   \                                 In segment ABSOLUTE, at 0x4a, root
+   \   union <unnamed> volatile __io _A_OCR1A;
+   \                     _A_OCR1A:
+   \   00000000                              DS 2
+
+   \                                 In segment ABSOLUTE, at 0x4c, root
+   \   union <unnamed> volatile __io _A_TCNT1;
+   \                     _A_TCNT1:
+   \   00000000                              DS 2
+
+   \                                 In segment ABSOLUTE, at 0x4e, root
+   \   union <unnamed> volatile __io _A_TCCR1B;
+   \                     _A_TCCR1B:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x4f, root
+   \   union <unnamed> volatile __io _A_TCCR1A;
+   \                     _A_TCCR1A:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x50, root
+   \   union <unnamed> volatile __io _A_SFIOR;
+   \                     _A_SFIOR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x51, root
+   \   union <unnamed> volatile __io _A_OCR0;
+   \                     _A_OCR0:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x52, root
+   \   union <unnamed> volatile __io _A_TCNT0;
+   \                     _A_TCNT0:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x53, root
+   \   union <unnamed> volatile __io _A_TCCR0;
+   \                     _A_TCCR0:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x54, root
+   \   union <unnamed> volatile __io _A_MCUSR;
+   \                     _A_MCUSR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x55, root
+   \   union <unnamed> volatile __io _A_MCUCR;
+   \                     _A_MCUCR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x56, root
+   \   union <unnamed> volatile __io _A_EMCUCR;
+   \                     _A_EMCUCR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x57, root
+   \   union <unnamed> volatile __io _A_SPMCR;
+   \                     _A_SPMCR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x58, root
+   \   union <unnamed> volatile __io _A_TIFR;
+   \                     _A_TIFR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x59, root
+   \   union <unnamed> volatile __io _A_TIMSK;
+   \                     _A_TIMSK:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x5a, root
+   \   union <unnamed> volatile __io _A_GIFR;
+   \                     _A_GIFR:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x5b, root
+   \   union <unnamed> volatile __io _A_GIMSK;
+   \                     _A_GIMSK:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x5d, root
+   \   union <unnamed> volatile __io _A_SP;
+   \                     _A_SP:
+   \   00000000                              DS 2
+
+   \                                 In segment ABSOLUTE, at 0x5f, root
+   \   union <unnamed> volatile __io _A_SREG;
+   \                     _A_SREG:
+   \   00000000                              DS 1
+      5          #include <inavr.h>
+      6          #include <iostream.h>
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   static __nearfunc void __sti__Test_cpp_ccc03e22();
+   \                     ??__sti__Test_cpp_ccc03e22:
+   \   00000000   ....                       LDI     R16,LOW(_Ios_init0)
+   \   00000002   ....                       LDI     R17,(_Ios_init0) >> 8
+   \   00000004   ........                   CALL    ??Init
+   \   00000008   ....                       LDI     R16,LOW(?_0)
+   \   0000000A   ....                       LDI     R17,(?_0) >> 8
+   \   0000000C   ........                   CALL    __record_needed_destruction
+   \   00000010   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void exception::~exception(exception *, int);
+   \                     `?~exception`:
+   \   00000000   2F40                       MOV     R20,R16
+   \   00000002   2B41                       OR      R20,R17
+   \   00000004   F051                       BREQ    `?~exception_1`
+   \   00000006   ....                       LDI     R20,LOW(??__vtbl)
+   \   00000008   ....                       LDI     R21,(??__vtbl) >> 8
+   \   0000000A   2FE0                       MOV     R30,R16
+   \   0000000C   2FF1                       MOV     R31,R17
+   \   0000000E   8342                       STD     Z+2,R20
+   \   00000010   8353                       STD     Z+3,R21
+   \   00000012   FB20                       BST     R18,0
+   \   00000014   F416                       BRTC    `?~exception_1`
+   \   00000016   ........                   CALL    `??operator delete`
+   \                     `?~exception_1`:
+   \   0000001A   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char const *exception::what(exception const *) const;
+   \                     ??what:
+   \   00000000   2FE0                       MOV     R30,R16
+   \   00000002   2FF1                       MOV     R31,R17
+   \   00000004   8100                       LD      R16,Z
+   \   00000006   8111                       LDD     R17,Z+1
+   \   00000008   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void exception::_Doraise(exception const *) const;
+   \                     ??_Doraise:
+   \   00000000   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void bad_exception::~bad_exception(bad_exception *, int);
+   \                     `?~bad_exception`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~bad_exception_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_1)
+   \   00000010   ....                       LDI     R17,(??__vtbl_1) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~exception`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~bad_exception_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~bad_exception_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void bad_exception::_Doraise(bad_exception const *) const;
+   \                     ??_Doraise_1:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc fpos &fpos::fpos(fpos *, streamoff);
+   \                     ??fpos:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   0198                       MOVW    R19 : R18,R17 : R16
+   \   00000006   01CA                       MOVW    R25 : R24,R21 : R20
+   \   00000008   01DB                       MOVW    R27 : R26,R23 : R22
+   \   0000000A   2F02                       MOV     R16,R18
+   \   0000000C   2B03                       OR      R16,R19
+   \   0000000E   F441                       BRNE    ??fpos_1
+   \   00000010   E00E                       LDI     R16,14
+   \   00000012   E010                       LDI     R17,0
+   \   00000014   ........                   CALL    `??operator new`
+   \   00000018   0198                       MOVW    R19 : R18,R17 : R16
+   \   0000001A   0189                       MOVW    R17 : R16,R19 : R18
+   \   0000001C   2B01                       OR      R16,R17
+   \   0000001E   F0D1                       BREQ    ??fpos_2
+   \                     ??fpos_1:
+   \   00000020   2FE2                       MOV     R30,R18
+   \   00000022   2FF3                       MOV     R31,R19
+   \   00000024   8380                       ST      Z,R24
+   \   00000026   8391                       STD     Z+1,R25
+   \   00000028   83A2                       STD     Z+2,R26
+   \   0000002A   83B3                       STD     Z+3,R27
+   \   0000002C   01C9                       MOVW    R25 : R24,R19 : R18
+   \   0000002E   9604                       ADIW    R25 : R24,4
+   \   00000030   ....                       LDI     R22,LOW(_Fpz)
+   \   00000032   ....                       LDI     R23,(_Fpz) >> 8
+   \   00000034   018C                       MOVW    R17 : R16,R25 : R24
+   \   00000036   01FB                       MOVW    R31 : R30,R23 : R22
+   \   00000038   E047                       LDI     R20,7
+   \   0000003A   E050                       LDI     R21,0
+   \   0000003C   ........                   CALL    ?ML_SRAM_SRAM_16_L07
+   \   00000040   ....                       LDI     R30,LOW(??_Stz)
+   \   00000042   ....                       LDI     R31,(??_Stz) >> 8
+   \   00000044   8140                       LD      R20,Z
+   \   00000046   8151                       LDD     R21,Z+1
+   \   00000048   8162                       LDD     R22,Z+2
+   \   0000004A   2FE2                       MOV     R30,R18
+   \   0000004C   2FF3                       MOV     R31,R19
+   \   0000004E   8743                       STD     Z+11,R20
+   \   00000050   8754                       STD     Z+12,R21
+   \   00000052   8765                       STD     Z+13,R22
+   \                     ??fpos_2:
+   \   00000054   0189                       MOVW    R17 : R16,R19 : R18
+   \   00000056   E0E4                       LDI     R30,4
+   \   00000058   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char *char_traits::copy(char *, char const *, size_t);
+   \                     ??copy:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   018A                       MOVW    R17 : R16,R21 : R20
+   \   00000008   01F9                       MOVW    R31 : R30,R19 : R18
+   \   0000000A   ........                   CALL    memcpy
+   \   0000000E   91A9                       LD      R26,Y+
+   \   00000010   91B9                       LD      R27,Y+
+   \   00000012   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char char_traits::to_char_type(char_traits::int_type const &);
+   \                     ??to_char_type:
+   \   00000000   2FE0                       MOV     R30,R16
+   \   00000002   2FF1                       MOV     R31,R17
+   \   00000004   8100                       LD      R16,Z
+   \   00000006   8111                       LDD     R17,Z+1
+   \   00000008   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int char_traits::to_int_type(char const &);
+   \                     ??to_int_type:
+   \   00000000   2FE0                       MOV     R30,R16
+   \   00000002   2FF1                       MOV     R31,R17
+   \   00000004   8100                       LD      R16,Z
+   \   00000006   E010                       LDI     R17,0
+   \   00000008   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc bool char_traits::eq_int_type(char_traits::int_type const &, char_traits::int_type const &);
+   \                     ??eq_int_type:
+   \   00000000   2FE0                       MOV     R30,R16
+   \   00000002   2FF1                       MOV     R31,R17
+   \   00000004   8100                       LD      R16,Z
+   \   00000006   8111                       LDD     R17,Z+1
+   \   00000008   2FE2                       MOV     R30,R18
+   \   0000000A   2FF3                       MOV     R31,R19
+   \   0000000C   8120                       LD      R18,Z
+   \   0000000E   8131                       LDD     R19,Z+1
+   \   00000010   1702                       CP      R16,R18
+   \   00000012   0713                       CPC     R17,R19
+   \   00000014   F411                       BRNE    ??eq_int_type_1
+   \   00000016   E001                       LDI     R16,1
+   \   00000018   9508                       RET
+   \                     ??eq_int_type_1:
+   \   0000001A   E000                       LDI     R16,0
+   \   0000001C   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int char_traits::eof();
+   \                     ??eof:
+   \   00000000   EF0F                       LDI     R16,255
+   \   00000002   EF1F                       LDI     R17,255
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void char_allocator::deallocate(void *, size_t);
+   \                     ??deallocate:
+   \   00000000   ........                   CALL    `??operator delete`
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void string::~string(string *, int);
+   \                     `?~string`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01C8                       MOVW    R25 : R24,R17 : R16
+   \   00000006   01D9                       MOVW    R27 : R26,R19 : R18
+   \   00000008   2F08                       MOV     R16,R24
+   \   0000000A   2B09                       OR      R16,R25
+   \   0000000C   F049                       BREQ    `?~string_1`
+   \   0000000E   E021                       LDI     R18,1
+   \   00000010   018C                       MOVW    R17 : R16,R25 : R24
+   \   00000012   ........                   CALL    ??_Tidy
+   \   00000016   FBA0                       BST     R26,0
+   \   00000018   F41E                       BRTC    `?~string_1`
+   \   0000001A   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000001C   ........                   CALL    `??operator delete`
+   \                     `?~string_1`:
+   \   00000020   E0E4                       LDI     R30,4
+   \   00000022   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char const *string::c_str(string const *) const;
+   \                     ??c_str:
+   \   00000000   2FE0                       MOV     R30,R16
+   \   00000002   2FF1                       MOV     R31,R17
+   \   00000004   8122                       LDD     R18,Z+2
+   \   00000006   8133                       LDD     R19,Z+3
+   \   00000008   2B23                       OR      R18,R19
+   \   0000000A   F421                       BRNE    ??c_str_1
+   \   0000000C   ........                   CALL    ??_Nullstr
+   \   00000010   0198                       MOVW    R19 : R18,R17 : R16
+   \   00000012   C004                       RJMP    ??c_str_2
+   \                     ??c_str_1:
+   \   00000014   2FE0                       MOV     R30,R16
+   \   00000016   2FF1                       MOV     R31,R17
+   \   00000018   8122                       LDD     R18,Z+2
+   \   0000001A   8133                       LDD     R19,Z+3
+   \                     ??c_str_2:
+   \   0000001C   0189                       MOVW    R17 : R16,R19 : R18
+   \   0000001E   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char const *string::_Nullstr();
+   \                     ??_Nullstr:
+   \   00000000   ....                       LDI     R16,LOW(??_C)
+   \   00000002   ....                       LDI     R17,(??_C) >> 8
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc unsigned char &string::_Refcnt(string *, char const *);
+   \                     ??_Refcnt:
+   \   00000000   0189                       MOVW    R17 : R16,R19 : R18
+   \   00000002   5001                       SUBI    R16,1
+   \   00000004   4010                       SBCI    R17,0
+   \   00000006   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void string::_Tidy(string *, bool);
+   \                     ??_Tidy:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   2322                       TST     R18
+   \   00000008   F1C9                       BREQ    ??_Tidy_1
+   \   0000000A   2FEA                       MOV     R30,R26
+   \   0000000C   2FFB                       MOV     R31,R27
+   \   0000000E   8102                       LDD     R16,Z+2
+   \   00000010   8113                       LDD     R17,Z+3
+   \   00000012   2B01                       OR      R16,R17
+   \   00000014   F199                       BREQ    ??_Tidy_1
+   \   00000016   2FEA                       MOV     R30,R26
+   \   00000018   2FFB                       MOV     R31,R27
+   \   0000001A   8122                       LDD     R18,Z+2
+   \   0000001C   8133                       LDD     R19,Z+3
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    ??_Refcnt
+   \   00000024   2FE0                       MOV     R30,R16
+   \   00000026   2FF1                       MOV     R31,R17
+   \   00000028   8100                       LD      R16,Z
+   \   0000002A   2300                       TST     R16
+   \   0000002C   F061                       BREQ    ??_Tidy_2
+   \   0000002E   2FEA                       MOV     R30,R26
+   \   00000030   2FFB                       MOV     R31,R27
+   \   00000032   8122                       LDD     R18,Z+2
+   \   00000034   8133                       LDD     R19,Z+3
+   \   00000036   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000038   ........                   CALL    ??_Refcnt
+   \   0000003C   2FE0                       MOV     R30,R16
+   \   0000003E   2FF1                       MOV     R31,R17
+   \   00000040   8100                       LD      R16,Z
+   \   00000042   3F0F                       CPI     R16,255
+   \   00000044   F479                       BRNE    ??_Tidy_3
+   \                     ??_Tidy_2:
+   \   00000046   2FEA                       MOV     R30,R26
+   \   00000048   2FFB                       MOV     R31,R27
+   \   0000004A   8126                       LDD     R18,Z+6
+   \   0000004C   8137                       LDD     R19,Z+7
+   \   0000004E   5F2E                       SUBI    R18,254
+   \   00000050   4F3F                       SBCI    R19,255
+   \   00000052   2FEA                       MOV     R30,R26
+   \   00000054   2FFB                       MOV     R31,R27
+   \   00000056   8102                       LDD     R16,Z+2
+   \   00000058   8113                       LDD     R17,Z+3
+   \   0000005A   5001                       SUBI    R16,1
+   \   0000005C   4010                       SBCI    R17,0
+   \   0000005E   ........                   CALL    ??deallocate
+   \   00000062   C00C                       RJMP    ??_Tidy_1
+   \                     ??_Tidy_3:
+   \   00000064   2FEA                       MOV     R30,R26
+   \   00000066   2FFB                       MOV     R31,R27
+   \   00000068   8122                       LDD     R18,Z+2
+   \   0000006A   8133                       LDD     R19,Z+3
+   \   0000006C   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000006E   ........                   CALL    ??_Refcnt
+   \   00000072   2FE0                       MOV     R30,R16
+   \   00000074   2FF1                       MOV     R31,R17
+   \   00000076   8100                       LD      R16,Z
+   \   00000078   950A                       DEC     R16
+   \   0000007A   8300                       ST      Z,R16
+   \                     ??_Tidy_1:
+   \   0000007C   E000                       LDI     R16,0
+   \   0000007E   E010                       LDI     R17,0
+   \   00000080   2FEA                       MOV     R30,R26
+   \   00000082   2FFB                       MOV     R31,R27
+   \   00000084   8302                       STD     Z+2,R16
+   \   00000086   8313                       STD     Z+3,R17
+   \   00000088   E000                       LDI     R16,0
+   \   0000008A   E010                       LDI     R17,0
+   \   0000008C   2FEA                       MOV     R30,R26
+   \   0000008E   2FFB                       MOV     R31,R27
+   \   00000090   8304                       STD     Z+4,R16
+   \   00000092   8315                       STD     Z+5,R17
+   \   00000094   E000                       LDI     R16,0
+   \   00000096   E010                       LDI     R17,0
+   \   00000098   2FEA                       MOV     R30,R26
+   \   0000009A   2FFB                       MOV     R31,R27
+   \   0000009C   8306                       STD     Z+6,R16
+   \   0000009E   8317                       STD     Z+7,R17
+   \   000000A0   91A9                       LD      R26,Y+
+   \   000000A2   91B9                       LD      R27,Y+
+   \   000000A4   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void logic_error::~logic_error(logic_error *, int);
+   \                     `?~logic_error`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F0B9                       BREQ    `?~logic_error_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_2)
+   \   00000010   ....                       LDI     R17,(??__vtbl_2) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E022                       LDI     R18,2
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   5F0C                       SUBI    R16,252
+   \   00000022   4F1F                       SBCI    R17,255
+   \   00000024   ........                   CALL    `?~string`
+   \   00000028   E020                       LDI     R18,0
+   \   0000002A   E030                       LDI     R19,0
+   \   0000002C   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002E   ........                   CALL    `?~exception`
+   \   00000032   FB80                       BST     R24,0
+   \   00000034   F41E                       BRTC    `?~logic_error_1`
+   \   00000036   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000038   ........                   CALL    `??operator delete`
+   \                     `?~logic_error_1`:
+   \   0000003C   E0E4                       LDI     R30,4
+   \   0000003E   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char const *logic_error::what(logic_error const *) const;
+   \                     ??what_1:
+   \   00000000   5F0C                       SUBI    R16,252
+   \   00000002   4F1F                       SBCI    R17,255
+   \   00000004   ........                   CALL    ??c_str
+   \   00000008   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void logic_error::_Doraise(logic_error const *) const;
+   \                     ??_Doraise_2:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void domain_error::~domain_error(domain_error *, int);
+   \                     `?~domain_error`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~domain_error_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_3)
+   \   00000010   ....                       LDI     R17,(??__vtbl_3) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~logic_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~domain_error_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~domain_error_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void domain_error::_Doraise(domain_error const *) const;
+   \                     ??_Doraise_3:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void invalid_argument::~invalid_argument(invalid_argument *, int);
+   \                     `?~invalid_argument`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~invalid_argument_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_4)
+   \   00000010   ....                       LDI     R17,(??__vtbl_4) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~logic_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~invalid_argument_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~invalid_argument_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void invalid_argument::_Doraise(invalid_argument const *) const;
+   \                     ??_Doraise_4:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void length_error::~length_error(length_error *, int);
+   \                     `?~length_error`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~length_error_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_5)
+   \   00000010   ....                       LDI     R17,(??__vtbl_5) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~logic_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~length_error_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~length_error_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void length_error::_Doraise(length_error const *) const;
+   \                     ??_Doraise_5:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void out_of_range::~out_of_range(out_of_range *, int);
+   \                     `?~out_of_range`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~out_of_range_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_6)
+   \   00000010   ....                       LDI     R17,(??__vtbl_6) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~logic_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~out_of_range_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~out_of_range_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void out_of_range::_Doraise(out_of_range const *) const;
+   \                     ??_Doraise_6:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void runtime_error::~runtime_error(runtime_error *, int);
+   \                     `?~runtime_error`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F0B9                       BREQ    `?~runtime_error_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_7)
+   \   00000010   ....                       LDI     R17,(??__vtbl_7) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E022                       LDI     R18,2
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   5F0C                       SUBI    R16,252
+   \   00000022   4F1F                       SBCI    R17,255
+   \   00000024   ........                   CALL    `?~string`
+   \   00000028   E020                       LDI     R18,0
+   \   0000002A   E030                       LDI     R19,0
+   \   0000002C   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002E   ........                   CALL    `?~exception`
+   \   00000032   FB80                       BST     R24,0
+   \   00000034   F41E                       BRTC    `?~runtime_error_1`
+   \   00000036   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000038   ........                   CALL    `??operator delete`
+   \                     `?~runtime_error_1`:
+   \   0000003C   E0E4                       LDI     R30,4
+   \   0000003E   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char const *runtime_error::what(runtime_error const *) const;
+   \                     ??what_2:
+   \   00000000   5F0C                       SUBI    R16,252
+   \   00000002   4F1F                       SBCI    R17,255
+   \   00000004   ........                   CALL    ??c_str
+   \   00000008   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void runtime_error::_Doraise(runtime_error const *) const;
+   \                     ??_Doraise_7:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void overflow_error::~overflow_error(overflow_error *, int);
+   \                     `?~overflow_error`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~overflow_error_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_8)
+   \   00000010   ....                       LDI     R17,(??__vtbl_8) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~runtime_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~overflow_error_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~overflow_error_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void overflow_error::_Doraise(overflow_error const *) const;
+   \                     ??_Doraise_8:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void underflow_error::~underflow_error(underflow_error *, int);
+   \                     `?~underflow_error`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~underflow_error_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_9)
+   \   00000010   ....                       LDI     R17,(??__vtbl_9) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~runtime_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~underflow_error_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~underflow_error_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void underflow_error::_Doraise(underflow_error const *) const;
+   \                     ??_Doraise_9:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void range_error::~range_error(range_error *, int);
+   \                     `?~range_error`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~range_error_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_10)
+   \   00000010   ....                       LDI     R17,(??__vtbl_10) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~runtime_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~range_error_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~range_error_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void range_error::_Doraise(range_error const *) const;
+   \                     ??_Doraise_10:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc locale &locale::locale(locale *);
+   \                     ??locale:
+   \   00000000   2F20                       MOV     R18,R16
+   \   00000002   2B21                       OR      R18,R17
+   \   00000004   F421                       BRNE    ??locale_1
+   \   00000006   E001                       LDI     R16,1
+   \   00000008   E010                       LDI     R17,0
+   \   0000000A   ........                   CALL    `??operator new`
+   \                     ??locale_1:
+   \   0000000E   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void ios_base::failure::~failure(ios_base::failure *, int);
+   \                     `?~failure`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~failure_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_11)
+   \   00000010   ....                       LDI     R17,(??__vtbl_11) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8302                       STD     Z+2,R16
+   \   00000018   8313                       STD     Z+3,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~runtime_error`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~failure_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~failure_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void ios_base::failure::_Doraise(ios_base::failure const *) const;
+   \                     ??_Doraise_11:
+   \   00000000   ........                   CALL    ??_Throw
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc streambuf &streambuf::streambuf(streambuf *);
+   \                     ??streambuf:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   2F0A                       MOV     R16,R26
+   \   00000008   2B0B                       OR      R16,R27
+   \   0000000A   F441                       BRNE    ??streambuf_1
+   \   0000000C   E10B                       LDI     R16,27
+   \   0000000E   E010                       LDI     R17,0
+   \   00000010   ........                   CALL    `??operator new`
+   \   00000014   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000016   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000018   2B01                       OR      R16,R17
+   \   0000001A   F071                       BREQ    ??streambuf_2
+   \                     ??streambuf_1:
+   \   0000001C   ....                       LDI     R16,LOW(??__vtbl_12)
+   \   0000001E   ....                       LDI     R17,(??__vtbl_12) >> 8
+   \   00000020   9659                       ADIW    R27 : R26,25
+   \   00000022   930D                       ST      X+,R16
+   \   00000024   931C                       ST      X,R17
+   \   00000026   975A                       SBIW    R27 : R26,26
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   5E08                       SUBI    R16,232
+   \   0000002C   4F1F                       SBCI    R17,255
+   \   0000002E   ........                   CALL    ??locale
+   \   00000032   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000034   ........                   CALL    ??_Init
+   \                     ??streambuf_2:
+   \   00000038   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000003A   91A9                       LD      R26,Y+
+   \   0000003C   91B9                       LD      R27,Y+
+   \   0000003E   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void streambuf::~streambuf(streambuf *, int);
+   \                     `?~streambuf`:
+   \   00000000   2F40                       MOV     R20,R16
+   \   00000002   2B41                       OR      R20,R17
+   \   00000004   F051                       BREQ    `?~streambuf_1`
+   \   00000006   ....                       LDI     R20,LOW(??__vtbl_12)
+   \   00000008   ....                       LDI     R21,(??__vtbl_12) >> 8
+   \   0000000A   2FE0                       MOV     R30,R16
+   \   0000000C   2FF1                       MOV     R31,R17
+   \   0000000E   8F41                       STD     Z+25,R20
+   \   00000010   8F52                       STD     Z+26,R21
+   \   00000012   FB20                       BST     R18,0
+   \   00000014   F416                       BRTC    `?~streambuf_1`
+   \   00000016   ........                   CALL    `??operator delete`
+   \                     `?~streambuf_1`:
+   \   0000001A   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc streambuf *streambuf::pubsetbuf(streambuf *, char *, streamsize);
+   \                     ??pubsetbuf:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   2FA0                       MOV     R26,R16
+   \   00000006   2FB1                       MOV     R27,R17
+   \   00000008   9659                       ADIW    R27 : R26,25
+   \   0000000A   91ED                       LD      R30,X+
+   \   0000000C   91FC                       LD      R31,X
+   \   0000000E   975A                       SBIW    R27 : R26,26
+   \   00000010   9674                       ADIW    R31 : R30,20
+   \   00000012   8160                       LD      R22,Z
+   \   00000014   8171                       LDD     R23,Z+1
+   \   00000016   01FB                       MOVW    R31 : R30,R23 : R22
+   \   00000018   9509                       ICALL
+   \   0000001A   91A9                       LD      R26,Y+
+   \   0000001C   91B9                       LD      R27,Y+
+   \   0000001E   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::sgetc(streambuf *);
+   \                     ??sgetc:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000008   ........                   CALL    ??gptr
+   \   0000000C   2B01                       OR      R16,R17
+   \   0000000E   F081                       BREQ    ??sgetc_1
+   \   00000010   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000012   ........                   CALL    ??gptr
+   \   00000016   01C8                       MOVW    R25 : R24,R17 : R16
+   \   00000018   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000001A   ........                   CALL    ??egptr
+   \   0000001E   1780                       CP      R24,R16
+   \   00000020   0791                       CPC     R25,R17
+   \   00000022   F430                       BRCC    ??sgetc_1
+   \   00000024   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000026   ........                   CALL    ??gptr
+   \   0000002A   ........                   CALL    ??to_int_type
+   \   0000002E   C00A                       RJMP    ??sgetc_2
+   \                     ??sgetc_1:
+   \   00000030   9659                       ADIW    R27 : R26,25
+   \   00000032   91ED                       LD      R30,X+
+   \   00000034   91FC                       LD      R31,X
+   \   00000036   975A                       SBIW    R27 : R26,26
+   \   00000038   9638                       ADIW    R31 : R30,8
+   \   0000003A   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000003C   8120                       LD      R18,Z
+   \   0000003E   8131                       LDD     R19,Z+1
+   \   00000040   01F9                       MOVW    R31 : R30,R19 : R18
+   \   00000042   9509                       ICALL
+   \                     ??sgetc_2:
+   \   00000044   E0E4                       LDI     R30,4
+   \   00000046   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::sputc(streambuf *, streambuf::_E);
+   \                     ??sputc:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   9721                       SBIW    R29 : R28,1
+   \   00000006   8328                       ST      Y,R18
+   \   00000008   01D8                       MOVW    R27 : R26,R17 : R16
+   \   0000000A   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000000C   ........                   CALL    ??pptr
+   \   00000010   2B01                       OR      R16,R17
+   \   00000012   F0A1                       BREQ    ??sputc_1
+   \   00000014   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000016   ........                   CALL    ??pptr
+   \   0000001A   01C8                       MOVW    R25 : R24,R17 : R16
+   \   0000001C   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000001E   ........                   CALL    ??epptr
+   \   00000022   1780                       CP      R24,R16
+   \   00000024   0791                       CPC     R25,R17
+   \   00000026   F450                       BRCC    ??sputc_1
+   \   00000028   8188                       LD      R24,Y
+   \   0000002A   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002C   ........                   CALL    ??_Pninc
+   \   00000030   2FE0                       MOV     R30,R16
+   \   00000032   2FF1                       MOV     R31,R17
+   \   00000034   8380                       ST      Z,R24
+   \   00000036   ........                   CALL    ??to_int_type
+   \   0000003A   C010                       RJMP    ??sputc_2
+   \                     ??sputc_1:
+   \   0000003C   9659                       ADIW    R27 : R26,25
+   \   0000003E   918D                       LD      R24,X+
+   \   00000040   919C                       LD      R25,X
+   \   00000042   975A                       SBIW    R27 : R26,26
+   \   00000044   9602                       ADIW    R25 : R24,2
+   \   00000046   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000048   ........                   CALL    ??to_int_type
+   \   0000004C   0198                       MOVW    R19 : R18,R17 : R16
+   \   0000004E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000050   2FA8                       MOV     R26,R24
+   \   00000052   2FB9                       MOV     R27,R25
+   \   00000054   91ED                       LD      R30,X+
+   \   00000056   91FC                       LD      R31,X
+   \   00000058   9711                       SBIW    R27 : R26,1
+   \   0000005A   9509                       ICALL
+   \                     ??sputc_2:
+   \   0000005C   9621                       ADIW    R29 : R28,1
+   \   0000005E   E0E4                       LDI     R30,4
+   \   00000060   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char *streambuf::gptr(streambuf const *) const;
+   \                     ??gptr:
+   \   00000000   2F3B                       MOV     R19,R27
+   \   00000002   2F2A                       MOV     R18,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   85A4                       LDD     R26,Z+12
+   \   0000000A   85B5                       LDD     R27,Z+13
+   \   0000000C   910D                       LD      R16,X+
+   \   0000000E   911C                       LD      R17,X
+   \   00000010   9711                       SBIW    R27 : R26,1
+   \   00000012   2FA2                       MOV     R26,R18
+   \   00000014   2FB3                       MOV     R27,R19
+   \   00000016   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char *streambuf::pptr(streambuf const *) const;
+   \                     ??pptr:
+   \   00000000   2F3B                       MOV     R19,R27
+   \   00000002   2F2A                       MOV     R18,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   85A6                       LDD     R26,Z+14
+   \   0000000A   85B7                       LDD     R27,Z+15
+   \   0000000C   910D                       LD      R16,X+
+   \   0000000E   911C                       LD      R17,X
+   \   00000010   9711                       SBIW    R27 : R26,1
+   \   00000012   2FA2                       MOV     R26,R18
+   \   00000014   2FB3                       MOV     R27,R19
+   \   00000016   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char *streambuf::egptr(streambuf const *) const;
+   \                     ??egptr:
+   \   00000000   2F3B                       MOV     R19,R27
+   \   00000002   2F2A                       MOV     R18,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   89A4                       LDD     R26,Z+20
+   \   0000000A   89B5                       LDD     R27,Z+21
+   \   0000000C   910D                       LD      R16,X+
+   \   0000000E   911C                       LD      R17,X
+   \   00000010   9711                       SBIW    R27 : R26,1
+   \   00000012   2FA2                       MOV     R26,R18
+   \   00000014   2FB3                       MOV     R27,R19
+   \   00000016   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void streambuf::gbump(streambuf *, int);
+   \                     ??gbump:
+   \   00000000   2F5B                       MOV     R21,R27
+   \   00000002   2F4A                       MOV     R20,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   85A4                       LDD     R26,Z+12
+   \   0000000A   85B5                       LDD     R27,Z+13
+   \   0000000C   910D                       LD      R16,X+
+   \   0000000E   911C                       LD      R17,X
+   \   00000010   0F02                       ADD     R16,R18
+   \   00000012   1F13                       ADC     R17,R19
+   \   00000014   931C                       ST      X,R17
+   \   00000016   930E                       ST      -X,R16
+   \   00000018   2FA4                       MOV     R26,R20
+   \   0000001A   2FB5                       MOV     R27,R21
+   \   0000001C   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void streambuf::setg(streambuf *, char *, char *, char *);
+   \                     ??setg:
+   \   00000000   2E1B                       MOV     R1,R27
+   \   00000002   2E0A                       MOV     R0,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   81A4                       LDD     R26,Z+4
+   \   0000000A   81B5                       LDD     R27,Z+5
+   \   0000000C   932D                       ST      X+,R18
+   \   0000000E   933C                       ST      X,R19
+   \   00000010   9711                       SBIW    R27 : R26,1
+   \   00000012   2FE0                       MOV     R30,R16
+   \   00000014   2FF1                       MOV     R31,R17
+   \   00000016   85A4                       LDD     R26,Z+12
+   \   00000018   85B5                       LDD     R27,Z+13
+   \   0000001A   934D                       ST      X+,R20
+   \   0000001C   935C                       ST      X,R21
+   \   0000001E   9711                       SBIW    R27 : R26,1
+   \   00000020   2FE0                       MOV     R30,R16
+   \   00000022   2FF1                       MOV     R31,R17
+   \   00000024   89A4                       LDD     R26,Z+20
+   \   00000026   89B5                       LDD     R27,Z+21
+   \   00000028   936D                       ST      X+,R22
+   \   0000002A   937C                       ST      X,R23
+   \   0000002C   9711                       SBIW    R27 : R26,1
+   \   0000002E   2DA0                       MOV     R26,R0
+   \   00000030   2DB1                       MOV     R27,R1
+   \   00000032   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char *streambuf::epptr(streambuf const *) const;
+   \                     ??epptr:
+   \   00000000   2F3B                       MOV     R19,R27
+   \   00000002   2F2A                       MOV     R18,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   89A6                       LDD     R26,Z+22
+   \   0000000A   89B7                       LDD     R27,Z+23
+   \   0000000C   910D                       LD      R16,X+
+   \   0000000E   911C                       LD      R17,X
+   \   00000010   9711                       SBIW    R27 : R26,1
+   \   00000012   2FA2                       MOV     R26,R18
+   \   00000014   2FB3                       MOV     R27,R19
+   \   00000016   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char *streambuf::_Gninc(streambuf *);
+   \                     ??_Gninc:
+   \   00000000   2F7B                       MOV     R23,R27
+   \   00000002   2F6A                       MOV     R22,R26
+   \   00000004   2FA0                       MOV     R26,R16
+   \   00000006   2FB1                       MOV     R27,R17
+   \   00000008   961C                       ADIW    R27 : R26,12
+   \   0000000A   91ED                       LD      R30,X+
+   \   0000000C   91FC                       LD      R31,X
+   \   0000000E   971D                       SBIW    R27 : R26,13
+   \   00000010   8120                       LD      R18,Z
+   \   00000012   8131                       LDD     R19,Z+1
+   \   00000014   01A9                       MOVW    R21 : R20,R19 : R18
+   \   00000016   5F4F                       SUBI    R20,255
+   \   00000018   4F5F                       SBCI    R21,255
+   \   0000001A   2FE0                       MOV     R30,R16
+   \   0000001C   2FF1                       MOV     R31,R17
+   \   0000001E   85A4                       LDD     R26,Z+12
+   \   00000020   85B5                       LDD     R27,Z+13
+   \   00000022   934D                       ST      X+,R20
+   \   00000024   935C                       ST      X,R21
+   \   00000026   9711                       SBIW    R27 : R26,1
+   \   00000028   0189                       MOVW    R17 : R16,R19 : R18
+   \   0000002A   2FA6                       MOV     R26,R22
+   \   0000002C   2FB7                       MOV     R27,R23
+   \   0000002E   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void streambuf::pbump(streambuf *, int);
+   \                     ??pbump:
+   \   00000000   2F5B                       MOV     R21,R27
+   \   00000002   2F4A                       MOV     R20,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   85A6                       LDD     R26,Z+14
+   \   0000000A   85B7                       LDD     R27,Z+15
+   \   0000000C   910D                       LD      R16,X+
+   \   0000000E   911C                       LD      R17,X
+   \   00000010   0F02                       ADD     R16,R18
+   \   00000012   1F13                       ADC     R17,R19
+   \   00000014   931C                       ST      X,R17
+   \   00000016   930E                       ST      -X,R16
+   \   00000018   2FA4                       MOV     R26,R20
+   \   0000001A   2FB5                       MOV     R27,R21
+   \   0000001C   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void streambuf::setp(streambuf *, char *, char *);
+   \                     ??setp:
+   \   00000000   2F7B                       MOV     R23,R27
+   \   00000002   2F6A                       MOV     R22,R26
+   \   00000004   2FE0                       MOV     R30,R16
+   \   00000006   2FF1                       MOV     R31,R17
+   \   00000008   81A6                       LDD     R26,Z+6
+   \   0000000A   81B7                       LDD     R27,Z+7
+   \   0000000C   932D                       ST      X+,R18
+   \   0000000E   933C                       ST      X,R19
+   \   00000010   9711                       SBIW    R27 : R26,1
+   \   00000012   2FE0                       MOV     R30,R16
+   \   00000014   2FF1                       MOV     R31,R17
+   \   00000016   85A6                       LDD     R26,Z+14
+   \   00000018   85B7                       LDD     R27,Z+15
+   \   0000001A   932D                       ST      X+,R18
+   \   0000001C   933C                       ST      X,R19
+   \   0000001E   9711                       SBIW    R27 : R26,1
+   \   00000020   2FE0                       MOV     R30,R16
+   \   00000022   2FF1                       MOV     R31,R17
+   \   00000024   89A6                       LDD     R26,Z+22
+   \   00000026   89B7                       LDD     R27,Z+23
+   \   00000028   934D                       ST      X+,R20
+   \   0000002A   935C                       ST      X,R21
+   \   0000002C   9711                       SBIW    R27 : R26,1
+   \   0000002E   2FA6                       MOV     R26,R22
+   \   00000030   2FB7                       MOV     R27,R23
+   \   00000032   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc char *streambuf::_Pninc(streambuf *);
+   \                     ??_Pninc:
+   \   00000000   2F7B                       MOV     R23,R27
+   \   00000002   2F6A                       MOV     R22,R26
+   \   00000004   2FA0                       MOV     R26,R16
+   \   00000006   2FB1                       MOV     R27,R17
+   \   00000008   961E                       ADIW    R27 : R26,14
+   \   0000000A   91ED                       LD      R30,X+
+   \   0000000C   91FC                       LD      R31,X
+   \   0000000E   971F                       SBIW    R27 : R26,15
+   \   00000010   8120                       LD      R18,Z
+   \   00000012   8131                       LDD     R19,Z+1
+   \   00000014   01A9                       MOVW    R21 : R20,R19 : R18
+   \   00000016   5F4F                       SUBI    R20,255
+   \   00000018   4F5F                       SBCI    R21,255
+   \   0000001A   2FE0                       MOV     R30,R16
+   \   0000001C   2FF1                       MOV     R31,R17
+   \   0000001E   85A6                       LDD     R26,Z+14
+   \   00000020   85B7                       LDD     R27,Z+15
+   \   00000022   934D                       ST      X+,R20
+   \   00000024   935C                       ST      X,R21
+   \   00000026   9711                       SBIW    R27 : R26,1
+   \   00000028   0189                       MOVW    R17 : R16,R19 : R18
+   \   0000002A   2FA6                       MOV     R26,R22
+   \   0000002C   2FB7                       MOV     R27,R23
+   \   0000002E   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void streambuf::_Init(streambuf *);
+   \                     ??_Init:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   2FEA                       MOV     R30,R26
+   \   00000008   2FFB                       MOV     R31,R27
+   \   0000000A   83A4                       STD     Z+4,R26
+   \   0000000C   83B5                       STD     Z+5,R27
+   \   0000000E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000010   5F0E                       SUBI    R16,254
+   \   00000012   4F1F                       SBCI    R17,255
+   \   00000014   9616                       ADIW    R27 : R26,6
+   \   00000016   930D                       ST      X+,R16
+   \   00000018   931C                       ST      X,R17
+   \   0000001A   9717                       SBIW    R27 : R26,7
+   \   0000001C   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000001E   5F08                       SUBI    R16,248
+   \   00000020   4F1F                       SBCI    R17,255
+   \   00000022   961C                       ADIW    R27 : R26,12
+   \   00000024   930D                       ST      X+,R16
+   \   00000026   931C                       ST      X,R17
+   \   00000028   971D                       SBIW    R27 : R26,13
+   \   0000002A   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002C   5F06                       SUBI    R16,246
+   \   0000002E   4F1F                       SBCI    R17,255
+   \   00000030   961E                       ADIW    R27 : R26,14
+   \   00000032   930D                       ST      X+,R16
+   \   00000034   931C                       ST      X,R17
+   \   00000036   971F                       SBIW    R27 : R26,15
+   \   00000038   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000003A   5F00                       SUBI    R16,240
+   \   0000003C   4F1F                       SBCI    R17,255
+   \   0000003E   9654                       ADIW    R27 : R26,20
+   \   00000040   930D                       ST      X+,R16
+   \   00000042   931C                       ST      X,R17
+   \   00000044   9755                       SBIW    R27 : R26,21
+   \   00000046   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000048   5E0E                       SUBI    R16,238
+   \   0000004A   4F1F                       SBCI    R17,255
+   \   0000004C   9656                       ADIW    R27 : R26,22
+   \   0000004E   930D                       ST      X+,R16
+   \   00000050   931C                       ST      X,R17
+   \   00000052   9757                       SBIW    R27 : R26,23
+   \   00000054   E040                       LDI     R20,0
+   \   00000056   E050                       LDI     R21,0
+   \   00000058   E020                       LDI     R18,0
+   \   0000005A   E030                       LDI     R19,0
+   \   0000005C   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000005E   ........                   CALL    ??setp
+   \   00000062   E060                       LDI     R22,0
+   \   00000064   E070                       LDI     R23,0
+   \   00000066   E040                       LDI     R20,0
+   \   00000068   E050                       LDI     R21,0
+   \   0000006A   E020                       LDI     R18,0
+   \   0000006C   E030                       LDI     R19,0
+   \   0000006E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000070   ........                   CALL    ??setg
+   \   00000074   91A9                       LD      R26,Y+
+   \   00000076   91B9                       LD      R27,Y+
+   \   00000078   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::overflow(streambuf *, streambuf::int_type);
+   \                     ??overflow:
+   \   00000000   ........                   CALL    ??eof
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::pbackfail(streambuf *, streambuf::int_type);
+   \                     ??pbackfail:
+   \   00000000   ........                   CALL    ??eof
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::showmanyc(streambuf *);
+   \                     ??showmanyc:
+   \   00000000   E000                       LDI     R16,0
+   \   00000002   E010                       LDI     R17,0
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::underflow(streambuf *);
+   \                     ??underflow:
+   \   00000000   ........                   CALL    ??eof
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::uflow(streambuf *);
+   \                     ??uflow:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   9724                       SBIW    R29 : R28,4
+   \   00000006   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000008   9659                       ADIW    R27 : R26,25
+   \   0000000A   91ED                       LD      R30,X+
+   \   0000000C   91FC                       LD      R31,X
+   \   0000000E   975A                       SBIW    R27 : R26,26
+   \   00000010   9638                       ADIW    R31 : R30,8
+   \   00000012   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000014   8120                       LD      R18,Z
+   \   00000016   8131                       LDD     R19,Z+1
+   \   00000018   01F9                       MOVW    R31 : R30,R19 : R18
+   \   0000001A   9509                       ICALL
+   \   0000001C   830A                       STD     Y+2,R16
+   \   0000001E   831B                       STD     Y+3,R17
+   \   00000020   ........                   CALL    ??eof
+   \   00000024   8308                       ST      Y,R16
+   \   00000026   8319                       STD     Y+1,R17
+   \   00000028   019E                       MOVW    R19 : R18,R29 : R28
+   \   0000002A   5F2E                       SUBI    R18,254
+   \   0000002C   4F3F                       SBCI    R19,255
+   \   0000002E   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000030   ........                   CALL    ??eq_int_type
+   \   00000034   2300                       TST     R16
+   \   00000036   F019                       BREQ    ??uflow_1
+   \   00000038   ........                   CALL    ??eof
+   \   0000003C   C005                       RJMP    ??uflow_2
+   \                     ??uflow_1:
+   \   0000003E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000040   ........                   CALL    ??_Gninc
+   \   00000044   ........                   CALL    ??to_int_type
+   \                     ??uflow_2:
+   \   00000048   9624                       ADIW    R29 : R28,4
+   \   0000004A   91A9                       LD      R26,Y+
+   \   0000004C   91B9                       LD      R27,Y+
+   \   0000004E   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::xsgetn(streambuf *, char *, streamsize);
+   \                     ??xsgetn:
+   \   00000000   ........                   CALL    ?PROLOGUE10_L09
+   \   00000004                              REQUIRE ?Register_R4_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R5_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R6_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R7_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R8_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R9_is_cg_reg
+   \   00000004   9724                       SBIW    R29 : R28,4
+   \   00000006   01C8                       MOVW    R25 : R24,R17 : R16
+   \   00000008   01D9                       MOVW    R27 : R26,R19 : R18
+   \   0000000A   012A                       MOVW    R5 : R4,R21 : R20
+   \   0000000C   2466                       CLR     R6
+   \   0000000E   2477                       CLR     R7
+   \   00000010   C016                       RJMP    ??xsgetn_1
+   \                     ??xsgetn_2:
+   \   00000012   1448                       CP      R4,R8
+   \   00000014   0459                       CPC     R5,R9
+   \   00000016   F40C                       BRGE    ??xsgetn_3
+   \   00000018   0142                       MOVW    R9 : R8,R5 : R4
+   \                     ??xsgetn_3:
+   \   0000001A   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000001C   ........                   CALL    ??gptr
+   \   00000020   01A4                       MOVW    R21 : R20,R9 : R8
+   \   00000022   0198                       MOVW    R19 : R18,R17 : R16
+   \   00000024   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000026   ........                   CALL    ??copy
+   \   0000002A   0DA8                       ADD     R26,R8
+   \   0000002C   1DB9                       ADC     R27,R9
+   \   0000002E   0C68                       ADD     R6,R8
+   \   00000030   1C79                       ADC     R7,R9
+   \   00000032   1848                       SUB     R4,R8
+   \   00000034   0859                       SBC     R5,R9
+   \   00000036   0194                       MOVW    R19 : R18,R9 : R8
+   \   00000038   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000003A   ........                   CALL    ??gbump
+   \                     ??xsgetn_1:
+   \   0000003E   E001                       LDI     R16,1
+   \   00000040   1640                       CP      R4,R16
+   \   00000042   E000                       LDI     R16,0
+   \   00000044   0650                       CPC     R5,R16
+   \   00000046   F1E4                       BRLT    ??xsgetn_4
+   \   00000048   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000004A   ........                   CALL    ??gptr
+   \   0000004E   2B01                       OR      R16,R17
+   \   00000050   F071                       BREQ    ??xsgetn_5
+   \   00000052   018C                       MOVW    R17 : R16,R25 : R24
+   \   00000054   ........                   CALL    ??egptr
+   \   00000058   0148                       MOVW    R9 : R8,R17 : R16
+   \   0000005A   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000005C   ........                   CALL    ??gptr
+   \   00000060   1A80                       SUB     R8,R16
+   \   00000062   0A91                       SBC     R9,R17
+   \   00000064   E001                       LDI     R16,1
+   \   00000066   1680                       CP      R8,R16
+   \   00000068   E000                       LDI     R16,0
+   \   0000006A   0690                       CPC     R9,R16
+   \   0000006C   F694                       BRGE    ??xsgetn_2
+   \                     ??xsgetn_5:
+   \   0000006E   2FE8                       MOV     R30,R24
+   \   00000070   2FF9                       MOV     R31,R25
+   \   00000072   8D21                       LDD     R18,Z+25
+   \   00000074   8D32                       LDD     R19,Z+26
+   \   00000076   5F26                       SUBI    R18,246
+   \   00000078   4F3F                       SBCI    R19,255
+   \   0000007A   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000007C   2FE2                       MOV     R30,R18
+   \   0000007E   2FF3                       MOV     R31,R19
+   \   00000080   8120                       LD      R18,Z
+   \   00000082   8131                       LDD     R19,Z+1
+   \   00000084   01F9                       MOVW    R31 : R30,R19 : R18
+   \   00000086   9509                       ICALL
+   \   00000088   8308                       ST      Y,R16
+   \   0000008A   8319                       STD     Y+1,R17
+   \   0000008C   ........                   CALL    ??eof
+   \   00000090   830A                       STD     Y+2,R16
+   \   00000092   831B                       STD     Y+3,R17
+   \   00000094   019E                       MOVW    R19 : R18,R29 : R28
+   \   00000096   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000098   5F0E                       SUBI    R16,254
+   \   0000009A   4F1F                       SBCI    R17,255
+   \   0000009C   ........                   CALL    ??eq_int_type
+   \   000000A0   2300                       TST     R16
+   \   000000A2   F471                       BRNE    ??xsgetn_4
+   \   000000A4   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000A6   ........                   CALL    ??to_char_type
+   \   000000AA   930C                       ST      X,R16
+   \   000000AC   9611                       ADIW    R27 : R26,1
+   \   000000AE   E001                       LDI     R16,1
+   \   000000B0   0E60                       ADD     R6,R16
+   \   000000B2   E000                       LDI     R16,0
+   \   000000B4   1E70                       ADC     R7,R16
+   \   000000B6   EF0F                       LDI     R16,255
+   \   000000B8   0E40                       ADD     R4,R16
+   \   000000BA   EF0F                       LDI     R16,255
+   \   000000BC   1E50                       ADC     R5,R16
+   \   000000BE   CFBF                       RJMP    ??xsgetn_1
+   \                     ??xsgetn_4:
+   \   000000C0   0183                       MOVW    R17 : R16,R7 : R6
+   \   000000C2   9624                       ADIW    R29 : R28,4
+   \   000000C4   E0EA                       LDI     R30,10
+   \   000000C6   ........                   JMP     ?EPILOGUE_B10_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::xsputn(streambuf *, streambuf::_E const *, streamsize);
+   \                     ??xsputn:
+   \   00000000   ........                   CALL    ?PROLOGUE10_L09
+   \   00000004                              REQUIRE ?Register_R4_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R5_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R6_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R7_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R8_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R9_is_cg_reg
+   \   00000004   9724                       SBIW    R29 : R28,4
+   \   00000006   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000008   0139                       MOVW    R7 : R6,R19 : R18
+   \   0000000A   01CA                       MOVW    R25 : R24,R21 : R20
+   \   0000000C   2444                       CLR     R4
+   \   0000000E   2455                       CLR     R5
+   \   00000010   C015                       RJMP    ??xsputn_1
+   \                     ??xsputn_2:
+   \   00000012   1588                       CP      R24,R8
+   \   00000014   0599                       CPC     R25,R9
+   \   00000016   F40C                       BRGE    ??xsputn_3
+   \   00000018   014C                       MOVW    R9 : R8,R25 : R24
+   \                     ??xsputn_3:
+   \   0000001A   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000001C   ........                   CALL    ??pptr
+   \   00000020   01A4                       MOVW    R21 : R20,R9 : R8
+   \   00000022   0193                       MOVW    R19 : R18,R7 : R6
+   \   00000024   ........                   CALL    ??copy
+   \   00000028   0C68                       ADD     R6,R8
+   \   0000002A   1C79                       ADC     R7,R9
+   \   0000002C   0C48                       ADD     R4,R8
+   \   0000002E   1C59                       ADC     R5,R9
+   \   00000030   1988                       SUB     R24,R8
+   \   00000032   0999                       SBC     R25,R9
+   \   00000034   0194                       MOVW    R19 : R18,R9 : R8
+   \   00000036   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000038   ........                   CALL    ??pbump
+   \                     ??xsputn_1:
+   \   0000003C   3081                       CPI     R24,1
+   \   0000003E   E000                       LDI     R16,0
+   \   00000040   0790                       CPC     R25,R16
+   \   00000042   F1F4                       BRLT    ??xsputn_4
+   \   00000044   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000046   ........                   CALL    ??pptr
+   \   0000004A   2B01                       OR      R16,R17
+   \   0000004C   F071                       BREQ    ??xsputn_5
+   \   0000004E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000050   ........                   CALL    ??epptr
+   \   00000054   0148                       MOVW    R9 : R8,R17 : R16
+   \   00000056   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000058   ........                   CALL    ??pptr
+   \   0000005C   1A80                       SUB     R8,R16
+   \   0000005E   0A91                       SBC     R9,R17
+   \   00000060   E001                       LDI     R16,1
+   \   00000062   1680                       CP      R8,R16
+   \   00000064   E000                       LDI     R16,0
+   \   00000066   0690                       CPC     R9,R16
+   \   00000068   F6A4                       BRGE    ??xsputn_2
+   \                     ??xsputn_5:
+   \   0000006A   2FEA                       MOV     R30,R26
+   \   0000006C   2FFB                       MOV     R31,R27
+   \   0000006E   8C81                       LDD     R8,Z+25
+   \   00000070   8C92                       LDD     R9,Z+26
+   \   00000072   E002                       LDI     R16,2
+   \   00000074   0E80                       ADD     R8,R16
+   \   00000076   E000                       LDI     R16,0
+   \   00000078   1E90                       ADC     R9,R16
+   \   0000007A   0183                       MOVW    R17 : R16,R7 : R6
+   \   0000007C   ........                   CALL    ??to_int_type
+   \   00000080   0198                       MOVW    R19 : R18,R17 : R16
+   \   00000082   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000084   2DE8                       MOV     R30,R8
+   \   00000086   2DF9                       MOV     R31,R9
+   \   00000088   8140                       LD      R20,Z
+   \   0000008A   8151                       LDD     R21,Z+1
+   \   0000008C   01FA                       MOVW    R31 : R30,R21 : R20
+   \   0000008E   9509                       ICALL
+   \   00000090   830A                       STD     Y+2,R16
+   \   00000092   831B                       STD     Y+3,R17
+   \   00000094   ........                   CALL    ??eof
+   \   00000098   8308                       ST      Y,R16
+   \   0000009A   8319                       STD     Y+1,R17
+   \   0000009C   019E                       MOVW    R19 : R18,R29 : R28
+   \   0000009E   5F2E                       SUBI    R18,254
+   \   000000A0   4F3F                       SBCI    R19,255
+   \   000000A2   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000A4   ........                   CALL    ??eq_int_type
+   \   000000A8   2300                       TST     R16
+   \   000000AA   F451                       BRNE    ??xsputn_4
+   \   000000AC   E001                       LDI     R16,1
+   \   000000AE   0E60                       ADD     R6,R16
+   \   000000B0   E000                       LDI     R16,0
+   \   000000B2   1E70                       ADC     R7,R16
+   \   000000B4   E001                       LDI     R16,1
+   \   000000B6   0E40                       ADD     R4,R16
+   \   000000B8   E000                       LDI     R16,0
+   \   000000BA   1E50                       ADC     R5,R16
+   \   000000BC   9701                       SBIW    R25 : R24,1
+   \   000000BE   CFBE                       RJMP    ??xsputn_1
+   \                     ??xsputn_4:
+   \   000000C0   0182                       MOVW    R17 : R16,R5 : R4
+   \   000000C2   9624                       ADIW    R29 : R28,4
+   \   000000C4   E0EA                       LDI     R30,10
+   \   000000C6   ........                   JMP     ?EPILOGUE_B10_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc fpos streambuf::seekoff(streambuf *, streambuf::off_type, ios_base::seekdir, ios_base::openmode);
+   \                     ??seekoff:
+   \   00000000   939A                       ST      -Y,R25
+   \   00000002   938A                       ST      -Y,R24
+   \   00000004   972E                       SBIW    R29 : R28,14
+   \   00000006   01C8                       MOVW    R25 : R24,R17 : R16
+   \   00000008   ....                       LDI     R30,LOW(_BADOFF)
+   \   0000000A   ....                       LDI     R31,(_BADOFF) >> 8
+   \   0000000C   8140                       LD      R20,Z
+   \   0000000E   8151                       LDD     R21,Z+1
+   \   00000010   8162                       LDD     R22,Z+2
+   \   00000012   8173                       LDD     R23,Z+3
+   \   00000014   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000016   ........                   CALL    ??fpos
+   \   0000001A   019E                       MOVW    R19 : R18,R29 : R28
+   \   0000001C   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000001E   01F9                       MOVW    R31 : R30,R19 : R18
+   \   00000020   E04E                       LDI     R20,14
+   \   00000022   E050                       LDI     R21,0
+   \   00000024   ........                   CALL    ?ML_SRAM_SRAM_16_L07
+   \   00000028   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000002A   962E                       ADIW    R29 : R28,14
+   \   0000002C   9189                       LD      R24,Y+
+   \   0000002E   9199                       LD      R25,Y+
+   \   00000030   9623                       ADIW    R29 : R28,3
+   \   00000032   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc fpos streambuf::seekpos(streambuf *, streambuf::pos_type, ios_base::openmode);
+   \                     ??seekpos:
+   \   00000000   939A                       ST      -Y,R25
+   \   00000002   938A                       ST      -Y,R24
+   \   00000004   972E                       SBIW    R29 : R28,14
+   \   00000006   01C8                       MOVW    R25 : R24,R17 : R16
+   \   00000008   ....                       LDI     R30,LOW(_BADOFF)
+   \   0000000A   ....                       LDI     R31,(_BADOFF) >> 8
+   \   0000000C   8140                       LD      R20,Z
+   \   0000000E   8151                       LDD     R21,Z+1
+   \   00000010   8162                       LDD     R22,Z+2
+   \   00000012   8173                       LDD     R23,Z+3
+   \   00000014   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000016   ........                   CALL    ??fpos
+   \   0000001A   019E                       MOVW    R19 : R18,R29 : R28
+   \   0000001C   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000001E   01F9                       MOVW    R31 : R30,R19 : R18
+   \   00000020   E04E                       LDI     R20,14
+   \   00000022   E050                       LDI     R21,0
+   \   00000024   ........                   CALL    ?ML_SRAM_SRAM_16_L07
+   \   00000028   018C                       MOVW    R17 : R16,R25 : R24
+   \   0000002A   962E                       ADIW    R29 : R28,14
+   \   0000002C   9189                       LD      R24,Y+
+   \   0000002E   9199                       LD      R25,Y+
+   \   00000030   962E                       ADIW    R29 : R28,14
+   \   00000032   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc streambuf *streambuf::setbuf(streambuf *, char *, streamsize);
+   \                     ??setbuf:
+   \   00000000   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc int streambuf::sync(streambuf *);
+   \                     ??sync:
+   \   00000000   E000                       LDI     R16,0
+   \   00000002   E010                       LDI     R17,0
+   \   00000004   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void streambuf::imbue(streambuf *, locale const &);
+   \                     ??imbue:
+   \   00000000   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void ios::~ios(ios *, int);
+   \                     `?~ios`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~ios_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_13)
+   \   00000010   ....                       LDI     R17,(??__vtbl_13) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8B01                       STD     Z+17,R16
+   \   00000018   8B12                       STD     Z+18,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~ios_base`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~ios_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~ios_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void ostream::~ostream(ostream *, int);
+   \                     `?~ostream`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~ostream_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_14)
+   \   00000010   ....                       LDI     R17,(??__vtbl_14) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8B01                       STD     Z+17,R16
+   \   00000018   8B12                       STD     Z+18,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~ios`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~ostream_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~ostream_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void istream::~istream(istream *, int);
+   \                     `?~istream`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~istream_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_15)
+   \   00000010   ....                       LDI     R17,(??__vtbl_15) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8B01                       STD     Z+17,R16
+   \   00000018   8B12                       STD     Z+18,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~ios`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~istream_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~istream_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+      7          
+      8          
+      9          #pragma language=extended
+     10          volatile char c_var;
+     11          volatile int  i_var;
+     12          volatile static char cTest;
+     13          volatile static int iTest;
+     14          
+     15          //*********************************
+     16          
+     17          typedef union  
+     18            { int i,j;
+     19            } U;
+     20          
+     21          enum day 
+     22            { sp1 , sp2, sp3 } workday;
+     23            
+     24          struct s
+     25            { 
+     26              char tag; 
+     27              struct
+     28              { long l ;
+     29                float f; 
+     30              };
+     31            } st ;
+     32            
+     33          typedef struct ByteErr
+     34            { 
+     35              unsigned char Byte;
+     36              unsigned char Err;
+     37               
+     38            } Byte_Err ;
+     39              
+     40          static volatile __io struct
+     41           {
+     42            unsigned char  in_read:1;
+     43            unsigned char  out_read:1;
+     44            unsigned char  err:1;
+     45            unsigned char  change:1;
+     46            unsigned char  reserv:4;
+
+   \                                 In segment ABSOLUTE, at 0x24, root
+   \   00000000                              DS 1
+     47            } bit_reg @ 0x04;
+     48          
+     49           
+     50          __no_init volatile  struct
+     51           {
+     52            unsigned char  in_read:1;
+     53            unsigned char  out_read:1;
+     54            unsigned char  err:1;
+     55            unsigned char  change:1;
+     56            unsigned char  reserv:4;
+
+   \                                 In segment NEAR_N, align 1, keep-with-next, root
+     57            } bit_test ;
+   \   struct <unnamed> volatile __near bit_test;
+   \                     bit_test:
+   \   00000000                              DS 1
+     58            
+     59          #pragma type_attribute=__eeprom 
+
+   \                                 In segment EEPROM_I, align 1, keep-with-next, root
+   \   00000000   0037                       DW 55
+     60          const int  ep_i_var=55 ;
+     61          #pragma type_attribute=__eeprom 
+
+   \                                 In segment EEPROM_I, align 1, keep-with-next, root
+     62           char  ep_c_var;
+   \   char __eeprom ep_c_var;
+   \                     ep_c_var:
+   \   00000000   00                         DB 0
+     63          #pragma type_attribute=__eeprom 
+
+   \                                 In segment EEPROM_I, align 1, keep-with-next, root
+     64          unsigned int ep_a_var[10];
+   \   unsigned int __eeprom ep_a_var[10];
+   \                     ep_a_var:
+   \   00000000   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000008   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000010   00000000                   DB 0, 0, 0, 0
+     65          
+     66          volatile static ByteErr BR[10];
+     67          
+     68          /***********************************
+     69           *    Derived class declaration    *
+     70           ***********************************/
+
+   \                                 In segment CODE, align 2, keep-with-next
+     71          class MyBuf : public streambuf
+   \   __nearfunc MyBuf &MyBuf::MyBuf(MyBuf *);
+   \                     ??MyBuf:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   2F0A                       MOV     R16,R26
+   \   00000008   2B0B                       OR      R16,R27
+   \   0000000A   F441                       BRNE    ??MyBuf_1
+   \   0000000C   E10B                       LDI     R16,27
+   \   0000000E   E010                       LDI     R17,0
+   \   00000010   ........                   CALL    `??operator new`
+   \   00000014   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000016   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000018   2B01                       OR      R16,R17
+   \   0000001A   F049                       BREQ    ??MyBuf_2
+   \                     ??MyBuf_1:
+   \   0000001C   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000001E   ........                   CALL    ??streambuf
+   \   00000022   ....                       LDI     R16,LOW(??__vtbl_16)
+   \   00000024   ....                       LDI     R17,(??__vtbl_16) >> 8
+   \   00000026   9659                       ADIW    R27 : R26,25
+   \   00000028   930D                       ST      X+,R16
+   \   0000002A   931C                       ST      X,R17
+   \   0000002C   975A                       SBIW    R27 : R26,26
+   \                     ??MyBuf_2:
+   \   0000002E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000030   91A9                       LD      R26,Y+
+   \   00000032   91B9                       LD      R27,Y+
+   \   00000034   9508                       RET
+
+   \                                 In segment CODE, align 2, keep-with-next
+   \   __nearfunc void MyBuf::~MyBuf(MyBuf *, int);
+   \                     `?~MyBuf`:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000006   01C9                       MOVW    R25 : R24,R19 : R18
+   \   00000008   2F0A                       MOV     R16,R26
+   \   0000000A   2B0B                       OR      R16,R27
+   \   0000000C   F081                       BREQ    `?~MyBuf_1`
+   \   0000000E   ....                       LDI     R16,LOW(??__vtbl_16)
+   \   00000010   ....                       LDI     R17,(??__vtbl_16) >> 8
+   \   00000012   2FEA                       MOV     R30,R26
+   \   00000014   2FFB                       MOV     R31,R27
+   \   00000016   8F01                       STD     Z+25,R16
+   \   00000018   8F12                       STD     Z+26,R17
+   \   0000001A   E020                       LDI     R18,0
+   \   0000001C   E030                       LDI     R19,0
+   \   0000001E   018D                       MOVW    R17 : R16,R27 : R26
+   \   00000020   ........                   CALL    `?~streambuf`
+   \   00000024   FB80                       BST     R24,0
+   \   00000026   F41E                       BRTC    `?~MyBuf_1`
+   \   00000028   018D                       MOVW    R17 : R16,R27 : R26
+   \   0000002A   ........                   CALL    `??operator delete`
+   \                     `?~MyBuf_1`:
+   \   0000002E   E0E4                       LDI     R30,4
+   \   00000030   ........                   JMP     ?EPILOGUE_B4_L09
+     72          {
+     73          
+     74          };
+     75          
+     76          
+
+   \                                 In segment CODE, align 2, keep-with-next
+     77          void main(void)
+     78          {
+   \   __nearfunc void main();
+   \                     main:
+   \   00000000   ........                   CALL    ?PROLOGUE4_L09
+   \   00000004   97EF                       SBIW    R29 : R28,63
+   \   00000006   97EF                       SBIW    R29 : R28,63
+   \   00000008   97EE                       SBIW    R29 : R28,62
+     79          
+     80          volatile unsigned int p;
+     81          volatile ByteErr TempR;
+     82          char xx[128];
+     83          volatile  int i;
+     84          // enum
+     85          workday = sp1;
+   \   0000000A   E000                       LDI     R16,0
+   \   0000000C   9300....                   STS     workday,R16
+     86          if (workday == sp1)
+   \   00000010   9100....                   LDS     R16,workday
+   \   00000014   2300                       TST     R16
+   \   00000016   F421                       BRNE    ??main_0
+     87          workday = sp2;
+   \   00000018   E001                       LDI     R16,1
+   \   0000001A   9300....                   STS     workday,R16
+   \   0000001E   C003                       RJMP    ??main_1
+     88          else
+     89          workday = sp3;
+   \                     ??main_0:
+   \   00000020   E002                       LDI     R16,2
+   \   00000022   9300....                   STS     workday,R16
+     90          workday = sp1;
+   \                     ??main_1:
+   \   00000026   E000                       LDI     R16,0
+   \   00000028   9300....                   STS     workday,R16
+     91          //typedef  myspeed t_sd;
+     92          
+     93          
+     94          //
+     95          
+     96          for (i=0;i < 128;i++)
+   \   0000002C   E000                       LDI     R16,0
+   \   0000002E   E010                       LDI     R17,0
+   \   00000030   8308                       ST      Y,R16
+   \   00000032   8319                       STD     Y+1,R17
+   \   00000034   C00F                       RJMP    ??main_2
+     97          {
+     98           xx[i]= 0;
+   \                     ??main_3:
+   \   00000036   E020                       LDI     R18,0
+   \   00000038   018E                       MOVW    R17 : R16,R29 : R28
+   \   0000003A   5D0F                       SUBI    R16,223
+   \   0000003C   4F1F                       SBCI    R17,255
+   \   0000003E   81A8                       LD      R26,Y
+   \   00000040   81B9                       LDD     R27,Y+1
+   \   00000042   0FA0                       ADD     R26,R16
+   \   00000044   1FB1                       ADC     R27,R17
+   \   00000046   932C                       ST      X,R18
+   \   00000048   8108                       LD      R16,Y
+   \   0000004A   8119                       LDD     R17,Y+1
+   \   0000004C   5F0F                       SUBI    R16,255
+   \   0000004E   4F1F                       SBCI    R17,255
+   \   00000050   8308                       ST      Y,R16
+   \   00000052   8319                       STD     Y+1,R17
+   \                     ??main_2:
+   \   00000054   8108                       LD      R16,Y
+   \   00000056   8119                       LDD     R17,Y+1
+   \   00000058   3800                       CPI     R16,128
+   \   0000005A   E000                       LDI     R16,0
+   \   0000005C   0710                       CPC     R17,R16
+   \   0000005E   F35C                       BRLT    ??main_3
+     99          };
+    100          
+    101          MyBuf TxBuf;
+   \   00000060   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000062   5F0A                       SUBI    R16,250
+   \   00000064   4F1F                       SBCI    R17,255
+   \   00000066   ........                   CALL    ??MyBuf
+    102          TxBuf.pubsetbuf(xx,128);
+   \   0000006A   E840                       LDI     R20,128
+   \   0000006C   E050                       LDI     R21,0
+   \   0000006E   019E                       MOVW    R19 : R18,R29 : R28
+   \   00000070   5D2F                       SUBI    R18,223
+   \   00000072   4F3F                       SBCI    R19,255
+   \   00000074   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000076   5F0A                       SUBI    R16,250
+   \   00000078   4F1F                       SBCI    R17,255
+   \   0000007A   ........                   CALL    ??pubsetbuf
+    103          //
+    104          for (i=1;i<20;i++)
+   \   0000007E   E001                       LDI     R16,1
+   \   00000080   E010                       LDI     R17,0
+   \   00000082   8308                       ST      Y,R16
+   \   00000084   8319                       STD     Y+1,R17
+   \   00000086   C012                       RJMP    ??main_4
+    105          { 
+    106          iTest = TxBuf.sputc('H'+i);
+   \                     ??main_5:
+   \   00000088   8128                       LD      R18,Y
+   \   0000008A   8139                       LDD     R19,Y+1
+   \   0000008C   5B28                       SUBI    R18,184
+   \   0000008E   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000090   5F0A                       SUBI    R16,250
+   \   00000092   4F1F                       SBCI    R17,255
+   \   00000094   ........                   CALL    ??sputc
+   \   00000098   ....                       LDI     R30,LOW(iTest)
+   \   0000009A   ....                       LDI     R31,(iTest) >> 8
+   \   0000009C   8300                       ST      Z,R16
+   \   0000009E   8311                       STD     Z+1,R17
+   \   000000A0   8108                       LD      R16,Y
+   \   000000A2   8119                       LDD     R17,Y+1
+   \   000000A4   5F0F                       SUBI    R16,255
+   \   000000A6   4F1F                       SBCI    R17,255
+   \   000000A8   8308                       ST      Y,R16
+   \   000000AA   8319                       STD     Y+1,R17
+   \                     ??main_4:
+   \   000000AC   8188                       LD      R24,Y
+   \   000000AE   8199                       LDD     R25,Y+1
+   \   000000B0   3184                       CPI     R24,20
+   \   000000B2   4090                       SBCI    R25,0
+   \   000000B4   F34C                       BRLT    ??main_5
+    107          };
+    108          
+    109          //
+    110          cTest = TxBuf.sgetc();
+   \   000000B6   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000B8   5F0A                       SUBI    R16,250
+   \   000000BA   4F1F                       SBCI    R17,255
+   \   000000BC   ........                   CALL    ??sgetc
+   \   000000C0   9300....                   STS     cTest,R16
+    111          //
+    112          
+    113          
+    114          MyBuf RxBuf;
+   \   000000C4   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000C6   550F                       SUBI    R16,95
+   \   000000C8   4F1F                       SBCI    R17,255
+   \   000000CA   ........                   CALL    ??MyBuf
+    115          RxBuf.pubsetbuf(xx,128);
+   \   000000CE   E840                       LDI     R20,128
+   \   000000D0   E050                       LDI     R21,0
+   \   000000D2   019E                       MOVW    R19 : R18,R29 : R28
+   \   000000D4   5D2F                       SUBI    R18,223
+   \   000000D6   4F3F                       SBCI    R19,255
+   \   000000D8   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000DA   550F                       SUBI    R16,95
+   \   000000DC   4F1F                       SBCI    R17,255
+   \   000000DE   ........                   CALL    ??pubsetbuf
+    116          
+    117          //cout << "Hello\n";
+    118          loop:
+    119          
+    120          // New type variable 
+    121          st.tag = 10;
+   \                     ??main_6:
+   \   000000E2   E00A                       LDI     R16,10
+   \   000000E4   9300....                   STS     `st`,R16
+    122          st.l= 1234567;
+   \   000000E8   E807                       LDI     R16,135
+   \   000000EA   ED16                       LDI     R17,214
+   \   000000EC   E122                       LDI     R18,18
+   \   000000EE   E030                       LDI     R19,0
+   \   000000F0   ....                       LDI     R30,LOW(`st`)
+   \   000000F2   ....                       LDI     R31,(`st`) >> 8
+   \   000000F4   8301                       STD     Z+1,R16
+   \   000000F6   8312                       STD     Z+2,R17
+   \   000000F8   8323                       STD     Z+3,R18
+   \   000000FA   8334                       STD     Z+4,R19
+    123          st.f = 1.67;
+   \   000000FC   E80F                       LDI     R16,143
+   \   000000FE   EC12                       LDI     R17,194
+   \   00000100   ED25                       LDI     R18,213
+   \   00000102   E33F                       LDI     R19,63
+   \   00000104   ....                       LDI     R30,LOW(`st`)
+   \   00000106   ....                       LDI     R31,(`st`) >> 8
+   \   00000108   8305                       STD     Z+5,R16
+   \   0000010A   8316                       STD     Z+6,R17
+   \   0000010C   8327                       STD     Z+7,R18
+   \   0000010E   8730                       STD     Z+8,R19
+    124          
+    125          TempR.Byte = 'A';
+   \   00000110   E401                       LDI     R16,65
+   \   00000112   830A                       STD     Y+2,R16
+    126          TempR.Err  = 1;
+   \   00000114   E001                       LDI     R16,1
+   \   00000116   830B                       STD     Y+3,R16
+    127          BR[1].Byte = 'V';
+   \   00000118   E506                       LDI     R16,86
+   \   0000011A   9300....                   STS     (BR + 2),R16
+    128          BR[1].Err = 'H';
+   \   0000011E   E408                       LDI     R16,72
+   \   00000120   9300....                   STS     (BR + 3),R16
+    129          //
+    130          i_var = 4;
+   \   00000124   E004                       LDI     R16,4
+   \   00000126   E010                       LDI     R17,0
+   \   00000128   ....                       LDI     R30,LOW(i_var)
+   \   0000012A   ....                       LDI     R31,(i_var) >> 8
+   \   0000012C   8300                       ST      Z,R16
+   \   0000012E   8311                       STD     Z+1,R17
+    131          i_var = ep_i_var ;
+   \   00000130   E307                       LDI     R16,55
+   \   00000132   E010                       LDI     R17,0
+   \   00000134   ....                       LDI     R30,LOW(i_var)
+   \   00000136   ....                       LDI     R31,(i_var) >> 8
+   \   00000138   8300                       ST      Z,R16
+   \   0000013A   8311                       STD     Z+1,R17
+    132          ep_c_var = 't';
+   \   0000013C   E704                       LDI     R16,116
+   \   0000013E   ....                       LDI     R18,LOW(ep_c_var)
+   \   00000140   ....                       LDI     R19,(ep_c_var) >> 8
+   \   00000142   01A9                       MOVW    R21 : R20,R19 : R18
+   \   00000144   ........                   CALL    __eeput8_16
+    133          ep_a_var[1] = '1';
+   \   00000148   E301                       LDI     R16,49
+   \   0000014A   E010                       LDI     R17,0
+   \   0000014C   ....                       LDI     R18,LOW((ep_a_var + 2))
+   \   0000014E   ....                       LDI     R19,(ep_a_var + 2) >> 8
+   \   00000150   01A9                       MOVW    R21 : R20,R19 : R18
+   \   00000152   ........                   CALL    __eeput16_16
+    134          
+    135          bit_reg.in_read = 1;
+   \   00000156   9A20                       SBI     0x04,0x00
+    136          bit_reg.in_read = 0;
+   \   00000158   9820                       CBI     0x04,0x00
+    137          bit_test.in_read = 0;
+   \   0000015A   ....                       LDI     R30,LOW(bit_test)
+   \   0000015C   ....                       LDI     R31,(bit_test) >> 8
+   \   0000015E   8100                       LD      R16,Z
+   \   00000160   7F0E                       ANDI    R16,0xFE
+   \   00000162   8300                       ST      Z,R16
+    138          bit_test.in_read = 1;
+   \   00000164   ....                       LDI     R30,LOW(bit_test)
+   \   00000166   ....                       LDI     R31,(bit_test) >> 8
+   \   00000168   8100                       LD      R16,Z
+   \   0000016A   6001                       ORI     R16,0x01
+   \   0000016C   8300                       ST      Z,R16
+    139          
+    140          goto loop; 
+   \   0000016E   CFB9                       RJMP    ??main_6
+    141          }
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__9exception[3];
+   \                     ??__vtbl:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>`:
+   \   00000000   ....                       DW `?~exception`/2
+   \   00000002   ....                       DW ??what/2
+   \   00000004   ....                       DW ??_Doraise/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__13bad_exception[3];
+   \                     ??__vtbl_1:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_1`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_1`:
+   \   00000000   ....                       DW `?~bad_exception`/2
+   \   00000002   ....                       DW ??what/2
+   \   00000004   ....                       DW ??_Doraise_1/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__11logic_error[3];
+   \                     ??__vtbl_2:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_2`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_2`:
+   \   00000000   ....                       DW `?~logic_error`/2
+   \   00000002   ....                       DW ??what_1/2
+   \   00000004   ....                       DW ??_Doraise_2/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__12domain_error[3];
+   \                     ??__vtbl_3:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_3`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_3`:
+   \   00000000   ....                       DW `?~domain_error`/2
+   \   00000002   ....                       DW ??what_1/2
+   \   00000004   ....                       DW ??_Doraise_3/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__16invalid_argument[3];
+   \                     ??__vtbl_4:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_4`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_4`:
+   \   00000000   ....                       DW `?~invalid_argument`/2
+   \   00000002   ....                       DW ??what_1/2
+   \   00000004   ....                       DW ??_Doraise_4/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__12length_error[3];
+   \                     ??__vtbl_5:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_5`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_5`:
+   \   00000000   ....                       DW `?~length_error`/2
+   \   00000002   ....                       DW ??what_1/2
+   \   00000004   ....                       DW ??_Doraise_5/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__12out_of_range[3];
+   \                     ??__vtbl_6:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_6`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_6`:
+   \   00000000   ....                       DW `?~out_of_range`/2
+   \   00000002   ....                       DW ??what_1/2
+   \   00000004   ....                       DW ??_Doraise_6/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__13runtime_error[3];
+   \                     ??__vtbl_7:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_7`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_7`:
+   \   00000000   ....                       DW `?~runtime_error`/2
+   \   00000002   ....                       DW ??what_2/2
+   \   00000004   ....                       DW ??_Doraise_7/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__14overflow_error[3];
+   \                     ??__vtbl_8:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_8`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_8`:
+   \   00000000   ....                       DW `?~overflow_error`/2
+   \   00000002   ....                       DW ??what_2/2
+   \   00000004   ....                       DW ??_Doraise_8/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__15underflow_error[3];
+   \                     ??__vtbl_9:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_9`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_9`:
+   \   00000000   ....                       DW `?~underflow_error`/2
+   \   00000002   ....                       DW ??what_2/2
+   \   00000004   ....                       DW ??_Doraise_9/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__11range_error[3];
+   \                     ??__vtbl_10:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_10`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_10`:
+   \   00000000   ....                       DW `?~range_error`/2
+   \   00000002   ....                       DW ??what_2/2
+   \   00000004   ....                       DW ??_Doraise_10/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__Q2_8ios_base7failure[3];
+   \                     ??__vtbl_11:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for __vtbl>_11`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_11`:
+   \   00000000   ....                       DW `?~failure`/2
+   \   00000002   ....                       DW ??what_2/2
+   \   00000004   ....                       DW ??_Doraise_11/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__9streambuf[13];
+   \                     ??__vtbl_12:
+   \   00000000                              DS 26
+   \   0000001A                              REQUIRE `?<Initializer for __vtbl>_12`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_12`:
+   \   00000000   ....                       DW `?~streambuf`/2
+   \   00000002   ....                       DW ??overflow/2
+   \   00000004   ....                       DW ??pbackfail/2
+   \   00000006   ....                       DW ??showmanyc/2
+   \   00000008   ....                       DW ??underflow/2
+   \   0000000A   ....                       DW ??uflow/2
+   \   0000000C   ....                       DW ??xsgetn/2
+   \   0000000E   ....                       DW ??xsputn/2
+   \   00000010   ....                       DW ??seekoff/2
+   \   00000012   ....                       DW ??seekpos/2
+   \   00000014   ....                       DW ??setbuf/2
+   \   00000016   ....                       DW ??sync/2
+   \   00000018   ....                       DW ??imbue/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__3ios[1];
+   \                     ??__vtbl_13:
+   \   00000000                              DS 2
+   \   00000002                              REQUIRE `?<Initializer for __vtbl>_13`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_13`:
+   \   00000000   ....                       DW `?~ios`/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__7ostream[1];
+   \                     ??__vtbl_14:
+   \   00000000                              DS 2
+   \   00000002                              REQUIRE `?<Initializer for __vtbl>_14`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_14`:
+   \   00000000   ....                       DW `?~ostream`/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__7istream[1];
+   \                     ??__vtbl_15:
+   \   00000000                              DS 2
+   \   00000002                              REQUIRE `?<Initializer for __vtbl>_15`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_15`:
+   \   00000000   ....                       DW `?~istream`/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __vtbl_entry const __near __vtbl__5MyBuf[13];
+   \                     ??__vtbl_16:
+   \   00000000                              DS 26
+   \   0000001A                              REQUIRE `?<Initializer for __vtbl>_16`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for __vtbl>_16`:
+   \   00000000   ....                       DW `?~MyBuf`/2
+   \   00000002   ....                       DW ??overflow/2
+   \   00000004   ....                       DW ??pbackfail/2
+   \   00000006   ....                       DW ??showmanyc/2
+   \   00000008   ....                       DW ??underflow/2
+   \   0000000A   ....                       DW ??uflow/2
+   \   0000000C   ....                       DW ??xsgetn/2
+   \   0000000E   ....                       DW ??xsputn/2
+   \   00000010   ....                       DW ??seekoff/2
+   \   00000012   ....                       DW ??seekpos/2
+   \   00000014   ....                       DW ??setbuf/2
+   \   00000016   ....                       DW ??sync/2
+   \   00000018   ....                       DW ??imbue/2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   __dtor_rec const __near <Unnamed 01B7C63C>;
+   \                     ?_0:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for >`
+
+   \                                 In segment NEAR_I, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char const __near _C;
+   \                     ??_C:
+   \   00000000                              DS 1
+   \   00000001                              REQUIRE `?<Initializer for _C>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for >`:
+   \   00000000   ....                       DW ?_1
+   \   00000002   ....                       DW _Ios_init0
+   \   00000004   ....                       DW `?~Init`/2
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   __dtor_rec const *__near <Unnamed 01B7C81C>;
+   \                     ?_1:
+   \   00000000                              DS 2
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static ios_base::Init __near _Ios_init0;
+   \                     _Ios_init0:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   char volatile __near c_var;
+   \                     c_var:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   int volatile __near i_var;
+   \                     i_var:
+   \   00000000                              DS 2
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static char volatile __near cTest;
+   \                     cTest:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static int volatile __near iTest;
+   \                     iTest:
+   \   00000000                              DS 2
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   day __near workday;
+   \                     workday:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   s __near st;
+   \                     `st`:
+   \   00000000                              DS 9
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next, root
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static ByteErr volatile __near BR[10];
+   \                     BR:
+   \   00000000                              DS 20
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next, root
+   \                     `?<Initializer for _C>`:
+   \   00000000   00                         DB 0
+
+   \                                 In segment DIFUNCT, align 1, keep-with-next, root
+   \   00000000                              REQUIRE ?call_ctors
+   \   00000000   ....                       DW      ??__sti__Test_cpp_ccc03e22/2
+
+   Maximum stack usage in bytes:
+
+     Function                        CSTACK  RSTACK
+     --------                        ------  ------
+     MyBuf::MyBuf                        2       2 
+       -> operator new(unsigned int)
+                                         2       2 
+       -> streambuf::streambuf           2       2 
+     MyBuf::~MyBuf                       4       2 
+       -> streambuf::~streambuf          4       2 
+       -> operator delete(void *)        4       2 
+     __sti__Test_cpp_ccc03e22            0       2 
+       -> ios_base::Init::Init           0       2 
+       -> __record_needed_destruction
+                                         0       2 
+     bad_exception::_Doraise             0       2 
+       -> _Throw(exception const &)      0       2 
+     bad_exception::~bad_exception       4       2 
+       -> exception::~exception          4       2 
+       -> operator delete(void *)        4       2 
+     char_allocator::deallocate          0       2 
+       -> operator delete(void *)        0       2 
+     char_traits::copy                   2       2 
+       -> memcpy                         2       2 
+     char_traits::eof                    0       0 
+     char_traits::eq_int_type            0       0 
+     char_traits::to_char_type           0       0 
+     char_traits::to_int_type            0       0 
+     domain_error::_Doraise              0       2 
+       -> _Throw(exception const &)      0       2 
+     domain_error::~domain_error         4       2 
+       -> logic_error::~logic_error      4       2 
+       -> operator delete(void *)        4       2 
+     exception::_Doraise                 0       0 
+     exception::what                     0       0 
+     exception::~exception               0       2 
+       -> operator delete(void *)        0       2 
+     fpos::fpos                          4       2 
+       -> operator new(unsigned int)
+                                         4       2 
+     invalid_argument::_Doraise          0       2 
+       -> _Throw(exception const &)      0       2 
+     invalid_argument::~invalid_argument
+                                         4       2 
+       -> logic_error::~logic_error      4       2 
+       -> operator delete(void *)        4       2 
+     ios::~ios                           4       2 
+       -> ios_base::~ios_base            4       2 
+       -> operator delete(void *)        4       2 
+     ios_base::failure::_Doraise         0       2 
+       -> _Throw(exception const &)      0       2 
+     ios_base::failure::~failure         4       2 
+       -> runtime_error::~runtime_error
+                                         4       2 
+       -> operator delete(void *)        4       2 
+     istream::~istream                   4       2 
+       -> ios::~ios                      4       2 
+       -> operator delete(void *)        4       2 
+     length_error::_Doraise              0       2 
+       -> _Throw(exception const &)      0       2 
+     length_error::~length_error         4       2 
+       -> logic_error::~logic_error      4       2 
+       -> operator delete(void *)        4       2 
+     locale::locale                      0       2 
+       -> operator new(unsigned int)
+                                         0       2 
+     logic_error::_Doraise               0       2 
+       -> _Throw(exception const &)      0       2 
+     logic_error::what                   0       2 
+       -> string::c_str                  0       2 
+     logic_error::~logic_error           4       2 
+       -> string::~string                4       2 
+       -> exception::~exception          4       2 
+       -> operator delete(void *)        4       2 
+     main                              192       2 
+       -> MyBuf::MyBuf                 192       2 
+       -> streambuf::pubsetbuf         192       2 
+       -> streambuf::sputc             192       2 
+       -> streambuf::sgetc             192       2 
+       -> MyBuf::MyBuf                 192       2 
+       -> streambuf::pubsetbuf         192       2 
+     ostream::~ostream                   4       2 
+       -> ios::~ios                      4       2 
+       -> operator delete(void *)        4       2 
+     out_of_range::_Doraise              0       2 
+       -> _Throw(exception const &)      0       2 
+     out_of_range::~out_of_range         4       2 
+       -> logic_error::~logic_error      4       2 
+       -> operator delete(void *)        4       2 
+     overflow_error::_Doraise            0       2 
+       -> _Throw(exception const &)      0       2 
+     overflow_error::~overflow_error
+                                         4       2 
+       -> runtime_error::~runtime_error
+                                         4       2 
+       -> operator delete(void *)        4       2 
+     range_error::_Doraise               0       2 
+       -> _Throw(exception const &)      0       2 
+     range_error::~range_error           4       2 
+       -> runtime_error::~runtime_error
+                                         4       2 
+       -> operator delete(void *)        4       2 
+     runtime_error::_Doraise             0       2 
+       -> _Throw(exception const &)      0       2 
+     runtime_error::what                 0       2 
+       -> string::c_str                  0       2 
+     runtime_error::~runtime_error       4       2 
+       -> string::~string                4       2 
+       -> exception::~exception          4       2 
+       -> operator delete(void *)        4       2 
+     streambuf::_Gninc                   0       0 
+     streambuf::_Init                    2       2 
+       -> streambuf::setp                2       2 
+       -> streambuf::setg                2       2 
+     streambuf::_Pninc                   0       0 
+     streambuf::egptr                    0       0 
+     streambuf::epptr                    0       0 
+     streambuf::gbump                    0       0 
+     streambuf::gptr                     0       0 
+     streambuf::imbue                    0       0 
+     streambuf::overflow                 0       2 
+       -> char_traits::eof               0       2 
+     streambuf::pbackfail                0       2 
+       -> char_traits::eof               0       2 
+     streambuf::pbump                    0       0 
+     streambuf::pptr                     0       0 
+     streambuf::pubsetbuf                2       2 
+       ->   Indirect call                2       2 
+     streambuf::seekoff                 19       2 
+       -> fpos::fpos                    19       2 
+     streambuf::seekpos                 30       2 
+       -> fpos::fpos                    30       2 
+     streambuf::setbuf                   0       0 
+     streambuf::setg                     0       0 
+     streambuf::setp                     0       0 
+     streambuf::sgetc                    4       2 
+       -> streambuf::gptr                4       2 
+       -> streambuf::gptr                4       2 
+       -> streambuf::egptr               4       2 
+       -> streambuf::gptr                4       2 
+       -> char_traits::to_int_type       4       2 
+       ->   Indirect call                4       2 
+     streambuf::showmanyc                0       0 
+     streambuf::sputc                    5       2 
+       -> streambuf::pptr                5       2 
+       -> streambuf::pptr                5       2 
+       -> streambuf::epptr               5       2 
+       -> streambuf::_Pninc              5       2 
+       -> char_traits::to_int_type       5       2 
+       -> char_traits::to_int_type       5       2 
+       ->   Indirect call                5       2 
+     streambuf::streambuf                2       2 
+       -> operator new(unsigned int)
+                                         2       2 
+       -> locale::locale                 2       2 
+       -> streambuf::_Init               2       2 
+     streambuf::sync                     0       0 
+     streambuf::uflow                    6       2 
+       ->   Indirect call                6       2 
+       -> char_traits::eof               6       2 
+       -> char_traits::eq_int_type       6       2 
+       -> char_traits::eof               6       2 
+       -> streambuf::_Gninc              6       2 
+       -> char_traits::to_int_type       6       2 
+     streambuf::underflow                0       2 
+       -> char_traits::eof               0       2 
+     streambuf::xsgetn                  14       2 
+       -> streambuf::gptr               14       2 
+       -> char_traits::copy             14       2 
+       -> streambuf::gbump              14       2 
+       -> streambuf::gptr               14       2 
+       -> streambuf::egptr              14       2 
+       -> streambuf::gptr               14       2 
+       ->   Indirect call               14       2 
+       -> char_traits::eof              14       2 
+       -> char_traits::eq_int_type      14       2 
+       -> char_traits::to_char_type     14       2 
+     streambuf::xsputn                  14       2 
+       -> streambuf::pptr               14       2 
+       -> char_traits::copy             14       2 
+       -> streambuf::pbump              14       2 
+       -> streambuf::pptr               14       2 
+       -> streambuf::epptr              14       2 
+       -> streambuf::pptr               14       2 
+       -> char_traits::to_int_type      14       2 
+       ->   Indirect call               14       2 
+       -> char_traits::eof              14       2 
+       -> char_traits::eq_int_type      14       2 
+     streambuf::~streambuf               0       2 
+       -> operator delete(void *)        0       2 
+     string::_Nullstr                    0       0 
+     string::_Refcnt                     0       0 
+     string::_Tidy                       2       2 
+       -> string::_Refcnt                2       2 
+       -> string::_Refcnt                2       2 
+       -> char_allocator::deallocate
+                                         2       2 
+       -> string::_Refcnt                2       2 
+     string::c_str                       0       2 
+       -> string::_Nullstr               0       2 
+     string::~string                     4       2 
+       -> string::_Tidy                  4       2 
+       -> operator delete(void *)        4       2 
+     underflow_error::_Doraise           0       2 
+       -> _Throw(exception const &)      0       2 
+     underflow_error::~underflow_error
+                                         4       2 
+       -> runtime_error::~runtime_error
+                                         4       2 
+       -> operator delete(void *)        4       2 
+
+ 
+     63 bytes in segment ABSOLUTE
+   3212 bytes in segment CODE
+      2 bytes in segment DIFUNCT
+     23 bytes in segment EEPROM_I
+     12 bytes in segment INITTAB
+    137 bytes in segment NEAR_I
+    137 bytes in segment NEAR_ID
+      1 byte  in segment NEAR_N
+     39 bytes in segment NEAR_Z
+ 
+    524 bytes of CODE memory (+ 2839 bytes shared)
+    176 bytes of DATA memory (+ 64 bytes shared)
+     23 bytes of XDATA memory
+
+Errors: none
+Warnings: none

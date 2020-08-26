@@ -1,0 +1,2411 @@
+        NAME mr
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG NEAR_I:DATA:NOROOT(0)
+        RSEG NEAR_ID:CODE:NOROOT(0)
+        RSEG NEAR_Z:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        ERROR
+;NOTE: This module defines or uses C++ functions, which is not
+;      possible from assembler code. Assembling this file will
+;      not produce an equivalent object file to the one produced
+;      by the C++ compiler.
+
+        EXTERN ?need_segment_init
+        EXTERN ?SS_DIVMOD_L02
+        EXTERN ?UL_DIVMOD_L03
+
+        PUBWEAK `?<Segment init: NEAR_I>`
+        PUBWEAK `?<Segment init: NEAR_Z>`
+        PUBLIC ??B_RxBuf
+        FUNCTION ??B_RxBuf,0203H
+        PUBLIC ??B_TxBuf
+        FUNCTION ??B_TxBuf,0203H
+        PUBLIC ??Clear
+        FUNCTION ??Clear,0203H
+        PUBLIC ??ClearRxBuf
+        FUNCTION ??ClearRxBuf,0203H
+        PUBLIC ??ClearTxBuf
+        FUNCTION ??ClearTxBuf,0203H
+        PUBLIC ??E_RxBuf
+        FUNCTION ??E_RxBuf,0203H
+        PUBLIC ??E_TxBuf
+        FUNCTION ??E_TxBuf,0203H
+        FUNCTION ??Ext_INT1,0233H
+        LOCFRAME CSTACK, 5, STACK
+        PUBLIC ??InitUart
+        FUNCTION ??InitUart,0203H
+        LOCFRAME CSTACK, 12, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC ??RdByteRxBuf
+        FUNCTION ??RdByteRxBuf,0203H
+        PUBLIC ??RdByteTxBuf
+        FUNCTION ??RdByteTxBuf,0203H
+        PUBWEAK ??Uart0_RX
+        FUNCTION ??Uart0_RX,0233H
+        LOCFRAME CSTACK, 30, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??Uart0_TX
+        FUNCTION ??Uart0_TX,0233H
+        LOCFRAME CSTACK, 29, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBWEAK ??Uart0_UDRE
+        FUNCTION ??Uart0_UDRE,0233H
+        LOCFRAME CSTACK, 5, STACK
+        PUBLIC ??WrByteRxBuf
+        FUNCTION ??WrByteRxBuf,0203H
+        PUBLIC ??WrByteTxBuf
+        FUNCTION ??WrByteTxBuf,0203H
+        PUBLIC ??testfunc
+        FUNCTION ??testfunc,0203H
+        PUBWEAK _A_UCSR0A
+        PUBLIC main
+        FUNCTION main,021a03H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+;     1 /************************************************************
+;     2  * Name:    Mini Robot for buildings , EC++ version         *
+;     3  * **********************************************************   
+;     4  *                                                          *
+;     5  * Version:             0.01                                *
+;     6  * Date create:         30.07.2002  12:00                   *
+;     7  * Last edit:           15.08.2002  23:05                   *
+;     8  *                                                          *
+;     9  * File:                mr.c                                *
+;    10  *                                                          *  
+;    11  ************************************************************/
+;    12 #include <stdio.h>
+;    13 #include "iom161.h"
+
+        ASEGN ABSOLUTE:DATA:NOROOT,02bH
+; union <unnamed> volatile __io _A_UCSR0A;
+_A_UCSR0A:
+	DS 1
+;    14 #include <inavr.h>
+;    15 #include "mc_def.h"
+;    16 /* enable use of extended keywords */
+;    17 #pragma language=extended
+;    18 
+;    19  /***********************************
+;    20  *       Global variables          *
+;    21  ***********************************/
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    22 volatile static  unsigned int Test;
+; static unsigned int volatile __near Test;
+Test:
+	DS 2
+;    23 //
+
+        RSEG NEAR_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_I>`
+;    24 static volatile  unsigned int   gl_speed = 9600; // default baund speed 9600 bps 
+; static unsigned int volatile __near gl_speed;
+gl_speed:
+	DS 2
+	REQUIRE `?<Initializer for gl_speed>`
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    25 static volatile  unsigned int   gl_parity = 0;   //         parity NO check 
+; static unsigned int volatile __near gl_parity;
+gl_parity:
+	DS 2
+;    26 //
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    27 static volatile  unsigned int   gl_test_Rx = 0;   // Mode Test Rx 
+; static unsigned int volatile __near gl_test_Rx;
+gl_test_Rx:
+	DS 2
+;    28                                                   // Counter Errors 
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    29 volatile static  unsigned int   aErRx[5];         // Array Erros Rx
+; static unsigned int volatile __near aErRx[5];
+aErRx:
+	DS 10
+;    30                                                   // aErRx[1] - FE0
+;    31                                                   // aErRx[2] - OR0
+;    32                                                   // aErRx[3] - Error Pariry    
+;    33                                                   // aErRx[4] - Buf Rx Full
+;    34 static volatile  unsigned int   gl_test_Tx = 0;   // Mode Test  Tx
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    35 volatile static  unsigned int   aErTx[5];         // Array Erros Tx
+; static unsigned int volatile __near aErTx[5];
+aErTx:
+	DS 10
+;    36                                                   // aErRx[1] - empty
+;    37                                                   // aErRx[2] - empty
+;    38                                                   // aErRx[3] - empty    
+;    39                                                   // aErRx[4] - Buf Tx Full
+;    40 //      
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    41 volatile static unsigned int var=0;
+; static unsigned int volatile __near var;
+var:
+	DS 2
+;    42 volatile static  unsigned char aTest[BufLen];
+;    43 volatile static  unsigned int ErrTest;
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    44 volatile static  unsigned char cTest;  
+; static unsigned char volatile __near cTest;
+cTest:
+	DS 1
+;    45 volatile static  unsigned int  nTestPos;
+;    46 
+;    47 //  Variables for UART
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    48     volatile static unsigned char ErrRx;
+; static unsigned char volatile __near ErrRx;
+ErrRx:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    49     volatile static unsigned char RxBufPos ;
+; static unsigned char volatile __near RxBufPos;
+RxBufPos:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    50     volatile static unsigned char RxBuf[BufLen];
+; static unsigned char volatile __near RxBuf[15];
+RxBuf:
+	DS 15
+;    51     volatile static unsigned char ErrTx;
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    52     volatile static unsigned char TxBufPos ;
+; static unsigned char volatile __near TxBufPos;
+TxBufPos:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    53     volatile static unsigned char TxBuf[BufLen]; 
+; static unsigned char volatile __near TxBuf[15];
+TxBuf:
+	DS 15
+;    54 
+;    55 // Flag Print Erros Array
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+;    56    volatile static bool FlgPrint = false;
+; static bool volatile __near FlgPrint;
+FlgPrint:
+	DS 1
+;    57    volatile static unsigned char p = 0;
+;    58 //   
+
+        ASEGN ABSOLUTE:DATA:NOROOT,05bH
+	DS 1
+;    59 static volatile __io unsigned char _GIMSK @ 0x3B;
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03bH
+	DS 1
+;    60 static volatile __io unsigned char _PORTA @ 0x1B ;
+
+        ASEGN ABSOLUTE:DATA:NOROOT,032H
+	DS 1
+;    61 static volatile __io unsigned char _PORTD @ 0x12 ;
+;    62 static volatile __io unsigned char _DDRD  @ 0x11 ;
+;    63 static volatile __io unsigned char _SREG  @ 0x3F ;
+;    64  /*******************************************
+;    65  *     Base class declaration for UART0     *
+;    66  ********************************************/ 
+;    67  
+;    68 class Uart0Baseclass
+;    69 {
+;    70   public:
+;    71     // Constructor
+;    72     //Uart0Baseclass()
+;    73     //{};
+;    74 
+;    75     // Destructor
+;    76     //~Uart0Baseclass()
+;    77     //{};
+;    78  
+;    79     // This method init set for UART0.
+;    80     // 
+;    81     void InitUart(unsigned int speed, unsigned int parity);
+;    82   
+;    83     // This method clear the UART0
+;    84     void Clear();
+;    85     
+;    86     //----------------------------------------
+;    87     // This method clear the RxBuf
+;    88     void ClearRxBuf();
+;    89    // This method write on byte the RxBuf
+;    90     void WrByteRxBuf(unsigned char Byte);
+;    91     // This method write on byte the RxBuf
+;    92     unsigned char  RdByteRxBuf(void);
+;    93     // This method for RxBuf define Begin Buffer
+;    94     // Return - True : Begin Buf, no bytes 
+;    95     //        - Fasle : No Begin Buf , yes bytes 
+;    96     bool B_RxBuf();
+;    97     // This method for RxBuf define End Buffer
+;    98     // Return - True : End Buf, full bytes 
+;    99     //        - Fasle : No End Buf   
+;   100     bool E_RxBuf();
+;   101 
+;   102     
+;   103     //---------------------------------------
+;   104     // This method clear the TxBuf
+;   105     void ClearTxBuf();
+;   106     // This method write on byte the TxBuf
+;   107     void WrByteTxBuf(unsigned char Byte);
+;   108     // This method write on byte the TxBuf
+;   109     unsigned char  RdByteTxBuf(void);
+;   110     // This method for TxBuf define Begin Buffer
+;   111     // Return - True : Begin Buf, no bytes 
+;   112     //        - Fasle : No Begin Buf , yes bytes 
+;   113     bool B_TxBuf();
+;   114     // This method for TxBuf define End Buffer
+;   115     // Return - True : End Buf, full bytes 
+;   116     //        - Fasle : No End Buf   
+;   117     bool E_TxBuf();
+;   118 
+;   119     // For test method for interrupt
+;   120     void testfunc();
+;   121     
+;   122 //*******************************   
+;   123 // This method interrupt event RX 
+;   124 #pragma vector=UART0_RX_vect
+
+        RSEG CODE:CODE:NOROOT(1)
+;   125     static __interrupt void   Uart0_RX()
+;   126     {
+; __nearfunc __interrupt void Uart0Baseclass::Uart0_RX();
+??Uart0_RX:
+	ST	-Y,R27
+	ST	-Y,R26
+	ST	-Y,R25
+	ST	-Y,R24
+	ST	-Y,R31
+	ST	-Y,R30
+	ST	-Y,R1
+	ST	-Y,R0
+	ST	-Y,R22
+	ST	-Y,R21
+	ST	-Y,R20
+	ST	-Y,R19
+	ST	-Y,R18
+	ST	-Y,R17
+	ST	-Y,R16
+	IN	R22,0x3F
+	SBIW	R29 : R28,11
+;   127     volatile unsigned char cTmp;
+;   128     volatile unsigned char cByte;
+;   129     volatile unsigned char cPE;
+;   130     volatile unsigned char cPERx;    
+;   131     volatile bool FlgErr;
+;   132     volatile int i;
+;   133     volatile int j;
+;   134     volatile int k;    
+;   135     
+;   136     FlgErr = false;               // No Errors Rx    
+	LDI	R16,0
+	STD	Y+1,R16
+;   137 
+;   138 
+;   139         cTmp = UCSR0A & 0x10;     // Test bit FE0=?
+	IN	R16,0x0B
+	ANDI	R16,0x10
+	ST	Y,R16
+;   140           if ( cTmp != 0 )
+	LD	R16,Y
+	TST	R16
+	BREQ	??Uart0_RX_1
+;   141           {
+;   142             ErrRx = 1;
+	LDI	R16,1
+	STS	ErrRx,R16
+;   143             FlgErr = true;
+	STD	Y+1,R16
+;   144             if ( gl_test_Rx == 1)
+	LDI	R30,LOW(gl_test_Rx)
+	LDI	R31,(gl_test_Rx) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_1
+;   145             {
+;   146              aErRx[1]++;
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+2
+	LDD	R17,Z+3
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+2,R16
+	STD	Z+3,R17
+;   147              };
+;   148            };
+;   149         
+;   150         cTmp = UCSR0A & 0x08;     // Test bit OE0=?       
+??Uart0_RX_1:
+	IN	R16,0x0B
+	ANDI	R16,0x08
+	ST	Y,R16
+;   151           if ( (cTmp != 0) )  
+	LD	R16,Y
+	TST	R16
+	BREQ	??Uart0_RX_2
+;   152           {
+;   153             ErrRx = 2;
+	LDI	R16,2
+	STS	ErrRx,R16
+;   154             FlgErr = true;
+	LDI	R16,1
+	STD	Y+1,R16
+;   155             if ( gl_test_Rx == 1 )
+	LDI	R30,LOW(gl_test_Rx)
+	LDI	R31,(gl_test_Rx) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_2
+;   156             {
+;   157             aErRx[2]++;
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+4
+	LDD	R17,Z+5
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+4,R16
+	STD	Z+5,R17
+;   158             };
+;   159           };
+;   160    
+;   161      cByte = UDR0;                        // Read Byte Rx from UDR0
+??Uart0_RX_2:
+	IN	R16,0x0C
+	STD	Y+4,R16
+;   162      cPERx = (UCSR0B & 0x02) / 2;        // Read 9 Bit Rx
+	LDI	R16,0
+	SBIC	0x0A,0x01
+	INC	R16
+	STD	Y+3,R16
+;   163 
+;   164                
+;   165       switch(gl_parity)      // Test mode parity=?
+	LDI	R26,LOW(gl_parity)
+	LDI	R27,(gl_parity) >> 8
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R31 : R30,1
+	BREQ	??Uart0_RX_4
+	SBIW	R31 : R30,1
+	BREQ	??Uart0_RX_5
+	RJMP	??Uart0_RX_6
+;   166         {
+;   167         case 0:              // No parity
+;   168         break;
+;   169  
+;   170         case 1:             // mode parity = "1"
+;   171         case 2:             // mode parity = ~ "1" 
+;   172             if ( true ) // Counters all Errors
+;   173             {
+;   174               j=1;
+??Uart0_RX_5:
+??Uart0_RX_4:
+	LDI	R16,1
+	LDI	R17,0
+	STD	Y+5,R16
+	STD	Y+6,R17
+;   175               k=0;
+	STD	Y+9,R17
+	STD	Y+10,R17
+;   176               
+;   177                 for (i=1;i<=8;i++)
+	RJMP	??Uart0_RX_7
+;   178                     {
+;   179                     cTmp = cByte & j;
+??Uart0_RX_8:
+	LDD	R16,Y+4
+	LDD	R18,Y+5
+	LDD	R19,Y+6
+	AND	R18,R16
+	ST	Y,R18
+;   180                         if ( cTmp != 0)
+	LD	R16,Y
+	TST	R16
+	BREQ	??Uart0_RX_9
+;   181                         {
+;   182                         k++;
+	LDD	R16,Y+9
+	LDD	R17,Y+10
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+9,R16
+	STD	Y+10,R17
+;   183                         };
+;   184                      j = j*2;   
+??Uart0_RX_9:
+	LDD	R16,Y+5
+	LDD	R17,Y+6
+	LSL	R16
+	ROL	R17
+	STD	Y+5,R16
+	STD	Y+6,R17
+	LDD	R16,Y+7
+	LDD	R17,Y+8
+	SUBI	R16,255
+	SBCI	R17,255
+??Uart0_RX_7:
+	STD	Y+7,R16
+	STD	Y+8,R17
+	LDD	R24,Y+7
+	LDD	R25,Y+8
+	CPI	R24,9
+	SBCI	R25,0
+	BRLT	??Uart0_RX_8
+;   185                     };
+;   186       
+;   187                 cTmp = (char) (k % 2);
+	LDD	R16,Y+9
+	LDD	R17,Y+10
+	LDI	R20,2
+	LDI	R21,0
+	CALL	?SS_DIVMOD_L02
+	ST	Y,R20
+;   188                       
+;   189                     if ( (cTmp == 1) && (gl_parity == 1) )
+	LD	R16,Y
+	CPI	R16,1
+	BRNE	??Uart0_RX_10
+	LDI	R30,LOW(gl_parity)
+	LDI	R31,(gl_parity) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_10
+;   190                       {
+;   191                       cPE = 1;
+	LDI	R16,1
+	STD	Y+2,R16
+;   192                         if ( cPE != cPERx )
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	CP	R16,R17
+	BREQ	??Uart0_RX_10
+;   193                         {
+;   194                          FlgErr = true;
+	LDI	R16,1
+	STD	Y+1,R16
+;   195                          ErrRx = 3;
+	LDI	R16,3
+	STS	ErrRx,R16
+;   196                             if ( gl_test_Rx == 1 )
+	LDI	R30,LOW(gl_test_Rx)
+	LDI	R31,(gl_test_Rx) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_10
+;   197                             {
+;   198                             aErRx[3]++;
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+6
+	LDD	R17,Z+7
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+6,R16
+	STD	Z+7,R17
+;   199                             };
+;   200                          };
+;   201                       };
+;   202                     if ( (cTmp == 1) && (gl_parity == 2) )
+??Uart0_RX_10:
+	LD	R16,Y
+	CPI	R16,1
+	BRNE	??Uart0_RX_11
+	LDI	R30,LOW(gl_parity)
+	LDI	R31,(gl_parity) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,2
+	LDI	R16,0
+	SBCI	R17,0
+	BRNE	??Uart0_RX_11
+;   203                       {
+;   204                       cPE = 0;
+	STD	Y+2,R16
+;   205                         if ( cPE != cPERx )
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	CP	R16,R17
+	BREQ	??Uart0_RX_11
+;   206                         {
+;   207                          FlgErr = true;
+	LDI	R16,1
+	STD	Y+1,R16
+;   208                          ErrRx = 3;
+	LDI	R16,3
+	STS	ErrRx,R16
+;   209                             if ( gl_test_Rx == 1 )
+	LDI	R30,LOW(gl_test_Rx)
+	LDI	R31,(gl_test_Rx) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_11
+;   210                             {
+;   211                             aErRx[3]++;
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+6
+	LDD	R17,Z+7
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+6,R16
+	STD	Z+7,R17
+;   212                              };
+;   213                          };
+;   214                       };
+;   215                     if ( (cTmp == 0) && (gl_parity == 1) )
+??Uart0_RX_11:
+	LD	R16,Y
+	TST	R16
+	BRNE	??Uart0_RX_12
+	LDI	R30,LOW(gl_parity)
+	LDI	R31,(gl_parity) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	LDI	R16,0
+	SBCI	R17,0
+	BRNE	??Uart0_RX_12
+;   216                       {
+;   217                       cPE = 0;
+	STD	Y+2,R16
+;   218                         if ( cPE != cPERx )
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	CP	R16,R17
+	BREQ	??Uart0_RX_12
+;   219                         {
+;   220                          FlgErr = true;
+	LDI	R16,1
+	STD	Y+1,R16
+;   221                          ErrRx = 3;
+	LDI	R16,3
+	STS	ErrRx,R16
+;   222                                     if ( gl_test_Rx == 1 )
+	LDI	R30,LOW(gl_test_Rx)
+	LDI	R31,(gl_test_Rx) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_12
+;   223                                     {
+;   224                                     aErRx[3]++;
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+6
+	LDD	R17,Z+7
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+6,R16
+	STD	Z+7,R17
+;   225                                     };
+;   226                          };                      
+;   227                       };                            
+;   228                     if ( (cTmp == 0) && (gl_parity == 2) )
+??Uart0_RX_12:
+	LD	R16,Y
+	TST	R16
+	BRNE	??Uart0_RX_6
+	LDI	R30,LOW(gl_parity)
+	LDI	R31,(gl_parity) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,2
+	SBCI	R17,0
+	BRNE	??Uart0_RX_6
+;   229                       {
+;   230                       cPE = 1;
+	LDI	R16,1
+	STD	Y+2,R16
+;   231                         if ( cPE != cPERx )
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	CP	R16,R17
+	BREQ	??Uart0_RX_6
+;   232                         {
+;   233                          FlgErr = true;
+	LDI	R16,1
+	STD	Y+1,R16
+;   234                          ErrRx = 3;
+	LDI	R16,3
+	STS	ErrRx,R16
+;   235                                 if ( gl_test_Rx == 1 )
+	LDI	R30,LOW(gl_test_Rx)
+	LDI	R31,(gl_test_Rx) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_6
+;   236                                 {
+;   237                                 aErRx[3]++;
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+6
+	LDD	R17,Z+7
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+6,R16
+	STD	Z+7,R17
+;   238                                 };
+;   239                          };
+;   240                  };
+;   241                   
+;   242             };          
+;   243         break;
+;   244         };
+;   245 
+;   246       // Test End BufRx
+;   247       // set FlgErr=true if End BufRx
+;   248        if ( (RxBufPos >= (BufLen))  )
+??Uart0_RX_6:
+	LDS	R16,RxBufPos
+	CPI	R16,15
+	BRCS	??Uart0_RX_13
+;   249           {
+;   250             FlgErr = true;
+	LDI	R16,1
+	STD	Y+1,R16
+;   251             ErrRx = 4; // Full BufRx
+	LDI	R16,4
+	STS	ErrRx,R16
+;   252                   if ( gl_test_Rx == 1 )
+	LDI	R30,LOW(gl_test_Rx)
+	LDI	R31,(gl_test_Rx) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	CPI	R16,1
+	SBCI	R17,0
+	BRNE	??Uart0_RX_13
+;   253                   {
+;   254                   aErRx[4]++;
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+8
+	LDD	R17,Z+9
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+8,R16
+	STD	Z+9,R17
+;   255                   };
+;   256           }
+;   257       else
+;   258           {
+;   259             ;
+;   260           };
+;   261           
+;   262 
+;   263        
+;   264       // Write Byte to BufRx  
+;   265       if ( FlgErr == false )
+??Uart0_RX_13:
+	LDD	R16,Y+1
+	TST	R16
+	BRNE	??Uart0_RX_14
+;   266       {
+;   267       ErrRx = 0 ;   // No Errors Rx 
+	LDI	R16,0
+	STS	ErrRx,R16
+;   268       
+;   269 
+;   270       // Byte Write Rx Buf
+;   271             RxBuf[RxBufPos] = cByte;
+	LDD	R18,Y+4
+	LDS	R16,RxBufPos
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(RxBuf) & 0xFFFF))
+	SBCI	R31,(-(RxBuf) & 0xFFFF) >> 8
+	ST	Z,R18
+;   272             RxBufPos = RxBufPos + 1 ;
+	LDI	R30,LOW(RxBufPos)
+	LDI	R31,(RxBufPos) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+;   273 
+;   274             if ( (BufLen-RxBufPos) <= 2 ) // RTS0 = 1 stop Tx from PC
+	LDI	R30,15
+	LDI	R31,0
+	LDS	R16,RxBufPos
+	SUB	R30,R16
+	SBCI	R31,0
+	SBIW	R31 : R30,3
+	BRGE	??Uart0_RX_14
+;   275             {
+;   276             PORTC = PORTC ^ ( 1 ); // RTS0=1 Pins Out bits   
+	IN	R17,0x15
+	LDI	R16,1
+	EOR	R16,R17
+	OUT	0x15,R16
+;   277             };
+;   278       };
+;   279             
+;   280  }; 
+??Uart0_RX_14:
+	ADIW	R29 : R28,11
+	OUT	0x3F,R22
+	LD	R16,Y+
+	LD	R17,Y+
+	LD	R18,Y+
+	LD	R19,Y+
+	LD	R20,Y+
+	LD	R21,Y+
+	LD	R22,Y+
+	LD	R0,Y+
+	LD	R1,Y+
+	LD	R30,Y+
+	LD	R31,Y+
+	LD	R24,Y+
+	LD	R25,Y+
+	LD	R26,Y+
+	LD	R27,Y+
+	RETI
+;   281 
+;   282 
+;   283 
+;   284 //*************************************
+;   285 // This method interrupt event TX Empty
+;   286 #pragma vector=UART0_TX_vect
+
+        RSEG CODE:CODE:NOROOT(1)
+;   287    static __interrupt void   Uart0_TX()
+;   288 
+;   289     {
+; __nearfunc __interrupt void Uart0Baseclass::Uart0_TX();
+??Uart0_TX:
+	ST	-Y,R27
+	ST	-Y,R26
+	ST	-Y,R25
+	ST	-Y,R24
+	ST	-Y,R31
+	ST	-Y,R30
+	ST	-Y,R1
+	ST	-Y,R0
+	ST	-Y,R22
+	ST	-Y,R21
+	ST	-Y,R20
+	ST	-Y,R19
+	ST	-Y,R18
+	ST	-Y,R17
+	ST	-Y,R16
+	IN	R22,0x3F
+	SBIW	R29 : R28,10
+;   290     volatile unsigned char cTmp;
+;   291     volatile unsigned char cByte;
+;   292     volatile unsigned char cPE;
+;   293     volatile unsigned char cPERx;    
+;   294     volatile bool FlgErr;
+;   295     volatile bool Flg1;
+;   296     volatile bool Flg2;
+;   297     volatile bool Flg3; 
+;   298     volatile int i;
+;   299     volatile int j;
+;   300     volatile int k;   
+;   301 
+;   302      //var++;  // test
+;   303 
+;   304      
+;   305  // Init variable                 
+;   306     Flg1 = false;   // BufTxPos = 0
+	LDI	R16,0
+	STD	Y+1,R16
+;   307     Flg2 = false;   // DSR = 0;
+	STD	Y+2,R16
+;   308     Flg3 = false;   // CTS = 0;
+	STD	Y+3,R16
+;   309     
+;   310   // Test status Flg1 for BufTxPos
+;   311       if ( TxBufPos <= 0 )
+	LDS	R16,TxBufPos
+	TST	R16
+	BRNE	??Uart0_TX_1
+;   312       {
+;   313         Flg1 = false;
+	LDI	R16,0
+	RJMP	??Uart0_TX_2
+;   314         }
+;   315       else
+;   316       {
+;   317         Flg1 = true;
+??Uart0_TX_1:
+	LDI	R16,1
+??Uart0_TX_2:
+	STD	Y+1,R16
+;   318         };
+;   319 
+;   320   // Test status Flg2 for DSR signal
+;   321       cTmp = PORTC & (~(8));
+	IN	R16,0x15
+	ANDI	R16,0xF7
+	ST	Y,R16
+;   322       if (   cTmp == 0 )
+	LD	R16,Y
+	TST	R16
+	BRNE	??Uart0_TX_3
+;   323       {
+;   324         Flg2 = false;
+	LDI	R16,0
+	RJMP	??Uart0_TX_4
+;   325       }
+;   326       else 
+;   327       {
+;   328         Flg2 = true;
+??Uart0_TX_3:
+	LDI	R16,1
+??Uart0_TX_4:
+	STD	Y+2,R16
+;   329         };
+;   330   // Test status Flg3 for CTS signal  
+;   331         cTmp = PORTC & (~(2));
+	IN	R16,0x15
+	ANDI	R16,0xFD
+	ST	Y,R16
+;   332       if (   cTmp == 0 )
+	LD	R16,Y
+	TST	R16
+	BRNE	??Uart0_TX_5
+;   333       {
+;   334         Flg3 = false;
+	LDI	R16,0
+	RJMP	??Uart0_TX_6
+;   335       }
+;   336       else 
+;   337       {
+;   338         Flg3 = true;
+??Uart0_TX_5:
+	LDI	R16,1
+??Uart0_TX_6:
+	STD	Y+3,R16
+;   339         };
+;   340   // Calculate Z=(0..7)
+;   341        cTmp = 0;
+	LDI	R16,0
+	ST	Y,R16
+;   342        if ( Flg1 == true)
+	LDD	R16,Y+1
+	CPI	R16,1
+	BRNE	??Uart0_TX_7
+;   343        cTmp = cTmp + 4;
+	LD	R16,Y
+	SUBI	R16,252
+	ST	Y,R16
+;   344        if (Flg2 == true)
+??Uart0_TX_7:
+	LDD	R16,Y+2
+	CPI	R16,1
+	BRNE	??Uart0_TX_8
+;   345        cTmp = cTmp + 2;
+	LD	R16,Y
+	SUBI	R16,254
+	ST	Y,R16
+;   346        if (Flg3 == true)
+??Uart0_TX_8:
+	LDD	R16,Y+3
+	CPI	R16,1
+	BRNE	??Uart0_TX_9
+;   347        cTmp = cTmp + 1;
+	LD	R16,Y
+	INC	R16
+	ST	Y,R16
+;   348        
+;   349     _PORTA = (unsigned char) cTmp;
+??Uart0_TX_9:
+	LD	R16,Y
+	OUT	0x1B,R16
+;   350 // Execute events Z      
+;   351       switch(cTmp)
+	LD	R16,Y
+	SUBI	R16,4
+	BRCS	??Uart0_TX_10
+	BREQ	??Uart0_TX_11
+	RJMP	??Uart0_TX_12
+;   352       {
+;   353       case 0:  // Z=0 Disable Tx interrupt       
+;   354       case 1:  // Z=1
+;   355       case 2:  // Z=2
+;   356       case 3:  // Z=3
+;   357       UCSR0B = UCSR0B & (~(0x40)); // TXCIE0 = 0 
+??Uart0_TX_10:
+	CBI	0x0A,0x06
+	RJMP	??Uart0_TX_12
+;   358       break;
+;   359 
+;   360       case 4:  // Z=4 Write Byte of BufTx
+;   361       cByte=TxBuf[TxBufPos-1];
+??Uart0_TX_11:
+	LDS	R16,TxBufPos
+	LDI	R17,0
+	SUBI	R16,1
+	SBCI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(TxBuf) & 0xFFFF))
+	SBCI	R31,(-(TxBuf) & 0xFFFF) >> 8
+	LD	R16,Z
+	STD	Y+1,R16
+;   362       TxBufPos = TxBufPos - 1;
+	LDI	R30,LOW(TxBufPos)
+	LDI	R31,(TxBufPos) >> 8
+	LD	R16,Z
+	DEC	R16
+	ST	Z,R16
+;   363 
+;   364           switch(gl_parity) // Calculate 9 bit
+	LDI	R26,LOW(gl_parity)
+	LDI	R27,(gl_parity) >> 8
+	LD	R30,X+
+	LD	R31,X
+	SBIW	R31 : R30,1
+	BREQ	??Uart0_TX_13
+	SBIW	R31 : R30,1
+	BREQ	??Uart0_TX_14
+	RJMP	??Uart0_TX_15
+;   365           {
+;   366           case 0:
+;   367           // no 9 bit for Tx
+;   368           break;
+;   369           case 1:
+;   370           //  calculate 9 bit for Tx
+;   371               j=1;
+??Uart0_TX_13:
+	LDI	R16,1
+	LDI	R17,0
+	STD	Y+4,R16
+	STD	Y+5,R17
+;   372               k=0;
+	STD	Y+8,R17
+	STD	Y+9,R17
+;   373               
+;   374                 for (i=1;i<=8;i++)
+	RJMP	??Uart0_TX_16
+;   375                     {
+;   376                     cTmp = cByte & j;
+??Uart0_TX_17:
+	LDD	R16,Y+1
+	LDD	R18,Y+4
+	LDD	R19,Y+5
+	AND	R18,R16
+	ST	Y,R18
+;   377                         if ( cTmp != 0)
+	LD	R16,Y
+	TST	R16
+	BREQ	??Uart0_TX_18
+;   378                         {
+;   379                         k++;
+	LDD	R16,Y+8
+	LDD	R17,Y+9
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+8,R16
+	STD	Y+9,R17
+;   380                         };
+;   381                      j = j*2;   
+??Uart0_TX_18:
+	LDD	R16,Y+4
+	LDD	R17,Y+5
+	LSL	R16
+	ROL	R17
+	STD	Y+4,R16
+	STD	Y+5,R17
+	LDD	R16,Y+6
+	LDD	R17,Y+7
+	SUBI	R16,255
+	SBCI	R17,255
+??Uart0_TX_16:
+	STD	Y+6,R16
+	STD	Y+7,R17
+	LDD	R24,Y+6
+	LDD	R25,Y+7
+	CPI	R24,9
+	SBCI	R25,0
+	BRLT	??Uart0_TX_17
+;   382                     };
+;   383                     
+;   384                 cTmp = (char) (k % 2);
+	LDD	R16,Y+8
+	LDD	R17,Y+9
+	LDI	R20,2
+	LDI	R21,0
+	CALL	?SS_DIVMOD_L02
+	ST	Y,R20
+;   385           //  Write 9 bit PE
+;   386                 if ( cTmp == 0 )
+	LD	R16,Y
+	TST	R16
+	BREQ	??Uart0_TX_19
+;   387                 {
+;   388                 UCSR0B = UCSR0B & ( ~(0x01));  // Tx 9 bit=0
+;   389                 }
+;   390                 else
+;   391                 {
+;   392                 UCSR0B = UCSR0B ^ (0x01);     // Tx 9 bit=1           
+??Uart0_TX_20:
+	IN	R17,0x0A
+	LDI	R16,1
+	EOR	R16,R17
+	OUT	0x0A,R16
+	RJMP	??Uart0_TX_15
+;   393                 };                
+;   394           break;
+;   395           case 2:
+;   396               j=1;
+??Uart0_TX_14:
+	LDI	R16,1
+	LDI	R17,0
+	STD	Y+4,R16
+	STD	Y+5,R17
+;   397               k=0;
+	STD	Y+8,R17
+	STD	Y+9,R17
+;   398               
+;   399                 for (i=1;i<=8;i++)
+	RJMP	??Uart0_TX_21
+;   400                     {
+;   401                     cTmp = cByte & j;
+??Uart0_TX_22:
+	LDD	R16,Y+1
+	LDD	R18,Y+4
+	LDD	R19,Y+5
+	AND	R18,R16
+	ST	Y,R18
+;   402                         if ( cTmp != 0)
+	LD	R16,Y
+	TST	R16
+	BREQ	??Uart0_TX_23
+;   403                         {
+;   404                         k++;
+	LDD	R16,Y+8
+	LDD	R17,Y+9
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Y+8,R16
+	STD	Y+9,R17
+;   405                         };
+;   406                      j = j*2;   
+??Uart0_TX_23:
+	LDD	R16,Y+4
+	LDD	R17,Y+5
+	LSL	R16
+	ROL	R17
+	STD	Y+4,R16
+	STD	Y+5,R17
+	LDD	R16,Y+6
+	LDD	R17,Y+7
+	SUBI	R16,255
+	SBCI	R17,255
+??Uart0_TX_21:
+	STD	Y+6,R16
+	STD	Y+7,R17
+	LDD	R24,Y+6
+	LDD	R25,Y+7
+	CPI	R24,9
+	SBCI	R25,0
+	BRLT	??Uart0_TX_22
+;   407                     };
+;   408                     
+;   409                 cTmp = (char) (k % 2);
+	LDD	R16,Y+8
+	LDD	R17,Y+9
+	LDI	R20,2
+	LDI	R21,0
+	CALL	?SS_DIVMOD_L02
+	ST	Y,R20
+;   410           // write 9 bit PE
+;   411                 if ( cTmp == 0 )
+	LD	R16,Y
+	TST	R16
+	BREQ	??Uart0_TX_20
+;   412                 {
+;   413                 UCSR0B = UCSR0B ^ ( 0x01 );  // Tx 9 bit=1
+;   414                 }
+;   415                 else
+;   416                 {
+;   417                 UCSR0B = UCSR0B & (~(0x01)); // Tx 9 bit=0           
+??Uart0_TX_19:
+	CBI	0x0A,0x00
+;   418                 };    
+;   419           break;     
+;   420           };
+;   421           UDR0 = cByte;  // Transmit Byte and 9 bit
+??Uart0_TX_15:
+	LDD	R16,Y+1
+	OUT	0x0C,R16
+;   422 
+;   423       break;
+;   424 
+;   425       case 5:  // Z=5 Wait CTS=0
+;   426       case 6:  // Z=6 Wait DSR=0
+;   427       case 7:  // Z=7 Wait CTS=0 and DSR=0
+;   428       // ?? What must enable interrupt
+;   429       break;
+;   430       };
+;   431  };
+??Uart0_TX_12:
+	ADIW	R29 : R28,10
+	OUT	0x3F,R22
+	LD	R16,Y+
+	LD	R17,Y+
+	LD	R18,Y+
+	LD	R19,Y+
+	LD	R20,Y+
+	LD	R21,Y+
+	LD	R22,Y+
+	LD	R0,Y+
+	LD	R1,Y+
+	LD	R30,Y+
+	LD	R31,Y+
+	LD	R24,Y+
+	LD	R25,Y+
+	LD	R26,Y+
+	LD	R27,Y+
+	RETI
+;   432 
+;   433 //*******************************
+;   434 // This method interrupt event TX 
+;   435 #pragma vector=UART0_UDRE_vect 
+
+        RSEG CODE:CODE:NOROOT(1)
+;   436     static __interrupt void   Uart0_UDRE()
+;   437     {
+; __nearfunc __interrupt void Uart0Baseclass::Uart0_UDRE();
+??Uart0_UDRE:
+	ST	-Y,R31
+	ST	-Y,R30
+	ST	-Y,R18
+	ST	-Y,R17
+	ST	-Y,R16
+	IN	R18,0x3F
+;   438     _PORTA = Test; // test
+	LDI	R30,LOW(Test)
+	LDI	R31,(Test) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	OUT	0x1B,R16
+;   439       Test++;
+	LD	R16,Z
+	LDD	R17,Z+1
+	SUBI	R16,255
+	SBCI	R17,255
+	ST	Z,R16
+	STD	Z+1,R17
+;   440      UDR0 = '4'; 
+	LDI	R16,52
+	OUT	0x0C,R16
+;   441      };
+	OUT	0x3F,R18
+	LD	R16,Y+
+	LD	R17,Y+
+	LD	R18,Y+
+	LD	R30,Y+
+	LD	R31,Y+
+	RETI
+;   442      
+;   443 private:
+;   444     // Registrs for UART0
+;   445     volatile char TempVar ;
+;   446     static volatile __io unsigned char PORTC @ 0x15 ;
+;   447     static volatile __io unsigned char DDRC  @ 0x14 ;
+;   448     static volatile __io unsigned char PINC  @ 0x13 ;        
+;   449     static volatile __io unsigned char UCSR0A @ 0x0B ;
+;   450     static volatile __io unsigned char UCSR0B @ 0x0A ;
+;   451     static volatile __io struct
+;   452         { unsigned char uh0:4 ,
+;   453                         uh1:4 ;
+;   454         } UBRRHI @ 0x20;  
+;   455     static volatile __io unsigned char UBRR0  @ 0x09 ;
+;   456     static volatile __io unsigned char UDR0   @ 0x0C ; 
+;   457  };   
+;   458 
+;   459 
+;   460  /***********************************
+;   461  *    Base class implementation    *
+;   462  ***********************************/
+;   463 //-----------------------------------
+;   464 // Declare function
+
+        RSEG CODE:CODE:NOROOT(1)
+;   465   void Uart0Baseclass::InitUart(unsigned int speed, unsigned int parity )
+;   466   {
+; __nearfunc void Uart0Baseclass::InitUart(Uart0Baseclass *, unsigned int, unsigned int);
+??InitUart:
+	ST	-Y,R27
+	ST	-Y,R26
+	ST	-Y,R25
+	ST	-Y,R24
+	SBIW	R29 : R28,8
+	MOVW	R25 : R24,R19 : R18
+	MOVW	R27 : R26,R21 : R20
+;   467     volatile unsigned char cTmp;
+;   468     volatile bool FlErr;
+;   469     volatile unsigned long  lTmp;
+;   470     volatile unsigned int  i;
+;   471     
+;   472     //-----------------------
+;   473     // Disable all interrupts
+;   474     //__disable_interrupt();
+;   475 
+;   476     //--------------------
+;   477     // Disable Tx and Rx
+;   478     // ?? disable interrupt UART0, Clear Errors Tx/Rx, Clear UDR
+;   479     UCSR0A = 0x20;  // reset UART Control and Status Registers A
+	LDI	R16,32
+	OUT	0x0B,R16
+;   480     UCSR0B = 0x02;  // reset UART Control and Status Registers B
+	LDI	R16,2
+	OUT	0x0A,R16
+;   481     cTmp = UDR0  ;  // reset Errors Flags UART0 Rx
+	IN	R16,0x0C
+	ST	Y,R16
+;   482 
+;   483     //-----------------------
+;   484     // Resets out pins DTR0=1
+;   485     //                 RTS0=1
+;   486     cTmp = DDRC ^ ( 1+4 );   // Mode Pins to Out
+	IN	R17,0x14
+	LDI	R16,5
+	EOR	R16,R17
+	ST	Y,R16
+;   487     DDRC = cTmp; 
+	LD	R16,Y
+	OUT	0x14,R16
+;   488     cTmp = PORTC ^ ( 1+4 ); // Pins Out bits
+	IN	R17,0x15
+	LDI	R16,5
+	EOR	R16,R17
+	ST	Y,R16
+;   489     PORTC = cTmp ;
+	LD	R16,Y
+	OUT	0x15,R16
+;   490 
+;   491     //------------------------
+;   492     // Enable other interrupts
+;   493     //__enable_interrupt();  
+;   494 
+;   495     //------------------------
+;   496     // Erase Counter Errors
+;   497     for (i=1;i<=4;i++)
+	LDI	R16,1
+	LDI	R17,0
+	RJMP	??InitUart_1
+;   498     {
+;   499     aErRx[i] = 0;
+??InitUart_2:
+	LDI	R16,0
+	LDD	R18,Y+2
+	LDD	R19,Y+3
+	LSL	R18
+	ROL	R19
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(aErRx) & 0xFFFF))
+	SBCI	R31,(-(aErRx) & 0xFFFF) >> 8
+	ST	Z,R16
+	STD	Z+1,R16
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	SUBI	R16,255
+	SBCI	R17,255
+??InitUart_1:
+	STD	Y+2,R16
+	STD	Y+3,R17
+	LDD	R16,Y+2
+	LDD	R17,Y+3
+	CPI	R16,5
+	SBCI	R17,0
+	BRCS	??InitUart_2
+;   500     }; 
+;   501     
+;   502     //-------------------- 
+;   503     // Set speed baud UART
+;   504     // ?? CASE (300...57600 bps) the calculate const
+;   505     // registers
+;   506     FlErr = true;  
+	LDI	R16,1
+	STD	Y+1,R16
+;   507     cTmp = UCSR0A & 0x02; 
+	IN	R16,0x0B
+	ANDI	R16,0x02
+	ST	Y,R16
+;   508     switch (speed)
+	MOVW	R31 : R30,R25 : R24
+	SUBI	R30,0
+	SBCI	R31,150
+	BREQ	??InitUart_3
+	SUBI	R30,0
+	SBCI	R31,75
+	BREQ	??InitUart_3
+	SUBI	R30,44
+	SBCI	R31,32
+	BREQ	??InitUart_3
+	SUBI	R30,44
+	SBCI	R31,1
+	BREQ	??InitUart_3
+	SUBI	R30,88
+	SBCI	R31,2
+	BREQ	??InitUart_3
+	SUBI	R30,176
+	SBCI	R31,4
+	BREQ	??InitUart_3
+	SUBI	R30,96
+	SBCI	R31,9
+	BREQ	??InitUart_3
+	SUBI	R30,192
+	SBCI	R31,18
+	BREQ	??InitUart_3
+	SUBI	R30,128
+	SBCI	R31,37
+	BRNE	??InitUart_4
+;   509       {
+;   510       case 300:
+;   511       case 600:
+;   512       case 1200:
+;   513       case 2400:
+;   514       case 4800:
+;   515       case 9600:
+;   516       case 19200:
+;   517       case 38400:
+;   518       case 57600:
+;   519       if ( cTmp == 0)
+??InitUart_3:
+	LD	R16,Y
+	TST	R16
+	LDI	R16,0
+	BRNE	??InitUart_5
+;   520         {   // calculate UBR for On Speed Mode
+;   521          lTmp = (unsigned long)FQCK / 16 / (unsigned long)speed - 1;
+	LDI	R17,132
+	LDI	R18,3
+??InitUart_6:
+	LDI	R19,0
+	MOVW	R21 : R20,R25 : R24
+	LDI	R22,0
+	LDI	R23,0
+	CALL	?UL_DIVMOD_L03
+	SUBI	R16,1
+	SBCI	R17,0
+	SBCI	R18,0
+	SBCI	R19,0
+	STD	Y+4,R16
+	STD	Y+5,R17
+	STD	Y+6,R18
+	STD	Y+7,R19
+;   522          UBRR0 =(unsigned char)lTmp;                  // low byte UBR
+	LDD	R16,Y+4
+	LDD	R17,Y+5
+	LDD	R18,Y+6
+	LDD	R19,Y+7
+	OUT	0x09,R16
+;   523          UBRRHI.uh0 = (unsigned char)(lTmp / 256);     // high byte UBR 
+	LDD	R16,Y+4
+	LDD	R16,Y+5
+	LDD	R18,Y+6
+	LDD	R19,Y+7
+	IN	R20,0x20
+	ANDI	R20,0xF0
+	ANDI	R16,0x0F
+	OR	R16,R20
+	OUT	0x20,R16
+	RJMP	??InitUart_7
+;   524          }
+;   525       else
+;   526         {   // calculate UBR for Double Speed Mode 
+;   527          lTmp = (unsigned long)FQCK / 8 / (unsigned long)speed - 1;
+??InitUart_5:
+	LDI	R17,8
+	LDI	R18,7
+	RJMP	??InitUart_6
+;   528          UBRR0 =(unsigned char)lTmp;                  // low byte UBR
+;   529          UBRRHI.uh0 = (unsigned char)(lTmp / 256);     // high byte UBR 
+;   530          };   
+;   531       break;
+;   532       default:
+;   533         // if error speed store old speed
+;   534         FlErr = false;
+??InitUart_4:
+	LDI	R16,0
+	STD	Y+1,R16
+;   535       };
+;   536       if ( FlErr == true )
+??InitUart_7:
+	LDD	R16,Y+1
+	CPI	R16,1
+	BRNE	??InitUart_8
+;   537         {
+;   538         gl_speed = speed; 
+	LDI	R30,LOW(gl_speed)
+	LDI	R31,(gl_speed) >> 8
+	ST	Z,R24
+	STD	Z+1,R25
+;   539         };
+;   540         
+;   541     //---------------------------------------------
+;   542     // Set control parity chek
+;   543     // For parity=0  no check parity bit9=(1 or 0);
+;   544     //     parity=1  check parity set bit9
+;   545     //     parity=2  check no parity set bit9
+;   546     FlErr = true;  
+??InitUart_8:
+	LDI	R16,1
+	STD	Y+1,R16
+;   547     // ?? CASE (0,1,2) the calculate parity
+;   548     switch (parity)
+	MOVW	R31 : R30,R27 : R26
+	ADIW	R31 : R30,0
+	BREQ	??InitUart_9
+	SBIW	R31 : R30,1
+	BREQ	??InitUart_10
+	SBIW	R31 : R30,1
+	BREQ	??InitUart_10
+	RJMP	??InitUart_11
+;   549       {
+;   550       case 0:
+;   551       cTmp = UCSR0B;                // read Status 
+??InitUart_9:
+	IN	R16,0x0A
+	ST	Y,R16
+;   552       cTmp = cTmp & (~( 4 + 1 ) );  // Tx/Rx Mode 8 bits and 9 bits = 0
+	ANDI	R16,0xFA
+	ST	Y,R16
+;   553       UCSR0B = cTmp;     
+??InitUart_12:
+	LD	R16,Y
+	OUT	0x0A,R16
+	RJMP	??InitUart_13
+;   554       break;
+;   555       case 1:
+;   556       case 2:
+;   557       cTmp = UCSR0B;        // read Sattus 
+??InitUart_10:
+	IN	R16,0x0A
+	ST	Y,R16
+;   558       cTmp = cTmp ^ ( 4 + 1 );  // Tx/Rx Mode 9 bits and 9 bits = 1
+	LDI	R16,5
+	LD	R17,Y
+	EOR	R17,R16
+	ST	Y,R17
+;   559       UCSR0B = cTmp;
+	RJMP	??InitUart_12
+;   560       break;
+;   561       default:
+;   562         // if error parity store old parity
+;   563         FlErr = false;
+??InitUart_11:
+	LDI	R16,0
+	STD	Y+1,R16
+;   564       };
+;   565       if ( FlErr == true )
+??InitUart_13:
+	LDD	R16,Y+1
+	CPI	R16,1
+	BRNE	??InitUart_14
+;   566         {
+;   567         gl_parity = parity; 
+	LDI	R30,LOW(gl_parity)
+	LDI	R31,(gl_parity) >> 8
+	ST	Z,R26
+	STD	Z+1,R27
+;   568         };
+;   569         
+;   570         //----------------------------------
+;   571         // Enable iterrupts Tx/Rx
+;   572         // Sets bits Rts0 and Dtr0 for UART0
+;   573 
+;   574         //      RXCIE0,TXCIE0,RXEN0,TXEN0=1 
+;   575         UCSR0B = UCSR0B ^ ( 128+64+16+8);  //
+??InitUart_14:
+	IN	R17,0x0A
+	LDI	R16,216
+	EOR	R16,R17
+	OUT	0x0A,R16
+;   576 
+;   577         PORTC = PORTC & (~(4+1) ); // DTR=0 and RTS=0 Pins Out bits
+	IN	R16,0x15
+	ANDI	R16,0xFA
+	OUT	0x15,R16
+;   578  }
+	ADIW	R29 : R28,8
+	LD	R24,Y+
+	LD	R25,Y+
+	LD	R26,Y+
+	LD	R27,Y+
+	RET
+;   579 
+;   580 //-----------------------------------
+;   581 // Declare function
+
+        RSEG CODE:CODE:NOROOT(1)
+;   582   void Uart0Baseclass::Clear()
+;   583   {
+;   584     // Clear All Registers for UART0 and Stop Resiverd/Transmits
+;   585     //__disable_interrupt();
+;   586     UCSR0A=0x20;
+; __nearfunc void Uart0Baseclass::Clear(Uart0Baseclass *);
+??Clear:
+	LDI	R18,32
+	OUT	0x0B,R18
+;   587     UCSR0B=0x02;
+	LDI	R18,2
+	OUT	0x0A,R18
+;   588     UBRRHI.uh0=0x00;
+	IN	R18,0x20
+	ANDI	R18,0xF0
+	OUT	0x20,R18
+;   589     UBRR0=0x0;
+	LDI	R18,0
+	OUT	0x09,R18
+;   590     TempVar = UDR0; // Clear ERROR Resiverd
+	IN	R18,0x0C
+	MOVW	R31 : R30,R17 : R16
+	ST	Z,R18
+;   591     //__enable_interrupt();
+;   592  }
+	RET
+;   593 
+;   594 //-----------------------------------
+;   595 // Declare function
+
+        RSEG CODE:CODE:NOROOT(1)
+;   596   void Uart0Baseclass::ClearRxBuf() 
+;   597   {
+;   598   unsigned int i;
+;   599   //?? Define disable Rx interrupt
+;   600   //__disable_interrupt();
+;   601   for (i=0; i <= BufLen-1 ; i++)
+; __nearfunc void Uart0Baseclass::ClearRxBuf(Uart0Baseclass *);
+??ClearRxBuf:
+	LDI	R30,LOW(RxBuf)
+	LDI	R31,(RxBuf) >> 8
+	LDI	R16,15
+;   602     {RxBuf[i]=0xFF;
+??ClearRxBuf_1:
+	LDI	R17,255
+	ST	Z+,R17
+;   603      RxBufPos=0 ;
+	LDI	R17,0
+	STS	RxBufPos,R17
+	DEC	R16
+	BRNE	??ClearRxBuf_1
+;   604     }
+;   605   //__enable_interrupt();
+;   606   }
+	RET
+;   607 
+;   608 //-----------------------------------
+;   609 // Declare function
+
+        RSEG CODE:CODE:NOROOT(1)
+;   610   void Uart0Baseclass::WrByteRxBuf(unsigned char Byte) 
+;   611 {
+;   612   //__disable_interrupt();
+;   613     if ( RxBufPos >= (BufLen) )
+; __nearfunc void Uart0Baseclass::WrByteRxBuf(Uart0Baseclass *, unsigned char);
+??WrByteRxBuf:
+	LDS	R16,RxBufPos
+	CPI	R16,15
+	BRCC	??WrByteRxBuf_1
+;   614     ;
+;   615     else
+;   616       { 
+;   617       RxBuf[RxBufPos] = Byte;
+	LDS	R16,RxBufPos
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(RxBuf) & 0xFFFF))
+	SBCI	R31,(-(RxBuf) & 0xFFFF) >> 8
+	ST	Z,R18
+;   618       RxBufPos = RxBufPos + 1 ;
+	LDI	R30,LOW(RxBufPos)
+	LDI	R31,(RxBufPos) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+;   619       };
+;   620   //__enable_interrupt();  
+;   621  }
+??WrByteRxBuf_1:
+	RET
+;   622 
+;   623 //-----------------------------------
+;   624 // Declare functi-on
+
+        RSEG CODE:CODE:NOROOT(1)
+;   625 bool Uart0Baseclass::B_RxBuf(void)
+;   626 {
+;   627   bool Flag;
+;   628   //__disable_interrupt();
+;   629   if ( RxBufPos <= 0 )
+; __nearfunc bool Uart0Baseclass::B_RxBuf(Uart0Baseclass *);
+??B_RxBuf:
+	LDS	R16,RxBufPos
+	TST	R16
+	BRNE	??B_RxBuf_1
+;   630     {
+;   631     Flag = true;
+	LDI	R16,1
+;   632     RxBufPos = 0;
+	LDI	R17,0
+	STS	RxBufPos,R17
+	RET
+;   633     }
+;   634   else
+;   635     {
+;   636     Flag = false;
+??B_RxBuf_1:
+	LDI	R16,0
+;   637    //__enable_interrupt();
+;   638      };
+;   639   return ( Flag);
+	RET
+;   640 }    
+;   641 
+;   642 //-----------------------------------
+;   643 // Declare functi-on
+
+        RSEG CODE:CODE:NOROOT(1)
+;   644   unsigned char Uart0Baseclass::RdByteRxBuf(void) 
+;   645 {
+;   646  unsigned char Byte;
+;   647   //__disable_interrupt();
+;   648   if ( (BufLen - RxBufPos) > 2 )
+; __nearfunc unsigned char Uart0Baseclass::RdByteRxBuf(Uart0Baseclass *);
+??RdByteRxBuf:
+	LDI	R30,15
+	LDI	R31,0
+	LDS	R18,RxBufPos
+	SUB	R30,R18
+	SBCI	R31,0
+	SBIW	R31 : R30,3
+	BRLT	??RdByteRxBuf_1
+;   649     {
+;   650      PORTC = PORTC & (~ 1 ); // RTS0=0 Pins Out bits Enable Tx from PC
+	CBI	0x15,0x00
+;   651     };
+;   652  
+;   653   if ( RxBufPos == 0 )
+??RdByteRxBuf_1:
+	LDS	R17,RxBufPos
+	TST	R17
+	BREQ	??RdByteRxBuf_2
+;   654   ;
+;   655   else
+;   656       { 
+;   657       Byte=RxBuf[RxBufPos-1];
+	LDS	R16,RxBufPos
+	LDI	R17,0
+	SUBI	R16,1
+	SBCI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(RxBuf) & 0xFFFF))
+	SBCI	R31,(-(RxBuf) & 0xFFFF) >> 8
+	LD	R16,Z
+;   658       RxBufPos = RxBufPos - 1;
+	LDI	R30,LOW(RxBufPos)
+	LDI	R31,(RxBufPos) >> 8
+	LD	R17,Z
+	DEC	R17
+	ST	Z,R17
+;   659       }; 
+;   660   //__enable_interrupt() ;
+;   661 return (Byte);
+??RdByteRxBuf_2:
+	RET
+;   662 }
+;   663 
+;   664 //-----------------------------------
+;   665 // Declare functi-on
+
+        RSEG CODE:CODE:NOROOT(1)
+;   666 bool Uart0Baseclass::E_RxBuf(void)
+;   667 {
+;   668   bool Flag;
+;   669   //__disable_interrupt();
+;   670   if ( RxBufPos >= (BufLen) )
+; __nearfunc bool Uart0Baseclass::E_RxBuf(Uart0Baseclass *);
+??E_RxBuf:
+	LDS	R16,RxBufPos
+	CPI	R16,15
+	BRCS	??E_RxBuf_1
+;   671     {
+;   672     Flag = true;
+	LDI	R16,1
+;   673     RxBufPos = BufLen;
+	LDI	R17,15
+	STS	RxBufPos,R17
+	RET
+;   674     }
+;   675   else
+;   676     {
+;   677     Flag = false;
+??E_RxBuf_1:
+	LDI	R16,0
+;   678   //__enable_interrupt();
+;   679     };
+;   680   return ( Flag);
+	RET
+;   681 } 
+;   682 
+;   683 //-----------------------------------
+;   684 // Declare function
+
+        RSEG CODE:CODE:NOROOT(1)
+;   685   void Uart0Baseclass::ClearTxBuf() 
+;   686   {
+;   687   unsigned int i;
+;   688   //?? Define disable Rx interrupt
+;   689   //__disable_interrupt();
+;   690   for (i=0; i <= BufLen-1 ; i++)
+; __nearfunc void Uart0Baseclass::ClearTxBuf(Uart0Baseclass *);
+??ClearTxBuf:
+	LDI	R30,LOW(TxBuf)
+	LDI	R31,(TxBuf) >> 8
+	LDI	R16,15
+;   691     {TxBuf[i]=0xFF;
+??ClearTxBuf_1:
+	LDI	R17,255
+	ST	Z+,R17
+;   692      TxBufPos=0;
+	LDI	R17,0
+	STS	TxBufPos,R17
+	DEC	R16
+	BRNE	??ClearTxBuf_1
+;   693     }
+;   694   //__enable_interrupt();
+;   695   }
+	RET
+;   696 
+;   697 //-----------------------------------
+;   698 // Declare function
+
+        RSEG CODE:CODE:NOROOT(1)
+;   699   void Uart0Baseclass::WrByteTxBuf(unsigned char Byte) 
+;   700 {
+;   701   //__disable_interrupt TXCIE0;
+;   702   UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+; __nearfunc void Uart0Baseclass::WrByteTxBuf(Uart0Baseclass *, unsigned char);
+??WrByteTxBuf:
+	CBI	0x0A,0x06
+;   703 
+;   704     if ( TxBufPos >= (BufLen) )
+	LDS	R16,TxBufPos
+	CPI	R16,15
+	BRCC	??WrByteTxBuf_1
+;   705       ; // ErrTx Buffer Full
+;   706     else
+;   707       {
+;   708         TxBuf[TxBufPos] = Byte;
+	LDS	R16,TxBufPos
+	LDI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(TxBuf) & 0xFFFF))
+	SBCI	R31,(-(TxBuf) & 0xFFFF) >> 8
+	ST	Z,R18
+;   709         TxBufPos = TxBufPos + 1 ;
+	LDI	R30,LOW(TxBufPos)
+	LDI	R31,(TxBufPos) >> 8
+	LD	R16,Z
+	INC	R16
+	ST	Z,R16
+;   710           
+;   711           if (TxBufPos == 1 ) // yes primary byte in BufTx
+	LDS	R16,TxBufPos
+	CPI	R16,1
+	BRNE	??WrByteTxBuf_2
+;   712             {
+;   713             TxBufPos = TxBufPos - 1 ;      
+	LD	R16,Z
+	DEC	R16
+	ST	Z,R16
+;   714             UDR0 = Byte; 
+	OUT	0x0C,R18
+;   715             UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+	CBI	0x0A,0x06
+	RET
+;   716             } 
+;   717           else 
+;   718             {
+;   719               if ( TxBufPos != 0 )
+??WrByteTxBuf_2:
+	LDS	R16,TxBufPos
+	TST	R16
+	BREQ	??WrByteTxBuf_1
+;   720               {
+;   721               //__enable_interrupt TXC0; 
+;   722               UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete      
+	IN	R17,0x0A
+	LDI	R16,64
+	EOR	R16,R17
+	OUT	0x0A,R16
+;   723               };
+;   724             };
+;   725      }; 
+;   726 
+;   727  }
+??WrByteTxBuf_1:
+	RET
+;   728 
+;   729 //-----------------------------------
+;   730 // Declare functi-on
+
+        RSEG CODE:CODE:NOROOT(1)
+;   731   unsigned char Uart0Baseclass::RdByteTxBuf(void) 
+;   732 {
+;   733  unsigned char Byte;
+;   734   //__disable_interrupt TXCIE0;
+;   735   UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+; __nearfunc unsigned char Uart0Baseclass::RdByteTxBuf(Uart0Baseclass *);
+??RdByteTxBuf:
+	CBI	0x0A,0x06
+;   736 
+;   737   if ( TxBufPos == 0 )
+	LDS	R17,TxBufPos
+	TST	R17
+	BREQ	??RdByteTxBuf_1
+;   738   ;
+;   739   else
+;   740       { 
+;   741       Byte=TxBuf[TxBufPos-1];
+	LDS	R16,TxBufPos
+	LDI	R17,0
+	SUBI	R16,1
+	SBCI	R17,0
+	MOVW	R31 : R30,R17 : R16
+	SUBI	R30,LOW((-(TxBuf) & 0xFFFF))
+	SBCI	R31,(-(TxBuf) & 0xFFFF) >> 8
+	LD	R16,Z
+;   742       TxBufPos = TxBufPos - 1;
+	LDI	R30,LOW(TxBufPos)
+	LDI	R31,(TxBufPos) >> 8
+	LD	R17,Z
+	DEC	R17
+	ST	Z,R17
+;   743       }; 
+;   744   //__enable_interrupt TXC0; 
+;   745      UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+??RdByteTxBuf_1:
+	IN	R18,0x0A
+	LDI	R17,64
+	EOR	R17,R18
+	OUT	0x0A,R17
+;   746 return (Byte);
+	RET
+;   747 }
+;   748 
+;   749 //-----------------------------------
+;   750 // Declare functi-on
+
+        RSEG CODE:CODE:NOROOT(1)
+;   751 bool Uart0Baseclass::B_TxBuf(void)
+;   752 {
+;   753   bool Flag;
+;   754   //__disable_interrupt TXCIE0;
+;   755   UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+; __nearfunc bool Uart0Baseclass::B_TxBuf(Uart0Baseclass *);
+??B_TxBuf:
+	CBI	0x0A,0x06
+;   756   if ( TxBufPos <= 0 )
+	LDS	R16,TxBufPos
+	TST	R16
+	BRNE	??B_TxBuf_1
+;   757     {
+;   758     Flag = true;
+	LDI	R16,1
+;   759     TxBufPos = 0;
+	LDI	R17,0
+	STS	TxBufPos,R17
+	RET
+;   760     }
+;   761   else
+;   762     {
+;   763     Flag = false;
+??B_TxBuf_1:
+	LDI	R16,0
+;   764   //__enable_interrupt TXC0; 
+;   765      UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+	IN	R18,0x0A
+	LDI	R17,64
+	EOR	R17,R18
+	OUT	0x0A,R17
+;   766      };
+;   767   return ( Flag);
+	RET
+;   768 }    
+;   769 
+;   770 //-----------------------------------
+;   771 // Declare functi-on
+
+        RSEG CODE:CODE:NOROOT(1)
+;   772 bool Uart0Baseclass::E_TxBuf(void)
+;   773 {
+;   774   bool Flag;
+;   775   //__disable_interrupt TXCIE0;
+;   776   UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+; __nearfunc bool Uart0Baseclass::E_TxBuf(Uart0Baseclass *);
+??E_TxBuf:
+	CBI	0x0A,0x06
+;   777   if ( TxBufPos >= (BufLen) )
+	LDS	R16,TxBufPos
+	CPI	R16,15
+	BRCS	??E_TxBuf_1
+;   778     {
+;   779     Flag = true;
+	LDI	R16,1
+;   780     TxBufPos = BufLen;
+	LDI	R17,15
+	STS	TxBufPos,R17
+	RET
+;   781     }
+;   782   else
+;   783     {
+;   784     Flag = false;
+??E_TxBuf_1:
+	LDI	R16,0
+;   785   //__enable_interrupt TXC0; 
+;   786      UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+	IN	R18,0x0A
+	LDI	R17,64
+	EOR	R17,R18
+	OUT	0x0A,R17
+;   787     };
+;   788   return ( Flag);
+	RET
+;   789 } 
+;   790 //================================
+;   791 // test function
+
+        RSEG CODE:CODE:NOROOT(1)
+;   792 void Uart0Baseclass::testfunc(void)
+;   793     {
+;   794     ;
+;   795     }
+; __nearfunc void Uart0Baseclass::testfunc(Uart0Baseclass *);
+??testfunc:
+	RET
+;   796  
+;   797 /***********************************
+;   798  *    Derived class declaration    *
+;   799  ***********************************/
+;   800 class Uart0 : public Uart0Baseclass
+;   801 {
+;   802 public:
+;   803   static volatile  unsigned char test ;
+;   804 };
+;   805 
+;   806 //************************
+;   807 // Declaration functions *
+;   808 //************************
+;   809 
+;   810 // This method interrupt event TX 
+;   811 #pragma vector=INT1_vect 
+
+        RSEG CODE:CODE:NOROOT(1)
+;   812 static __interrupt void   Ext_INT1(void)
+;   813 {
+; static __nearfunc __interrupt void Ext_INT1();
+??Ext_INT1:
+	ST	-Y,R31
+	ST	-Y,R30
+	ST	-Y,R17
+	ST	-Y,R16
+;   814   //_PORTA = UCSR0A;
+;   815    _PORTA = var;
+	LDI	R30,LOW(var)
+	LDI	R31,(var) >> 8
+	LD	R16,Z
+	LDD	R17,Z+1
+	OUT	0x1B,R16
+;   816    FlgPrint = true;
+	LDI	R16,1
+	STS	FlgPrint,R16
+;   817 }
+	LD	R16,Y+
+	LD	R17,Y+
+	LD	R30,Y+
+	LD	R31,Y+
+	RETI
+;   818 
+
+        RSEG CODE:CODE:NOROOT(1)
+;   819 void main()
+;   820 {
+; __nearfunc void main();
+main:
+        FUNCALL main, ??Clear
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??ClearRxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??ClearTxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??InitUart
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??E_TxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??WrByteTxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??E_TxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??WrByteTxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??E_TxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??WrByteTxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??E_TxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??WrByteTxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??E_TxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??WrByteTxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??B_RxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??RdByteRxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??E_TxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        FUNCALL main, ??WrByteTxBuf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	SBIW	R29 : R28,2
+;   821 volatile unsigned char iVar = '0';
+	LDI	R16,48
+	STD	Y+1,R16
+;   822 
+;   823 
+;   824 static volatile __io unsigned char DDRA  @ 0x1A ;
+;   825 static volatile __io unsigned char PINA  @ 0x19 ;
+;   826 
+;   827 //*******************************
+;   828 
+;   829   //**********************
+;   830   // Full reset UART
+;   831   Uart0 UartTest;               // Define new type UartTest 
+;   832   UartTest.Clear();             // Erase all registers and 
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??Clear
+;   833                                 // disable interrupts UART0 
+;   834   UartTest.ClearRxBuf();        // Erase Buffer Rx
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??ClearRxBuf
+;   835   UartTest.ClearTxBuf();        // Erase Buffer Tx
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??ClearTxBuf
+;   836   UartTest.InitUart(gl_speed, gl_parity);
+	LDI	R30,LOW(gl_parity)
+	LDI	R31,(gl_parity) >> 8
+	LD	R20,Z
+	LDD	R21,Z+1
+	LDI	R30,LOW(gl_speed)
+	LDI	R31,(gl_speed) >> 8
+	LD	R18,Z
+	LDD	R19,Z+1
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??InitUart
+;   837                                 // Sets speed, mode parity UART0
+;   838                                 // and enable interrupt UART0 Tx and Rx 
+;   839                             
+;   840   //***********************
+;   841   // Proramm 
+;   842   DDRA = 0xff;          // Port A  all pins Output
+	LDI	R16,255
+	OUT	0x1A,R16
+;   843 
+;   844   iVar = _GIMSK ^ 0x80; // Enable INT1
+	IN	R17,0x3B
+	LDI	R16,128
+	EOR	R16,R17
+	STD	Y+1,R16
+;   845   _GIMSK = iVar;
+	LDD	R16,Y+1
+	OUT	0x3B,R16
+;   846   _PORTD = _PORTD ^ 0x08 ;   // Port D pin INT1 Input 
+	IN	R17,0x12
+	LDI	R16,8
+	EOR	R16,R17
+	OUT	0x12,R16
+;   847   _PORTA = 0x55;
+	LDI	R16,85
+	OUT	0x1B,R16
+;   848   UCSR0A = UCSR0A ^ 0x40;   // Erase Bit TXC0=0 !!
+	IN	R17,0x0B
+	LDI	R16,64
+	EOR	R16,R17
+	OUT	0x0B,R16
+;   849   //UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+;   850   __enable_interrupt();
+	SEI
+	RJMP	??main_0
+;   851 
+;   852 
+;   853   //UDR0 = '5';
+;   854 
+;   855 
+;   856  loop:
+;   857 
+;   858    
+;   859   //__disable_interrupt();
+;   860 
+;   861   //if ( UartTest.E_TxBuf() != true  )
+;   862   //  {
+;   863   // UartTest.WrByteTxBuf('1');
+;   864   //  UartTest.WrByteTxBuf('2');
+;   865   //  UartTest.WrByteTxBuf('3');
+;   866   //  };
+;   867 
+;   868 
+;   869 
+;   870   //======================================================
+;   871   // Test On  Read Byte from UART0 and Write Bute to UART0
+;   872   // Connect signals DTR,RTS,CTS,DTS
+;   873  
+;   874   //do
+;   875   //_PORTA ++;
+;   876   //while ( (UCSR0A & 0x40) == 0 );
+;   877   //UCSR0A = UCSR0A ^ (0x40);
+;   878 
+;   879 
+;   880   if ( UartTest.B_RxBuf() != true  )
+;   881     {
+;   882     cTest = UartTest.RdByteRxBuf();
+;   883     };
+;   884 
+;   885   if ( UartTest.E_TxBuf() != true  )
+;   886     {
+;   887     UartTest.WrByteTxBuf(cTest);
+;   888     }
+;   889   else
+;   890     {
+;   891     aErTx[4]++;   // Error Buf Tx full 
+??main_1:
+	LDI	R30,LOW(aErTx)
+	LDI	R31,(aErTx) >> 8
+	LDD	R16,Z+8
+	LDD	R17,Z+9
+	SUBI	R16,255
+	SBCI	R17,255
+	STD	Z+8,R16
+	STD	Z+9,R17
+;   892     };
+;   893 
+;   894   // Test FlgPrint for print table errors Rx and Tx
+;   895     if (FlgPrint == true)
+??main_2:
+	LDS	R16,FlgPrint
+	CPI	R16,1
+	BRNE	??main_0
+;   896     {
+;   897     // Print Table
+;   898         // R1
+;   899         if ( UartTest.E_TxBuf() != true  )
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??E_TxBuf
+	CPI	R16,1
+	BREQ	??main_3
+;   900         {
+;   901         UartTest.WrByteTxBuf('R');
+	LDI	R18,82
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??WrByteTxBuf
+;   902         };
+;   903         if ( UartTest.E_TxBuf() != true  )
+??main_3:
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??E_TxBuf
+	CPI	R16,1
+	BREQ	??main_4
+;   904         {
+;   905         UartTest.WrByteTxBuf('1');
+	LDI	R18,49
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??WrByteTxBuf
+;   906         };
+;   907         if ( UartTest.E_TxBuf() != true  )
+??main_4:
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??E_TxBuf
+	CPI	R16,1
+	BREQ	??main_5
+;   908         {
+;   909         UartTest.WrByteTxBuf('=');
+	LDI	R18,61
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??WrByteTxBuf
+;   910         };
+;   911         if ( UartTest.E_TxBuf() != true  )
+??main_5:
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??E_TxBuf
+	CPI	R16,1
+	BREQ	??main_6
+;   912         {
+;   913         cTest = (unsigned char) ( aErRx[1] / 256 );
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+2
+	LDD	R16,Z+3
+	STS	cTest,R16
+;   914         UartTest.WrByteTxBuf(cTest);
+	LDS	R18,cTest
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??WrByteTxBuf
+;   915         };
+;   916         if ( UartTest.E_TxBuf() != true  )
+??main_6:
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??E_TxBuf
+	CPI	R16,1
+	BREQ	??main_7
+;   917         {
+;   918         cTest = (unsigned char) ( aErRx[1] % 256 );
+	LDI	R30,LOW(aErRx)
+	LDI	R31,(aErRx) >> 8
+	LDD	R16,Z+2
+	LDD	R17,Z+3
+	STS	cTest,R16
+;   919         UartTest.WrByteTxBuf(cTest);
+	LDS	R18,cTest
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??WrByteTxBuf
+;   920         };                        
+;   921     //
+;   922     FlgPrint = false;
+??main_7:
+	LDI	R16,0
+	STS	FlgPrint,R16
+??main_0:
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??B_RxBuf
+	CPI	R16,1
+	BREQ	??main_8
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??RdByteRxBuf
+	STS	cTest,R16
+??main_8:
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??E_TxBuf
+	CPI	R16,1
+	BRNE	??main_9
+	RJMP	??main_1
+??main_9:
+	LDS	R18,cTest
+	MOVW	R17 : R16,R29 : R28
+	RCALL	??WrByteTxBuf
+	RJMP	??main_2
+;   923     };
+;   924   // ?? module test 2
+;   925   goto loop;  
+;   926 }
+
+        ASEGN ABSOLUTE:DATA:NOROOT,03aH
+	DS 1
+
+        ASEGN ABSOLUTE:DATA:NOROOT,039H
+	DS 1
+
+        COMMON INTVEC:CODE:ROOT(1)
+        ORG 8
+	JMP	??Ext_INT1
+
+        COMMON INTVEC:CODE:ROOT(1)
+        ORG 52
+	JMP	??Uart0_RX
+
+        COMMON INTVEC:CODE:ROOT(1)
+        ORG 60
+	JMP	??Uart0_UDRE
+
+        COMMON INTVEC:CODE:ROOT(1)
+        ORG 68
+	JMP	??Uart0_TX
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_Z>`:
+	DW	SFE(NEAR_Z) - SFB(NEAR_Z)
+	DW	SFB(NEAR_Z)
+	DW	0
+	REQUIRE ?need_segment_init
+
+        RSEG NEAR_ID:CODE:NOROOT(0)
+`?<Initializer for gl_speed>`:
+	DW 9600
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_I>`:
+	DW	SFE(NEAR_I) - SFB(NEAR_I)
+	DW	SFB(NEAR_I)
+	DW	SFB(NEAR_ID)
+	REQUIRE ?need_segment_init
+
+        END
+; 
+;      6 bytes in segment ABSOLUTE
+;   2210 bytes in segment CODE
+;     12 bytes in segment INITTAB
+;     16 bytes in segment INTVEC
+;      2 bytes in segment NEAR_I
+;      2 bytes in segment NEAR_ID
+;     63 bytes in segment NEAR_Z
+; 
+;   1034 bytes of CODE memory (+ 1206 bytes shared)
+;     65 bytes of DATA memory (+ 6 bytes shared)
+;
+;Errors: none
+;Warnings: 1

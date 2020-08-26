@@ -1,0 +1,344 @@
+        NAME UART0_A1x_f01
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "2"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG NEAR_Z:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+
+        EXTERN ?need_segment_init
+        EXTERN ?PROLOGUE4_L09
+
+        PUBWEAK `?<Segment init: NEAR_Z>`
+        PUBLIC S16e
+        PUBLIC S18e
+        PUBLIC S21e
+        PUBLIC S22e
+        PUBLIC S23e
+        PUBLIC S39e
+        PUBLIC S3e
+        PUBLIC S4e
+        PUBLIC S51e
+        PUBLIC S5e
+        PUBLIC TransmitByte
+        FUNCTION TransmitByte,0203H
+        PUBWEAK _A_UCSR0B
+        PUBLIC fBit_CTS0
+        PUBLIC fBit_DSR0
+        PUBLIC fBit_DTR0
+        PUBLIC fBit_RTS0
+        PUBLIC fCheckParity_UART0
+        PUBLIC fContrStream_UART0
+        PUBLIC fEnb_CTS0
+        PUBLIC fEnb_DSR0
+        PUBLIC fEnb_DTR0
+        PUBLIC fEnb_Echo_UART0
+        PUBLIC fEnb_Err_UART0
+        PUBLIC fEnb_RTS0
+        PUBLIC fEnb_XON_XOFF_Rx_UART0
+        PUBLIC fEnb_XON_XOFF_Tx_UART0
+        PUBLIC fModeCHR90
+        PUBLIC fModeMPCM0
+        PUBLIC fModeU2X0
+        PUBLIC fSpeedBaud_UART0
+        PUBLIC fSym_XOFF
+        PUBLIC fSym_XON
+        PUBLIC main
+        FUNCTION main,021a03H
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+;     1 #include "iom161.h"
+
+        ASEGN ABSOLUTE:DATA:NOROOT,02aH
+; union <unnamed> volatile __io _A_UCSR0B;
+_A_UCSR0B:
+	DS 1
+;     2 #include "stdio.h"
+;     3 #include "uart0_A1x.h"
+;     4 #include "uart0_A1x_decl.h"
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned int const __flash fSpeedBaud_UART0;
+fSpeedBaud_UART0:
+	DW 9600
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fModeU2X0;
+fModeU2X0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fModeCHR90;
+fModeCHR90:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fCheckParity_UART0;
+fCheckParity_UART0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fContrStream_UART0;
+fContrStream_UART0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_DTR0;
+fEnb_DTR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_DTR0;
+fBit_DTR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_DSR0;
+fEnb_DSR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_DSR0;
+fBit_DSR0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_RTS0;
+fEnb_RTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_RTS0;
+fBit_RTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_CTS0;
+fEnb_CTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fBit_CTS0;
+fBit_CTS0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fSym_XON;
+fSym_XON:
+	DB 17
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fSym_XOFF;
+fSym_XOFF:
+	DB 19
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_XON_XOFF_Tx_UART0;
+fEnb_XON_XOFF_Tx_UART0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_XON_XOFF_Rx_UART0;
+fEnb_XON_XOFF_Rx_UART0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_Echo_UART0;
+fEnb_Echo_UART0:
+	DB 1
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fModeMPCM0;
+fModeMPCM0:
+	DB 0
+
+        RSEG NEAR_F:CODE:NOROOT(0)
+; unsigned char const __flash fEnb_Err_UART0;
+fEnb_Err_UART0:
+	DB 0
+
+        RSEG EEPROM_I:XDATA:NOROOT(0)
+; unsigned char __eeprom S3e;
+S3e:
+	DB 0
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S4e;
+S4e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S5e;
+S5e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S16e;
+S16e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S18e;
+S18e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S21e;
+S21e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S22e;
+S22e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S23e;
+S23e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S39e;
+S39e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; unsigned char __near S51e;
+S51e:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near TxBuf_UART0[32];
+TxBuf_UART0:
+	DS 32
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near TxHead_UART0;
+TxHead_UART0:
+	DS 1
+
+        RSEG NEAR_Z:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: NEAR_Z>`
+; static unsigned char volatile __near TxTail_UART0;
+TxTail_UART0:
+	DS 1
+;     5 
+;     6 
+;     7 
+
+        RSEG CODE:CODE:NOROOT(1)
+;     8 void TransmitByte( unsigned char data )
+;     9         {
+;    10         unsigned char tmphead;
+;    11         /* calculate buffer index */
+;    12         //tmphead = ( TxHead_UART0 + 1 ) & TX_BUFFER_MASK_UART0;
+;    13         tmphead = (TxHead_UART0+1) & TX_BUFFER_MASK_UART0;
+; __nearfunc void TransmitByte(unsigned char);
+TransmitByte:
+	LDS	R18,TxHead_UART0
+	INC	R18
+	ANDI	R18,0x1F
+;    14                 /* wait for free space in buffer */
+;    15 
+;    16         while ( tmphead == TxTail_UART0 )
+??TransmitByte_0:
+	LDS	R17,TxTail_UART0
+	CP	R18,R17
+	BREQ	??TransmitByte_0
+;    17                 ;
+;    18         TxBuf_UART0[tmphead] = data; /* store data in buffer */
+	LDI	R19,0
+	MOVW	R31 : R30,R19 : R18
+	SUBI	R30,LOW((-(TxBuf_UART0) & 0xFFFF))
+	SBCI	R31,(-(TxBuf_UART0) & 0xFFFF) >> 8
+	ST	Z,R16
+;    19         TxHead_UART0 = tmphead; /* store new index */
+	STS	TxHead_UART0,R18
+;    20         UCSR0B |= (1<<UDRIE0); /* enable UDRE interrupt */
+	SBI	0x0A,0x05
+;    21         }
+	RET
+;    22 
+
+        RSEG CODE:CODE:NOROOT(1)
+;    23 void main(void)
+;    24 {
+; __nearfunc void main();
+main:
+        FUNCALL main, TransmitByte
+        LOCFRAME CSTACK, 4, STACK
+        LOCFRAME RSTACK, 2, STACK
+	CALL	?PROLOGUE4_L09
+;    25   int i;
+;    26   unsigned char data='U'; 
+	LDI	R24,85
+;    27   for (;;)
+;    28   {
+;    29    /*--------------------------*/
+;    30   /*   Test for function UART0 */
+;    31   /*
+;    32 
+;    33   void TransmitByte( unsigned char data )
+;    34 
+;    35       1 byte  in segment ABSOLUTE
+;    36      48 bytes in segment CODE
+;    37       1 byte  in segment EEPROM_I
+;    38       6 bytes in segment INITTAB
+;    39      21 bytes in segment NEAR_F
+;    40      43 bytes in segment NEAR_Z
+;    41  
+;    42      69 bytes of CODE memory (+ 6 bytes shared)
+;    43      43 bytes of DATA memory (+ 1 byte shared)
+;    44       1 byte  of XDATA memory
+;    45   */
+;    46   TransmitByte(data);
+??main_0:
+	MOV	R16,R24
+	RCALL	TransmitByte
+;    47   /* End Test */
+;    48   i++;
+	ADIW	R27 : R26,1
+	RJMP	??main_0
+;    49   /* Test Modul for A1x.c */
+;    50   };
+;    51 }
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: NEAR_Z>`:
+	DW	SFE(NEAR_Z) - SFB(NEAR_Z)
+	DW	SFB(NEAR_Z)
+	DW	0
+	REQUIRE ?need_segment_init
+
+        END
+; 
+;      1 byte  in segment ABSOLUTE
+;     48 bytes in segment CODE
+;      1 byte  in segment EEPROM_I
+;      6 bytes in segment INITTAB
+;     21 bytes in segment NEAR_F
+;     43 bytes in segment NEAR_Z
+; 
+;     69 bytes of CODE memory (+ 6 bytes shared)
+;     43 bytes of DATA memory (+ 1 byte shared)
+;      1 byte  of XDATA memory
+;
+;Errors: none
+;Warnings: none

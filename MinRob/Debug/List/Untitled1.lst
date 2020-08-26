@@ -1,0 +1,140 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             03/Sep/2002  00:41:36 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\MiniRobot_CODE\Untitled1.c                    #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\MiniRobot_CODE\Debug\Obj\   #
+#                    -I C:\AVR_CC\AVR\SRC\CLIB\INC\ -lC                      #
+#                    C:\AVR_CC\MiniRobot_CODE\Debug\List\ -lA                #
+#                    C:\AVR_CC\MiniRobot_CODE\Debug\List\ -e -y              #
+#                    --initializers_in_flash -z3 --no_cse --no_inline        #
+#                    --no_code_motion --no_cross_call --no_clustering        #
+#                    --debug -DENABLE_BIT_DEFINITIONS                        #
+#                    C:\AVR_CC\MiniRobot_CODE\Untitled1.c                    #
+#    List file    =  C:\AVR_CC\MiniRobot_CODE\Debug\List\Untitled1.lst       #
+#    Object file  =  C:\AVR_CC\MiniRobot_CODE\Debug\Obj\Untitled1.r90        #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1                // Calculate parity
+      2          unsigned char CalculParity(unsigned char Byte,unsigned char cPEx )  
+      3            {
+      4              //unsigned char tmphead;
+      5              unsigned char cTmp;
+      6              //unsigned char cByte;
+      7              unsigned char cPE;
+      8              //unsigned char cPERx;
+      9              volatile unsigned char FlgErr;
+     10              int i;
+     11              int j;
+     12              int k;  
+     13                switch(CheckParity_UART0)      // Test mode parity=?
+                              ^
+Error[Pe020]: identifier "CheckParity_UART0" is undefined
+     14                   {
+     15                  case 0:              // No parity
+     16                  break;
+     17           
+     18                  case 1:             // mode parity: yes "1" 
+     19                  case 2:             // mode parity: no  "1" 
+     20                        j=1;
+     21                        k=0;
+     22                          for (i=1;i<=8;i++)
+     23                              {
+     24                              cTmp = Byte & j;
+     25                                  if ( cTmp != 0)
+     26                                  {
+     27                                  k++;
+     28                                  };
+     29                               j = j*2;   
+     30                              };
+     31                
+     32                          cTmp = (char) (k % 2);
+     33                                
+     34                              if ( (cTmp == 1) && (CheckParity_UART0 == 1) )
+     35                                {
+     36                                cPE = 1;
+     37                                  if ( cPE != cPERx )
+                                                     ^
+Error[Pe020]: identifier "cPERx" is undefined
+     38                                  {
+     39                                   FlgErr = 1;  // Error parity
+     40                                      if ( Enb_Err_UART0 == 1 )
+                                                  ^
+Error[Pe020]: identifier "Enb_Err_UART0" is undefined
+     41                                      {
+     42                                      Rx_Tx_Err_UART0[3]++;
+                                             ^
+Error[Pe020]: identifier "Rx_Tx_Err_UART0" is undefined
+     43                                      };
+     44                                   };
+     45                                };
+     46                              if ( (cTmp == 1) && (CheckParity_UART0 == 2) )
+     47                                {
+     48                                cPE = 0;
+     49                                  if ( cPE != cPERx )
+                                                     ^
+Error[Pe020]: identifier "cPERx" is undefined
+     50                                  {
+     51                                   FlgErr = 1;  // Error parity
+     52                                      if ( Enb_Err_UART0 == 1 )
+                                                  ^
+Error[Pe020]: identifier "Enb_Err_UART0" is undefined
+     53                                      {
+     54                                      Rx_Tx_Err_UART0[3]++;
+                                             ^
+Error[Pe020]: identifier "Rx_Tx_Err_UART0" is undefined
+     55                                       };
+     56                                   };
+     57                                };
+     58                              if ( (cTmp == 0) && (CheckParity_UART0 == 1) )
+     59                                {
+     60                                cPE = 0;
+     61                                  if ( cPE != cPERx )
+                                                     ^
+Error[Pe020]: identifier "cPERx" is undefined
+     62                                  {
+     63                                   FlgErr = 1;  // Error parity
+     64                                              if ( Enb_Err_UART0 == 1 )
+                                                          ^
+Error[Pe020]: identifier "Enb_Err_UART0" is undefined
+     65                                              {
+     66                                              Rx_Tx_Err_UART0[3]++;
+                                                     ^
+Error[Pe020]: identifier "Rx_Tx_Err_UART0" is undefined
+     67                                              };
+     68                                   };                      
+     69                                };                            
+     70                              if ( (cTmp == 0) && (CheckParity_UART0 == 2) )
+     71                                {
+     72                                cPE = 1;
+     73                                  if ( cPE != cPERx )
+                                                     ^
+Error[Pe020]: identifier "cPERx" is undefined
+     74                                  {
+     75                                   FlgErr = 1;
+     76                                          if ( Enb_Err_UART0 == 1 )
+                                                      ^
+Error[Pe020]: identifier "Enb_Err_UART0" is undefined
+     77                                          {
+     78                                          Rx_Tx_Err_UART0[3]++;
+                                                 ^
+Error[Pe020]: identifier "Rx_Tx_Err_UART0" is undefined
+     79                                          };
+     80                                   };
+     81                           };
+     82                   break;
+     83                   default:
+     84                   ;
+     85                   break;
+     86                  };          
+     87            return FlgErr;
+     88            }
+     89            
+                   ^
+Warning[Pe001]: last line of file ends without a newline
+
+Errors: 13
+Warnings: 1

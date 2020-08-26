@@ -1,0 +1,1963 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             14/Oct/2002  14:05:10 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\Functions\Scan_CMD.c                          #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\Functions\Debug\Obj\ -I     #
+#                    C:\AVR_CC\AVR\SRC\CLIB\INC\ -lC                         #
+#                    C:\AVR_CC\Functions\Debug\List\ -lA                     #
+#                    C:\AVR_CC\Functions\Debug\List\ -e -y                   #
+#                    --initializers_in_flash -z3 --no_cse --no_inline        #
+#                    --no_code_motion --no_cross_call --no_clustering        #
+#                    --debug C:\AVR_CC\Functions\Scan_CMD.c                  #
+#    List file    =  C:\AVR_CC\Functions\Debug\List\Scan_CMD.lst             #
+#    Object file  =  C:\AVR_CC\Functions\Debug\Obj\Scan_CMD.r90              #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          /*********************************************
+      2          * Programm:       SCAN_CMD.c                 *
+      3          *                                            *
+      4          *  Note:  For projekt MINIROBIT BUILDING     *
+      5          *                                            *
+      6          * Name:  Module Code adapted from Atmel AVR  *
+      7          *        Application for Amega161            *
+      8          *                                            *
+      9          *                                            *
+     10          * Edit data:     01.10.02£. 16:06:23         *
+     11          * Last data:     14.10.02£. 13:33:25         *
+     12          * Version:       0.02                        *
+     13          **********************************************/
+     14          
+     15          #include "iom161.h"
+
+   \                                 In segment ABSOLUTE, at 0x3a
+   \   union <unnamed> volatile __io _A_DDRA;
+   \                     _A_DDRA:
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x3b
+   \   union <unnamed> volatile __io _A_PORTA;
+   \                     _A_PORTA:
+   \   00000000                              DS 1
+     16          #include "stdio.h"
+     17          #include "ctype.h"
+     18          #include "string.h"
+     19          #include "scan_cmd.h"
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static char __near BUF_CMD[42];
+   \                     BUF_CMD:
+   \   00000000                              DS 42
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static unsigned char volatile __near Head_CMD;
+   \                     Head_CMD:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static char __near BUF_TEST[42];
+   \                     BUF_TEST:
+   \   00000000                              DS 42
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static pars __near CMD_PAR[5];
+   \                     CMD_PAR:
+   \   00000000                              DS 55
+
+   \                                 In segment NEAR_F, align 1, keep-with-next
+   \   dic __flash Dict_CMD[6];
+   \                     Dict_CMD:
+   \   00000000   0078                       DB "x"
+   \   00000002   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000000A   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000012   0000                       DB 0, 0
+   \   00000014   01                         DB 1
+   \   00000015   754674636F69               DB "Fuction display X"
+   \            206E69647073
+   \            616C20790058
+   \   00000027   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000002F   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000037   000000000000               DB 0, 0, 0, 0, 0, 0
+   \   0000003D   0079                       DB "y"
+   \   0000003F   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000047   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000004F   0000                       DB 0, 0
+   \   00000051   01                         DB 1
+   \   00000052   754674636F69               DB "Fuction display Y"
+   \            206E69647073
+   \            616C20790059
+   \   00000064   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000006C   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000074   000000000000               DB 0, 0, 0, 0, 0, 0
+   \   0000007A   007A                       DB "z"
+   \   0000007C   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000084   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000008C   0000                       DB 0, 0
+   \   0000008E   01                         DB 1
+   \   0000008F   754674636F69               DB "Fuction display Z"
+   \            206E69647073
+   \            616C2079005A
+   \   000000A1   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   000000A9   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   000000B1   000000000000               DB 0, 0, 0, 0, 0, 0
+   \   000000B7   696C747300                 DB "list"
+   \   000000BC   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   000000C4   000000000000               DB 0, 0, 0, 0, 0, 0, 0
+   \            00          
+   \   000000CB   00                         DB 0
+   \   000000CC   7546636E6974               DB "Function list functions"
+   \            6E6F6C207369
+   \            20747566636E
+   \            69746E6F0073
+   \   000000E4   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   000000EC   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   000000F4   6976776500                 DB "view"
+   \   000000F9   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000101   000000000000               DB 0, 0, 0, 0, 0, 0, 0
+   \            00          
+   \   00000108   01                         DB 1
+   \   00000109   754674636F69               DB "Fuction view"
+   \            206E69767765
+   \            00          
+   \   00000116   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000011E   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000126   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000012E   000000                     DB 0, 0, 0
+   \   00000131   72706E690074               DB "print"
+   \   00000137   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000013F   000000000000               DB 0, 0, 0, 0, 0, 0
+   \   00000145   02                         DB 2
+   \   00000146   7546636E6974               DB "Function print"
+   \            6E6F70206972
+   \            746E00      
+   \   00000155   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000015D   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   00000165   000000000000               DB 0, 0, 0, 0, 0, 0, 0, 0
+   \            0000        
+   \   0000016D   00                         DB 0
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   static char volatile __near MODE_OUT_MSG;
+   \                     MODE_OUT_MSG:
+   \   00000000                              DS 1
+
+  void    out_err_msg( char *s1, int id_msg, volatile int *ps, int codepage );
+                                                                              ^
+"C:\AVR_CC\Functions\scan_cmd.h",112  Warning[Pe001]: last line of file ends
+          without a newline
+     20          #include "c:\AVR_CC\UART_MOD\uart0_A1x_ext_func.h"
+     21          
+     22          
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     23          static volatile int point_err;
+   \   static int volatile __near point_err;
+   \                     point_err:
+   \   00000000                              DS 2
+     24          
+     25           /* Debug test SCAN_CMD for module */
+     26          #define TEST_SCAN_CMD
+     27          
+     28          #ifdef TEST_SCAN_CMD
+     29          
+     30           /* main - a simple test program*/
+
+   \                                 In segment CODE, align 2, keep-with-next
+     31          void main( void )
+     32               {
+   \   __nearfunc void main();
+   \                     main:
+   \   00000000   ........                   CALL    ?PROLOGUE10_L09
+   \   00000004                              REQUIRE ?Register_R4_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R5_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R6_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R7_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R8_is_cg_reg
+   \   00000004                              REQUIRE ?Register_R9_is_cg_reg
+   \   00000004   9729                       SBIW    R29 : R28,9
+     33                  static unsigned char cRet;
+     34                  volatile long int l_i;
+     35                  volatile unsigned int i,j;
+     36                  static int iByte, iRet;
+     37                  volatile char cFlg;
+     38                  int flgerr = 0;
+   \   00000006   E080                       LDI     R24,0
+   \   00000008   E090                       LDI     R25,0
+     39                  int point_dict;
+     40                  char *p;
+     41                  char *pt;
+                               ^
+Warning[Pe550]: variable "pt" was set but never used
+     42          
+     43                  MODE_OUT_MSG = 1;  // full print message errors
+   \   0000000A   E001                       LDI     R16,1
+   \   0000000C   9300....                   STS     MODE_OUT_MSG,R16
+     44          
+     45                  /*-----------------------*/
+     46                  /* 2. Init UART0         */
+     47                  Reset_UART0();
+   \   00000010   ........                   CALL    Reset_UART0
+     48                  Init_S_UART0(57600); // 57600 default
+   \   00000014   E000                       LDI     R16,0
+   \   00000016   EE11                       LDI     R17,225
+   \   00000018   ........                   CALL    Init_S_UART0
+     49          
+     50                  /*-------------------*/
+     51                  /* 4. Begin programm */
+     52                  _SEI(); // enable global interrupt
+   \   0000001C   9478               sei
+     53          
+     54                  iRet = printf("Test ver 0.02 for Scan_CMD \n\r");
+   \   0000001E   ....                       LDI     R16,LOW(`?<Constant "Test ver 0.02 for Sca...">`)
+   \   00000020   ....                       LDI     R17,(`?<Constant "Test ver 0.02 for Sca...">`) >> 8
+   \   00000022   ........                   CALL    printf
+   \   00000026   ....                       LDI     R30,LOW(??iRet)
+   \   00000028   ....                       LDI     R31,(??iRet) >> 8
+   \   0000002A   8300                       ST      Z,R16
+   \   0000002C   8311                       STD     Z+1,R17
+     55          
+     56                  l_i=0;
+   \   0000002E   E000                       LDI     R16,0
+   \   00000030   E010                       LDI     R17,0
+   \   00000032   E020                       LDI     R18,0
+   \   00000034   E030                       LDI     R19,0
+   \   00000036   830D                       STD     Y+5,R16
+   \   00000038   831E                       STD     Y+6,R17
+   \   0000003A   832F                       STD     Y+7,R18
+   \   0000003C   8738                       STD     Y+8,R19
+     57                  i = 0;
+   \   0000003E   E000                       LDI     R16,0
+   \   00000040   E010                       LDI     R17,0
+   \   00000042   8308                       ST      Y,R16
+   \   00000044   8319                       STD     Y+1,R17
+     58                  cRet = 0;
+   \   00000046   E000                       LDI     R16,0
+   \   00000048   9300....                   STS     ??cRet,R16
+     59          
+     60                  /* line string test */
+     61                  iRet = sprintf(BUF_TEST,"print1,2\n");
+   \   0000004C   ....                       LDI     R18,LOW(`?<Constant "print1,2\\n">`)
+   \   0000004E   ....                       LDI     R19,(`?<Constant "print1,2\\n">`) >> 8
+   \   00000050   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000052   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000054   ........                   CALL    sprintf
+   \   00000058   ....                       LDI     R30,LOW(??iRet)
+   \   0000005A   ....                       LDI     R31,(??iRet) >> 8
+   \   0000005C   8300                       ST      Z,R16
+   \   0000005E   8311                       STD     Z+1,R17
+     62                  /*ERR 1 test test_cmd_s() */
+     63                  iRet = test_cmd_s(BUF_TEST, &point_err);
+   \   00000060   ....                       LDI     R18,LOW(point_err)
+   \   00000062   ....                       LDI     R19,(point_err) >> 8
+   \   00000064   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000066   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000068   ........                   CALL    test_cmd_s
+   \   0000006C   ....                       LDI     R30,LOW(??iRet)
+   \   0000006E   ....                       LDI     R31,(??iRet) >> 8
+   \   00000070   8300                       ST      Z,R16
+   \   00000072   8311                       STD     Z+1,R17
+     64                  out_err_msg(BUF_TEST,iRet, &point_err, 866);
+   \   00000074   E662                       LDI     R22,98
+   \   00000076   E073                       LDI     R23,3
+   \   00000078   ....                       LDI     R20,LOW(point_err)
+   \   0000007A   ....                       LDI     R21,(point_err) >> 8
+   \   0000007C   ....                       LDI     R30,LOW(??iRet)
+   \   0000007E   ....                       LDI     R31,(??iRet) >> 8
+   \   00000080   8120                       LD      R18,Z
+   \   00000082   8131                       LDD     R19,Z+1
+   \   00000084   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000086   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000088   ........                   CALL    out_err_msg
+     65          
+     66                  /* line string test */
+     67                  iRet = sprintf(BUF_TEST,"print1,2\n");
+   \   0000008C   ....                       LDI     R18,LOW(`?<Constant "print1,2\\n">`)
+   \   0000008E   ....                       LDI     R19,(`?<Constant "print1,2\\n">`) >> 8
+   \   00000090   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000092   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000094   ........                   CALL    sprintf
+   \   00000098   ....                       LDI     R30,LOW(??iRet)
+   \   0000009A   ....                       LDI     R31,(??iRet) >> 8
+   \   0000009C   8300                       ST      Z,R16
+   \   0000009E   8311                       STD     Z+1,R17
+     68                  /*ERR 2 test test_cmd_s() */
+     69                  iRet = test_cmd_s(BUF_TEST, &point_err);
+   \   000000A0   ....                       LDI     R18,LOW(point_err)
+   \   000000A2   ....                       LDI     R19,(point_err) >> 8
+   \   000000A4   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000000A6   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000000A8   ........                   CALL    test_cmd_s
+   \   000000AC   ....                       LDI     R30,LOW(??iRet)
+   \   000000AE   ....                       LDI     R31,(??iRet) >> 8
+   \   000000B0   8300                       ST      Z,R16
+   \   000000B2   8311                       STD     Z+1,R17
+     70                  out_err_msg(BUF_TEST,iRet, &point_err, 866);
+   \   000000B4   E662                       LDI     R22,98
+   \   000000B6   E073                       LDI     R23,3
+   \   000000B8   ....                       LDI     R20,LOW(point_err)
+   \   000000BA   ....                       LDI     R21,(point_err) >> 8
+   \   000000BC   ....                       LDI     R30,LOW(??iRet)
+   \   000000BE   ....                       LDI     R31,(??iRet) >> 8
+   \   000000C0   8120                       LD      R18,Z
+   \   000000C2   8131                       LDD     R19,Z+1
+   \   000000C4   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000000C6   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000000C8   ........                   CALL    out_err_msg
+     71          
+     72                  /* line string test */
+     73                  iRet = sprintf(BUF_TEST,"print(1,2\n");
+   \   000000CC   ....                       LDI     R18,LOW(`?<Constant "print(1,2\\n">`)
+   \   000000CE   ....                       LDI     R19,(`?<Constant "print(1,2\\n">`) >> 8
+   \   000000D0   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000000D2   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000000D4   ........                   CALL    sprintf
+   \   000000D8   ....                       LDI     R30,LOW(??iRet)
+   \   000000DA   ....                       LDI     R31,(??iRet) >> 8
+   \   000000DC   8300                       ST      Z,R16
+   \   000000DE   8311                       STD     Z+1,R17
+     74                  /*ERR 3 test test_cmd_s() */
+     75                  iRet = test_cmd_s(BUF_TEST, &point_err);
+   \   000000E0   ....                       LDI     R18,LOW(point_err)
+   \   000000E2   ....                       LDI     R19,(point_err) >> 8
+   \   000000E4   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000000E6   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000000E8   ........                   CALL    test_cmd_s
+   \   000000EC   ....                       LDI     R30,LOW(??iRet)
+   \   000000EE   ....                       LDI     R31,(??iRet) >> 8
+   \   000000F0   8300                       ST      Z,R16
+   \   000000F2   8311                       STD     Z+1,R17
+     76                  out_err_msg(BUF_TEST,iRet, &point_err, 866);
+   \   000000F4   E662                       LDI     R22,98
+   \   000000F6   E073                       LDI     R23,3
+   \   000000F8   ....                       LDI     R20,LOW(point_err)
+   \   000000FA   ....                       LDI     R21,(point_err) >> 8
+   \   000000FC   ....                       LDI     R30,LOW(??iRet)
+   \   000000FE   ....                       LDI     R31,(??iRet) >> 8
+   \   00000100   8120                       LD      R18,Z
+   \   00000102   8131                       LDD     R19,Z+1
+   \   00000104   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000106   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000108   ........                   CALL    out_err_msg
+     77          
+     78                  /* line string test */
+     79                  iRet = sprintf(BUF_TEST,"print)1,2(\n");
+   \   0000010C   ....                       LDI     R18,LOW(`?<Constant "print)1,2(\\n">`)
+   \   0000010E   ....                       LDI     R19,(`?<Constant "print)1,2(\\n">`) >> 8
+   \   00000110   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000112   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000114   ........                   CALL    sprintf
+   \   00000118   ....                       LDI     R30,LOW(??iRet)
+   \   0000011A   ....                       LDI     R31,(??iRet) >> 8
+   \   0000011C   8300                       ST      Z,R16
+   \   0000011E   8311                       STD     Z+1,R17
+     80                  /*ERR 4 test test_cmd_s() */
+     81                  iRet = test_cmd_s(BUF_TEST, &point_err);
+   \   00000120   ....                       LDI     R18,LOW(point_err)
+   \   00000122   ....                       LDI     R19,(point_err) >> 8
+   \   00000124   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000126   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000128   ........                   CALL    test_cmd_s
+   \   0000012C   ....                       LDI     R30,LOW(??iRet)
+   \   0000012E   ....                       LDI     R31,(??iRet) >> 8
+   \   00000130   8300                       ST      Z,R16
+   \   00000132   8311                       STD     Z+1,R17
+     82                  out_err_msg(BUF_TEST,iRet, &point_err, 866);
+   \   00000134   E662                       LDI     R22,98
+   \   00000136   E073                       LDI     R23,3
+   \   00000138   ....                       LDI     R20,LOW(point_err)
+   \   0000013A   ....                       LDI     R21,(point_err) >> 8
+   \   0000013C   ....                       LDI     R30,LOW(??iRet)
+   \   0000013E   ....                       LDI     R31,(??iRet) >> 8
+   \   00000140   8120                       LD      R18,Z
+   \   00000142   8131                       LDD     R19,Z+1
+   \   00000144   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000146   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000148   ........                   CALL    out_err_msg
+     83          
+     84                  /* line string test */
+     85                  iRet = sprintf(BUF_TEST,"view(1)\n");
+   \   0000014C   ....                       LDI     R18,LOW(`?<Constant "view(1)\\n">`)
+   \   0000014E   ....                       LDI     R19,(`?<Constant "view(1)\\n">`) >> 8
+   \   00000150   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000152   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000154   ........                   CALL    sprintf
+   \   00000158   ....                       LDI     R30,LOW(??iRet)
+   \   0000015A   ....                       LDI     R31,(??iRet) >> 8
+   \   0000015C   8300                       ST      Z,R16
+   \   0000015E   8311                       STD     Z+1,R17
+     86                  /*ERR 5 test test_cmd_s() */
+     87                  iRet = test_cmd_s(BUF_TEST, &point_err);
+   \   00000160   ....                       LDI     R18,LOW(point_err)
+   \   00000162   ....                       LDI     R19,(point_err) >> 8
+   \   00000164   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000166   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000168   ........                   CALL    test_cmd_s
+   \   0000016C   ....                       LDI     R30,LOW(??iRet)
+   \   0000016E   ....                       LDI     R31,(??iRet) >> 8
+   \   00000170   8300                       ST      Z,R16
+   \   00000172   8311                       STD     Z+1,R17
+     88                  out_err_msg(BUF_TEST,iRet, &point_err, 866);
+   \   00000174   E662                       LDI     R22,98
+   \   00000176   E073                       LDI     R23,3
+   \   00000178   ....                       LDI     R20,LOW(point_err)
+   \   0000017A   ....                       LDI     R21,(point_err) >> 8
+   \   0000017C   ....                       LDI     R30,LOW(??iRet)
+   \   0000017E   ....                       LDI     R31,(??iRet) >> 8
+   \   00000180   8120                       LD      R18,Z
+   \   00000182   8131                       LDD     R19,Z+1
+   \   00000184   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000186   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000188   ........                   CALL    out_err_msg
+     89          
+     90                  iRet = printf("\n\r'Ok\n\rEnd Test out_err_msg() \n\r");
+   \   0000018C   ....                       LDI     R16,LOW(`?<Constant "\\n\\r\\'Ok\\n\\rEnd Test out_e...">`)
+   \   0000018E   ....                       LDI     R17,(`?<Constant "\\n\\r\\'Ok\\n\\rEnd Test out_e...">`) >> 8
+   \   00000190   ........                   CALL    printf
+   \   00000194   ....                       LDI     R30,LOW(??iRet)
+   \   00000196   ....                       LDI     R31,(??iRet) >> 8
+   \   00000198   8300                       ST      Z,R16
+   \   0000019A   8311                       STD     Z+1,R17
+     91          
+     92          
+     93                  /* test Read from Dictionary CMD */
+     94                  cRet = Dict_CMD[0].pars;
+   \   0000019C   ....                       LDI     R30,LOW((Dict_CMD + 20))
+   \   0000019E   ....                       LDI     R31,(Dict_CMD + 20) >> 8
+   \   000001A0   9104                       LPM     R16,Z
+   \   000001A2   9300....                   STS     ??cRet,R16
+     95                  cRet = cRet+0;
+   \   000001A6   9100....                   LDS     R16,??cRet
+   \   000001AA   9300....                   STS     ??cRet,R16
+     96          
+     97                  /* read name from Dictionary CMD */
+     98                  for (i=0;i<=((BUFFER_SIZE_CMD/2)-1);i++)
+   \   000001AE   E000                       LDI     R16,0
+   \   000001B0   E010                       LDI     R17,0
+   \   000001B2   8308                       ST      Y,R16
+   \   000001B4   8319                       STD     Y+1,R17
+   \   000001B6   C013                       RJMP    ??main_0
+     99                  {
+    100                  BUF_TEST[i] = Dict_CMD[1].name[i]; ;
+   \                     ??main_1:
+   \   000001B8   8108                       LD      R16,Y
+   \   000001BA   8119                       LDD     R17,Y+1
+   \   000001BC   ....                       LDI     R18,LOW((Dict_CMD + 61))
+   \   000001BE   ....                       LDI     R19,(Dict_CMD + 61) >> 8
+   \   000001C0   81E8                       LD      R30,Y
+   \   000001C2   81F9                       LDD     R31,Y+1
+   \   000001C4   0FE2                       ADD     R30,R18
+   \   000001C6   1FF3                       ADC     R31,R19
+   \   000001C8   9124                       LPM     R18,Z
+   \   000001CA   01F8                       MOVW    R31 : R30,R17 : R16
+   \   000001CC   ....                       SUBI    R30,LOW((-(BUF_TEST) & 0xFFFF))
+   \   000001CE   ....                       SBCI    R31,(-(BUF_TEST) & 0xFFFF) >> 8
+   \   000001D0   8320                       ST      Z,R18
+   \   000001D2   8108                       LD      R16,Y
+   \   000001D4   8119                       LDD     R17,Y+1
+   \   000001D6   5F0F                       SUBI    R16,255
+   \   000001D8   4F1F                       SBCI    R17,255
+   \   000001DA   8308                       ST      Y,R16
+   \   000001DC   8319                       STD     Y+1,R17
+   \                     ??main_0:
+   \   000001DE   8188                       LD      R24,Y
+   \   000001E0   8199                       LDD     R25,Y+1
+   \   000001E2   3184                       CPI     R24,20
+   \   000001E4   4090                       SBCI    R25,0
+   \   000001E6   F340                       BRCS    ??main_1
+    101                  };
+    102          
+    103                  /* read name from Dictionary CMD */
+    104                  for (i=0;i<=((BUFFER_SIZE_CMD)-1);i++)
+   \   000001E8   E000                       LDI     R16,0
+   \   000001EA   E010                       LDI     R17,0
+   \   000001EC   8308                       ST      Y,R16
+   \   000001EE   8319                       STD     Y+1,R17
+   \   000001F0   C013                       RJMP    ??main_2
+    105                  {
+    106                  BUF_TEST[i] = Dict_CMD[1].info_name[i]; ;
+   \                     ??main_3:
+   \   000001F2   8108                       LD      R16,Y
+   \   000001F4   8119                       LDD     R17,Y+1
+   \   000001F6   ....                       LDI     R18,LOW((Dict_CMD + 82))
+   \   000001F8   ....                       LDI     R19,(Dict_CMD + 82) >> 8
+   \   000001FA   81E8                       LD      R30,Y
+   \   000001FC   81F9                       LDD     R31,Y+1
+   \   000001FE   0FE2                       ADD     R30,R18
+   \   00000200   1FF3                       ADC     R31,R19
+   \   00000202   9124                       LPM     R18,Z
+   \   00000204   01F8                       MOVW    R31 : R30,R17 : R16
+   \   00000206   ....                       SUBI    R30,LOW((-(BUF_TEST) & 0xFFFF))
+   \   00000208   ....                       SBCI    R31,(-(BUF_TEST) & 0xFFFF) >> 8
+   \   0000020A   8320                       ST      Z,R18
+   \   0000020C   8108                       LD      R16,Y
+   \   0000020E   8119                       LDD     R17,Y+1
+   \   00000210   5F0F                       SUBI    R16,255
+   \   00000212   4F1F                       SBCI    R17,255
+   \   00000214   8308                       ST      Y,R16
+   \   00000216   8319                       STD     Y+1,R17
+   \                     ??main_2:
+   \   00000218   8188                       LD      R24,Y
+   \   0000021A   8199                       LDD     R25,Y+1
+   \   0000021C   3288                       CPI     R24,40
+   \   0000021E   4090                       SBCI    R25,0
+   \   00000220   F340                       BRCS    ??main_3
+    107                  };
+    108          
+    109                  /* init test array test[] */
+    110                  Head_CMD = 0;
+   \   00000222   E000                       LDI     R16,0
+   \   00000224   9300....                   STS     Head_CMD,R16
+    111                  for (i=0;i<=(BUFFER_SIZE_CMD-1);i++)
+   \   00000228   E000                       LDI     R16,0
+   \   0000022A   E010                       LDI     R17,0
+   \   0000022C   8308                       ST      Y,R16
+   \   0000022E   8319                       STD     Y+1,R17
+   \   00000230   C00D                       RJMP    ??main_4
+    112                  {
+    113                  BUF_TEST[i] = 0;
+   \                     ??main_5:
+   \   00000232   E000                       LDI     R16,0
+   \   00000234   8128                       LD      R18,Y
+   \   00000236   8139                       LDD     R19,Y+1
+   \   00000238   01F9                       MOVW    R31 : R30,R19 : R18
+   \   0000023A   ....                       SUBI    R30,LOW((-(BUF_TEST) & 0xFFFF))
+   \   0000023C   ....                       SBCI    R31,(-(BUF_TEST) & 0xFFFF) >> 8
+   \   0000023E   8300                       ST      Z,R16
+   \   00000240   8108                       LD      R16,Y
+   \   00000242   8119                       LDD     R17,Y+1
+   \   00000244   5F0F                       SUBI    R16,255
+   \   00000246   4F1F                       SBCI    R17,255
+   \   00000248   8308                       ST      Y,R16
+   \   0000024A   8319                       STD     Y+1,R17
+   \                     ??main_4:
+   \   0000024C   8188                       LD      R24,Y
+   \   0000024E   8199                       LDD     R25,Y+1
+   \   00000250   3288                       CPI     R24,40
+   \   00000252   4090                       SBCI    R25,0
+   \   00000254   F370                       BRCS    ??main_5
+    114                  };
+    115          
+    116                  /*test strlen_uc() */
+    117                  iRet = strlen_c(BUF_TEST);
+   \   00000256   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000258   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   0000025A   ........                   CALL    strlen_c
+   \   0000025E   ....                       LDI     R30,LOW(??iRet)
+   \   00000260   ....                       LDI     R31,(??iRet) >> 8
+   \   00000262   8300                       ST      Z,R16
+   \   00000264   8311                       STD     Z+1,R17
+    118          
+    119                  /*test strchr_uc() */
+    120                  p = strchr_c(BUF_TEST,'(');
+   \   00000266   E228                       LDI     R18,40
+   \   00000268   E030                       LDI     R19,0
+   \   0000026A   ....                       LDI     R16,LOW(BUF_TEST)
+   \   0000026C   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   0000026E   ........                   CALL    strchr_c
+   \   00000272   01D8                       MOVW    R27 : R26,R17 : R16
+    121                  iRet = *p;
+   \   00000274   910C                       LD      R16,X
+   \   00000276   E010                       LDI     R17,0
+   \   00000278   ....                       LDI     R30,LOW(??iRet)
+   \   0000027A   ....                       LDI     R31,(??iRet) >> 8
+   \   0000027C   8300                       ST      Z,R16
+   \   0000027E   8311                       STD     Z+1,R17
+    122          
+    123                  /*test strcat_uc() */
+    124                  p = strcat_c(BUF_TEST,BUF_CMD);
+   \   00000280   ....                       LDI     R18,LOW(BUF_CMD)
+   \   00000282   ....                       LDI     R19,(BUF_CMD) >> 8
+   \   00000284   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000286   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000288   ........                   CALL    strcat_c
+   \   0000028C   01D8                       MOVW    R27 : R26,R17 : R16
+    125          
+    126                  /* test strcmp_uc*/
+    127                  p = strcpy(BUF_CMD, BUF_TEST); // Copy BUF_TEST
+   \   0000028E   ....                       LDI     R18,LOW(BUF_TEST)
+   \   00000290   ....                       LDI     R19,(BUF_TEST) >> 8
+   \   00000292   ....                       LDI     R16,LOW(BUF_CMD)
+   \   00000294   ....                       LDI     R17,(BUF_CMD) >> 8
+   \   00000296   ........                   CALL    strcpy
+   \   0000029A   01D8                       MOVW    R27 : R26,R17 : R16
+    128                  iRet = strcmp_c(BUF_TEST,BUF_CMD); // Comparate str1 and str2
+   \   0000029C   ....                       LDI     R18,LOW(BUF_CMD)
+   \   0000029E   ....                       LDI     R19,(BUF_CMD) >> 8
+   \   000002A0   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000002A2   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000002A4   ........                   CALL    strcmp_c
+   \   000002A8   ....                       LDI     R30,LOW(??iRet)
+   \   000002AA   ....                       LDI     R31,(??iRet) >> 8
+   \   000002AC   8300                       ST      Z,R16
+   \   000002AE   8311                       STD     Z+1,R17
+   \   000002B0   C00F                       RJMP    ??main_6
+    129          
+    130          
+    131                  /* Read command and call functions */
+    132          
+    133              /* Begin */
+    134              do
+    135               {
+    136          
+    137                  /* test new function getchar() and prints stdin */
+    138                  /* Reset point for BUFFER BUF_CMD */
+    139                  Head_CMD = 0; // point begin
+    140                  memset(BUF_CMD, 0, BUFFER_SIZE_CMD);    // erase buffer
+    141                  memset(BUF_TEST, 0, BUFFER_SIZE_CMD);   // erase buffer
+    142          
+    143                  /* Output welcome */
+    144                  if (MODE_OUT_MSG == 1)
+    145                   {
+    146                   iRet = printf("%c ",'>');
+    147                   };
+    148          
+    149          
+    150                  do
+    151                   {
+    152                    /* Input from stdin */
+    153                    iByte = getchar_K();     // new size buffer 40 yes
+    154                    /* Save elements BUF_CMD */
+    155                    BUF_CMD[Head_CMD] = (unsigned char) iByte;
+    156                    Head_CMD++;
+    157                      if ( Head_CMD > (BUFFER_SIZE_CMD-1) )
+    158                       {
+    159                        Head_CMD--; // end buffer
+    160                       };
+    161                      if (iByte == 0x0A)  // ^J LF
+    162                       {
+    163                        /* char end string command */
+    164                        iRet = printf("\r");
+    165                       };
+    166                   }
+    167                  while ( iByte != 0x0A);
+    168          
+    169                  /* copy string BUF_CDM to BUF_TEST */
+    170                  p = strcpy(BUF_TEST, BUF_CMD);
+    171          
+    172                  /* erase '\n' and '\r' */
+    173                  p = strtok (BUF_TEST,"\n\r");
+    174          
+    175                  /* test print buffers */
+    176          
+    177               /* test print BUF_CMD
+    178                  iRet = printf("BUF_CMD: ");
+    179                  iRet = printf("%s", BUF_CMD);
+    180                  iRet = printf("\n\r");
+    181               */
+    182          
+    183               /* test BUF_TEST
+    184                  iRet = printf("BUF_TEST: ");
+    185                  iRet = printf("%s", BUF_TEST);
+    186                  iRet = printf("\n\r");
+    187               */
+    188          
+    189                  /* test syntax command and output message */
+    190                  flgerr = test_cmd_s(BUF_TEST, &point_err);
+    191          
+    192                  /* if ERROR then Print message error */
+    193                   if (flgerr > 0)
+    194                   {
+    195                    if (MODE_OUT_MSG == 1)
+    196                    {
+    197                    out_err_msg(BUF_TEST, flgerr, &point_err, 866);
+    198                    }
+    199                    else
+    200                    {
+    201                    iRet = printf("%d",flgerr);
+    202                    };
+    203                   };
+    204          
+    205              if ( flgerr == 0)
+    206               {
+    207                  /* test name, counter parametrs and range */
+    208                   iRet = strlen_c(BUF_TEST);
+    209                   j = 0; //counter symbols ','
+    210                   for (i=0;i<=iRet;i++)
+    211                   {
+    212                    if (BUF_TEST[i] == ',' )
+    213                    {
+    214                    j++;  // increment counter
+    215                    };
+    216                   }; // return j counter symbol ','
+    217          
+    218               /* test
+    219                  iRet = printf("\n\r Count',': ");
+    220                  iRet = printf("%d",j);
+    221                  iRet = printf("\n\r");
+    222               */
+    223          
+    224          
+    225                  iRet = 0;       // erase point Dict_CMD
+    226          
+    227                   do
+    228                    {
+    229                    p = strtok(BUF_TEST,"(),");
+    230          
+    231                    /* name in dict_CMD[] and name BUF_TEST */
+    232                          for (i=0;i<=((COUNT_CMD)-1);i++)
+    233                          {
+    234                                  flgerr = 0; // erase flag
+    235                                  for (j=0;j<=((BUFFER_SIZE_CMD/2)-1);j++)
+    236                                  {
+    237                                          if ( Dict_CMD[i].name[j] == 0)
+    238                                          {
+    239                                            if ( j == 0)
+    240                                            {
+    241                                            flgerr = flgerr | 1 ;
+    242                                            };
+    243                                            if ( BUF_TEST[j] != 0)
+    244                                            {
+    245                                            flgerr = flgerr | 1 ;
+    246                                            };
+    247                                          break;
+    248                                          };
+    249          
+    250                                          if ( BUF_TEST[j] != Dict_CMD[i].name[j])
+    251                                          {
+    252                                          flgerr = flgerr | 1 ;
+    253                                          };
+    254                                  };
+    255                             if (flgerr == 0)
+    256                             {
+    257                             point_dict = i; // store pointer for Name Function of Dict_CMD
+    258                             break;    // EXIT for
+    259                             };
+    260                          flgerr = 255;     // No name command in Dict_CMD[i]
+    261                          };
+    262          
+    263                    if ( flgerr == 255)
+    264                    {
+    265                          if (MODE_OUT_MSG == 1)
+    266                          {
+    267                          point_err = 0;  // print '^' position
+   \                     ??main_7:
+   \   000002B2   E000                       LDI     R16,0
+   \   000002B4   E010                       LDI     R17,0
+   \   000002B6   ....                       LDI     R30,LOW(point_err)
+   \   000002B8   ....                       LDI     R31,(point_err) >> 8
+   \   000002BA   8300                       ST      Z,R16
+   \   000002BC   8311                       STD     Z+1,R17
+    268                          out_err_msg(BUF_TEST, flgerr, &point_err, 866);
+   \   000002BE   E662                       LDI     R22,98
+   \   000002C0   E073                       LDI     R23,3
+   \   000002C2   ....                       LDI     R20,LOW(point_err)
+   \   000002C4   ....                       LDI     R21,(point_err) >> 8
+   \   000002C6   019C                       MOVW    R19 : R18,R25 : R24
+   \   000002C8   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000002CA   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000002CC   ........                   CALL    out_err_msg
+   \                     ??main_6:
+   \   000002D0   E000                       LDI     R16,0
+   \   000002D2   9300....                   STS     Head_CMD,R16
+   \   000002D6   E248                       LDI     R20,40
+   \   000002D8   E050                       LDI     R21,0
+   \   000002DA   E020                       LDI     R18,0
+   \   000002DC   E030                       LDI     R19,0
+   \   000002DE   ....                       LDI     R16,LOW(BUF_CMD)
+   \   000002E0   ....                       LDI     R17,(BUF_CMD) >> 8
+   \   000002E2   ........                   CALL    memset
+   \   000002E6   E248                       LDI     R20,40
+   \   000002E8   E050                       LDI     R21,0
+   \   000002EA   E020                       LDI     R18,0
+   \   000002EC   E030                       LDI     R19,0
+   \   000002EE   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000002F0   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000002F2   ........                   CALL    memset
+   \   000002F6   9100....                   LDS     R16,MODE_OUT_MSG
+   \   000002FA   3001                       CPI     R16,1
+   \   000002FC   F469                       BRNE    ??main_8
+   \   000002FE   E30E                       LDI     R16,62
+   \   00000300   E010                       LDI     R17,0
+   \   00000302   931A                       ST      -Y,R17
+   \   00000304   930A                       ST      -Y,R16
+   \   00000306   ....                       LDI     R16,LOW(`?<Constant "%c ">`)
+   \   00000308   ....                       LDI     R17,(`?<Constant "%c ">`) >> 8
+   \   0000030A   ........                   CALL    printf
+   \   0000030E   9622                       ADIW    R29 : R28,2
+   \   00000310   ....                       LDI     R30,LOW(??iRet)
+   \   00000312   ....                       LDI     R31,(??iRet) >> 8
+   \   00000314   8300                       ST      Z,R16
+   \   00000316   8311                       STD     Z+1,R17
+   \                     ??main_8:
+   \   00000318   ........                   CALL    getchar_K
+   \   0000031C   ....                       LDI     R30,LOW(??iByte)
+   \   0000031E   ....                       LDI     R31,(??iByte) >> 8
+   \   00000320   8300                       ST      Z,R16
+   \   00000322   8311                       STD     Z+1,R17
+   \   00000324   ....                       LDI     R30,LOW(??iByte)
+   \   00000326   ....                       LDI     R31,(??iByte) >> 8
+   \   00000328   8100                       LD      R16,Z
+   \   0000032A   8111                       LDD     R17,Z+1
+   \   0000032C   9120....                   LDS     R18,Head_CMD
+   \   00000330   E030                       LDI     R19,0
+   \   00000332   01F9                       MOVW    R31 : R30,R19 : R18
+   \   00000334   ....                       SUBI    R30,LOW((-(BUF_CMD) & 0xFFFF))
+   \   00000336   ....                       SBCI    R31,(-(BUF_CMD) & 0xFFFF) >> 8
+   \   00000338   8300                       ST      Z,R16
+   \   0000033A   ....                       LDI     R30,LOW(Head_CMD)
+   \   0000033C   ....                       LDI     R31,(Head_CMD) >> 8
+   \   0000033E   8100                       LD      R16,Z
+   \   00000340   9503                       INC     R16
+   \   00000342   8300                       ST      Z,R16
+   \   00000344   9100....                   LDS     R16,Head_CMD
+   \   00000348   3208                       CPI     R16,40
+   \   0000034A   F028                       BRCS    ??main_9
+   \   0000034C   ....                       LDI     R30,LOW(Head_CMD)
+   \   0000034E   ....                       LDI     R31,(Head_CMD) >> 8
+   \   00000350   8100                       LD      R16,Z
+   \   00000352   950A                       DEC     R16
+   \   00000354   8300                       ST      Z,R16
+   \                     ??main_9:
+   \   00000356   ....                       LDI     R30,LOW(??iByte)
+   \   00000358   ....                       LDI     R31,(??iByte) >> 8
+   \   0000035A   8100                       LD      R16,Z
+   \   0000035C   8111                       LDD     R17,Z+1
+   \   0000035E   300A                       CPI     R16,10
+   \   00000360   E000                       LDI     R16,0
+   \   00000362   0710                       CPC     R17,R16
+   \   00000364   F441                       BRNE    ??main_10
+   \   00000366   ....                       LDI     R16,LOW(`?<Constant "\\r">`)
+   \   00000368   ....                       LDI     R17,(`?<Constant "\\r">`) >> 8
+   \   0000036A   ........                   CALL    printf
+   \   0000036E   ....                       LDI     R30,LOW(??iRet)
+   \   00000370   ....                       LDI     R31,(??iRet) >> 8
+   \   00000372   8300                       ST      Z,R16
+   \   00000374   8311                       STD     Z+1,R17
+   \                     ??main_10:
+   \   00000376   ....                       LDI     R30,LOW(??iByte)
+   \   00000378   ....                       LDI     R31,(??iByte) >> 8
+   \   0000037A   8100                       LD      R16,Z
+   \   0000037C   8111                       LDD     R17,Z+1
+   \   0000037E   300A                       CPI     R16,10
+   \   00000380   E000                       LDI     R16,0
+   \   00000382   0710                       CPC     R17,R16
+   \   00000384   F649                       BRNE    ??main_8
+   \   00000386   ....                       LDI     R18,LOW(BUF_CMD)
+   \   00000388   ....                       LDI     R19,(BUF_CMD) >> 8
+   \   0000038A   ....                       LDI     R16,LOW(BUF_TEST)
+   \   0000038C   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   0000038E   ........                   CALL    strcpy
+   \   00000392   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000394   ....                       LDI     R18,LOW(`?<Constant "\\n\\r">`)
+   \   00000396   ....                       LDI     R19,(`?<Constant "\\n\\r">`) >> 8
+   \   00000398   ....                       LDI     R16,LOW(BUF_TEST)
+   \   0000039A   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   0000039C   ........                   CALL    strtok
+   \   000003A0   01D8                       MOVW    R27 : R26,R17 : R16
+   \   000003A2   ....                       LDI     R18,LOW(point_err)
+   \   000003A4   ....                       LDI     R19,(point_err) >> 8
+   \   000003A6   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000003A8   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000003AA   ........                   CALL    test_cmd_s
+   \   000003AE   01C8                       MOVW    R25 : R24,R17 : R16
+   \   000003B0   3081                       CPI     R24,1
+   \   000003B2   E000                       LDI     R16,0
+   \   000003B4   0790                       CPC     R25,R16
+   \   000003B6   F0CC                       BRLT    ??main_11
+   \   000003B8   9100....                   LDS     R16,MODE_OUT_MSG
+   \   000003BC   3001                       CPI     R16,1
+   \   000003BE   F451                       BRNE    ??main_12
+   \   000003C0   E662                       LDI     R22,98
+   \   000003C2   E073                       LDI     R23,3
+   \   000003C4   ....                       LDI     R20,LOW(point_err)
+   \   000003C6   ....                       LDI     R21,(point_err) >> 8
+   \   000003C8   019C                       MOVW    R19 : R18,R25 : R24
+   \   000003CA   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000003CC   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000003CE   ........                   CALL    out_err_msg
+   \   000003D2   C00B                       RJMP    ??main_11
+   \                     ??main_12:
+   \   000003D4   939A                       ST      -Y,R25
+   \   000003D6   938A                       ST      -Y,R24
+   \   000003D8   ....                       LDI     R16,LOW(`?<Constant "%d">`)
+   \   000003DA   ....                       LDI     R17,(`?<Constant "%d">`) >> 8
+   \   000003DC   ........                   CALL    printf
+   \   000003E0   9622                       ADIW    R29 : R28,2
+   \   000003E2   ....                       LDI     R30,LOW(??iRet)
+   \   000003E4   ....                       LDI     R31,(??iRet) >> 8
+   \   000003E6   8300                       ST      Z,R16
+   \   000003E8   8311                       STD     Z+1,R17
+   \                     ??main_11:
+   \   000003EA   2F08                       MOV     R16,R24
+   \   000003EC   2B09                       OR      R16,R25
+   \   000003EE   F009                       BREQ    ??main_13
+   \   000003F0   CF6F                       RJMP    ??main_6
+   \                     ??main_13:
+   \   000003F2   ....                       LDI     R16,LOW(BUF_TEST)
+   \   000003F4   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   000003F6   ........                   CALL    strlen_c
+   \   000003FA   ....                       LDI     R30,LOW(??iRet)
+   \   000003FC   ....                       LDI     R31,(??iRet) >> 8
+   \   000003FE   8300                       ST      Z,R16
+   \   00000400   8311                       STD     Z+1,R17
+   \   00000402   E000                       LDI     R16,0
+   \   00000404   E010                       LDI     R17,0
+   \   00000406   830A                       STD     Y+2,R16
+   \   00000408   831B                       STD     Y+3,R17
+   \   0000040A   E000                       LDI     R16,0
+   \   0000040C   E010                       LDI     R17,0
+   \   0000040E   8308                       ST      Y,R16
+   \   00000410   8319                       STD     Y+1,R17
+   \   00000412   C014                       RJMP    ??main_14
+   \                     ??main_15:
+   \   00000414   8108                       LD      R16,Y
+   \   00000416   8119                       LDD     R17,Y+1
+   \   00000418   01F8                       MOVW    R31 : R30,R17 : R16
+   \   0000041A   ....                       SUBI    R30,LOW((-(BUF_TEST) & 0xFFFF))
+   \   0000041C   ....                       SBCI    R31,(-(BUF_TEST) & 0xFFFF) >> 8
+   \   0000041E   8100                       LD      R16,Z
+   \   00000420   320C                       CPI     R16,44
+   \   00000422   F431                       BRNE    ??main_16
+   \   00000424   810A                       LDD     R16,Y+2
+   \   00000426   811B                       LDD     R17,Y+3
+   \   00000428   5F0F                       SUBI    R16,255
+   \   0000042A   4F1F                       SBCI    R17,255
+   \   0000042C   830A                       STD     Y+2,R16
+   \   0000042E   831B                       STD     Y+3,R17
+   \                     ??main_16:
+   \   00000430   8108                       LD      R16,Y
+   \   00000432   8119                       LDD     R17,Y+1
+   \   00000434   5F0F                       SUBI    R16,255
+   \   00000436   4F1F                       SBCI    R17,255
+   \   00000438   8308                       ST      Y,R16
+   \   0000043A   8319                       STD     Y+1,R17
+   \                     ??main_14:
+   \   0000043C   ....                       LDI     R30,LOW(??iRet)
+   \   0000043E   ....                       LDI     R31,(??iRet) >> 8
+   \   00000440   8100                       LD      R16,Z
+   \   00000442   8111                       LDD     R17,Z+1
+   \   00000444   8128                       LD      R18,Y
+   \   00000446   8139                       LDD     R19,Y+1
+   \   00000448   1702                       CP      R16,R18
+   \   0000044A   0713                       CPC     R17,R19
+   \   0000044C   F718                       BRCC    ??main_15
+   \   0000044E   E000                       LDI     R16,0
+   \   00000450   E010                       LDI     R17,0
+   \   00000452   ....                       LDI     R30,LOW(??iRet)
+   \   00000454   ....                       LDI     R31,(??iRet) >> 8
+   \   00000456   8300                       ST      Z,R16
+   \   00000458   8311                       STD     Z+1,R17
+   \                     ??main_17:
+   \   0000045A   ....                       LDI     R18,LOW(`?<Constant "(),">`)
+   \   0000045C   ....                       LDI     R19,(`?<Constant "(),">`) >> 8
+   \   0000045E   ....                       LDI     R16,LOW(BUF_TEST)
+   \   00000460   ....                       LDI     R17,(BUF_TEST) >> 8
+   \   00000462   ........                   CALL    strtok
+   \   00000466   01D8                       MOVW    R27 : R26,R17 : R16
+   \   00000468   E000                       LDI     R16,0
+   \   0000046A   E010                       LDI     R17,0
+   \   0000046C   8308                       ST      Y,R16
+   \   0000046E   8319                       STD     Y+1,R17
+   \   00000470   C008                       RJMP    ??main_18
+   \                     ??main_19:
+   \   00000472   EF8F                       LDI     R24,255
+   \   00000474   E090                       LDI     R25,0
+   \   00000476   8108                       LD      R16,Y
+   \   00000478   8119                       LDD     R17,Y+1
+   \   0000047A   5F0F                       SUBI    R16,255
+   \   0000047C   4F1F                       SBCI    R17,255
+   \   0000047E   8308                       ST      Y,R16
+   \   00000480   8319                       STD     Y+1,R17
+   \                     ??main_18:
+   \   00000482   8108                       LD      R16,Y
+   \   00000484   8119                       LDD     R17,Y+1
+   \   00000486   3006                       CPI     R16,6
+   \   00000488   4010                       SBCI    R17,0
+   \   0000048A   F008                       BRCS    ??main_20
+   \   0000048C   C059                       RJMP    ??main_21
+   \                     ??main_20:
+   \   0000048E   E080                       LDI     R24,0
+   \   00000490   E090                       LDI     R25,0
+   \   00000492   E000                       LDI     R16,0
+   \   00000494   E010                       LDI     R17,0
+   \   00000496   830A                       STD     Y+2,R16
+   \   00000498   831B                       STD     Y+3,R17
+   \   0000049A   C022                       RJMP    ??main_22
+   \                     ??main_23:
+   \   0000049C   812A                       LDD     R18,Y+2
+   \   0000049E   813B                       LDD     R19,Y+3
+   \   000004A0   8108                       LD      R16,Y
+   \   000004A2   8119                       LDD     R17,Y+1
+   \   000004A4   01F9                       MOVW    R31 : R30,R19 : R18
+   \   000004A6   ....                       SUBI    R30,LOW((-(BUF_TEST) & 0xFFFF))
+   \   000004A8   ....                       SBCI    R31,(-(BUF_TEST) & 0xFFFF) >> 8
+   \   000004AA   8060                       LD      R6,Z
+   \   000004AC   ....                       LDI     R18,LOW(Dict_CMD)
+   \   000004AE   2E82                       MOV     R8,R18
+   \   000004B0   ....                       LDI     R18,(Dict_CMD) >> 8
+   \   000004B2   2E92                       MOV     R9,R18
+   \   000004B4   E34D                       LDI     R20,61
+   \   000004B6   E050                       LDI     R21,0
+   \   000004B8   ........                   CALL    ?S_MUL_L02
+   \   000004BC   0D08                       ADD     R16,R8
+   \   000004BE   1D19                       ADC     R17,R9
+   \   000004C0   81EA                       LDD     R30,Y+2
+   \   000004C2   81FB                       LDD     R31,Y+3
+   \   000004C4   0FE0                       ADD     R30,R16
+   \   000004C6   1FF1                       ADC     R31,R17
+   \   000004C8   9104                       LPM     R16,Z
+   \   000004CA   1660                       CP      R6,R16
+   \   000004CC   F019                       BREQ    ??main_24
+   \   000004CE   6081                       ORI     R24,0x01
+   \   000004D0   E001                       LDI     R16,1
+   \   000004D2   E010                       LDI     R17,0
+   \                     ??main_24:
+   \   000004D4   810A                       LDD     R16,Y+2
+   \   000004D6   811B                       LDD     R17,Y+3
+   \   000004D8   5F0F                       SUBI    R16,255
+   \   000004DA   4F1F                       SBCI    R17,255
+   \   000004DC   830A                       STD     Y+2,R16
+   \   000004DE   831B                       STD     Y+3,R17
+   \                     ??main_22:
+   \   000004E0   810A                       LDD     R16,Y+2
+   \   000004E2   811B                       LDD     R17,Y+3
+   \   000004E4   3104                       CPI     R16,20
+   \   000004E6   4010                       SBCI    R17,0
+   \   000004E8   F528                       BRCC    ??main_25
+   \   000004EA   8108                       LD      R16,Y
+   \   000004EC   8119                       LDD     R17,Y+1
+   \   000004EE   ....                       LDI     R18,LOW(Dict_CMD)
+   \   000004F0   2E62                       MOV     R6,R18
+   \   000004F2   ....                       LDI     R18,(Dict_CMD) >> 8
+   \   000004F4   2E72                       MOV     R7,R18
+   \   000004F6   E34D                       LDI     R20,61
+   \   000004F8   E050                       LDI     R21,0
+   \   000004FA   ........                   CALL    ?S_MUL_L02
+   \   000004FE   0D06                       ADD     R16,R6
+   \   00000500   1D17                       ADC     R17,R7
+   \   00000502   81EA                       LDD     R30,Y+2
+   \   00000504   81FB                       LDD     R31,Y+3
+   \   00000506   0FE0                       ADD     R30,R16
+   \   00000508   1FF1                       ADC     R31,R17
+   \   0000050A   9104                       LPM     R16,Z
+   \   0000050C   2300                       TST     R16
+   \   0000050E   F631                       BRNE    ??main_23
+   \   00000510   810A                       LDD     R16,Y+2
+   \   00000512   811B                       LDD     R17,Y+3
+   \   00000514   2B01                       OR      R16,R17
+   \   00000516   F419                       BRNE    ??main_26
+   \   00000518   6081                       ORI     R24,0x01
+   \   0000051A   E001                       LDI     R16,1
+   \   0000051C   E010                       LDI     R17,0
+   \                     ??main_26:
+   \   0000051E   810A                       LDD     R16,Y+2
+   \   00000520   811B                       LDD     R17,Y+3
+   \   00000522   01F8                       MOVW    R31 : R30,R17 : R16
+   \   00000524   ....                       SUBI    R30,LOW((-(BUF_TEST) & 0xFFFF))
+   \   00000526   ....                       SBCI    R31,(-(BUF_TEST) & 0xFFFF) >> 8
+   \   00000528   8100                       LD      R16,Z
+   \   0000052A   2300                       TST     R16
+   \   0000052C   F019                       BREQ    ??main_25
+   \   0000052E   6081                       ORI     R24,0x01
+   \   00000530   E001                       LDI     R16,1
+   \   00000532   E010                       LDI     R17,0
+   \                     ??main_25:
+   \   00000534   2F08                       MOV     R16,R24
+   \   00000536   2B09                       OR      R16,R25
+   \   00000538   F009                       BREQ    ??main_27
+   \   0000053A   CF9B                       RJMP    ??main_19
+   \                     ??main_27:
+   \   0000053C   8048                       LD      R4,Y
+   \   0000053E   8059                       LDD     R5,Y+1
+   \                     ??main_21:
+   \   00000540   3F8F                       CPI     R24,255
+   \   00000542   E000                       LDI     R16,0
+   \   00000544   0790                       CPC     R25,R16
+   \   00000546   F489                       BRNE    ??main_28
+   \   00000548   9100....                   LDS     R16,MODE_OUT_MSG
+   \   0000054C   3001                       CPI     R16,1
+   \   0000054E   F409                       BRNE    ??main_29
+   \   00000550   CEB0                       RJMP    ??main_7
+    269                          }
+    270                          else
+    271                          {
+    272                          iRet = printf("%d", flgerr);
+   \                     ??main_29:
+   \   00000552   939A                       ST      -Y,R25
+   \   00000554   938A                       ST      -Y,R24
+   \   00000556   ....                       LDI     R16,LOW(`?<Constant "%d">`)
+   \   00000558   ....                       LDI     R17,(`?<Constant "%d">`) >> 8
+   \   0000055A   ........                   CALL    printf
+   \   0000055E   9622                       ADIW    R29 : R28,2
+   \   00000560   ....                       LDI     R30,LOW(??iRet)
+   \   00000562   ....                       LDI     R31,(??iRet) >> 8
+   \   00000564   8300                       ST      Z,R16
+   \   00000566   8311                       STD     Z+1,R17
+   \   00000568   CEB3                       RJMP    ??main_6
+    273                          };
+    274                          break; // EXIT do
+    275                    };
+    276          
+    277                    /* read parametrs from BUF_TEST */
+    278                    j = 0; // counter parametrs
+   \                     ??main_28:
+   \   0000056A   E000                       LDI     R16,0
+   \   0000056C   E010                       LDI     R17,0
+   \   0000056E   830A                       STD     Y+2,R16
+   \   00000570   831B                       STD     Y+3,R17
+    279          
+    280                    /* test */
+    281                    // iRet = printf("\n\r MODE_OUT_MSG= %d",MODE_OUT_MSG)
+    282          
+    283                    for (i=0;i<=CMD_PAR_MAX-1;i++) //  erase id=0
+   \   00000572   E000                       LDI     R16,0
+   \   00000574   E010                       LDI     R17,0
+   \   00000576   8308                       ST      Y,R16
+   \   00000578   8319                       STD     Y+1,R17
+   \   0000057A   C011                       RJMP    ??main_30
+    284                    {
+    285                    CMD_PAR[i].id = 0;
+   \                     ??main_31:
+   \   0000057C   2466                       CLR     R6
+   \   0000057E   8108                       LD      R16,Y
+   \   00000580   8119                       LDD     R17,Y+1
+   \   00000582   E04B                       LDI     R20,11
+   \   00000584   E050                       LDI     R21,0
+   \   00000586   ........                   CALL    ?S_MUL_L02
+   \   0000058A   01F8                       MOVW    R31 : R30,R17 : R16
+   \   0000058C   ....                       SUBI    R30,LOW((-(CMD_PAR) & 0xFFFF))
+   \   0000058E   ....                       SBCI    R31,(-(CMD_PAR) & 0xFFFF) >> 8
+   \   00000590   8260                       ST      Z,R6
+   \   00000592   8108                       LD      R16,Y
+   \   00000594   8119                       LDD     R17,Y+1
+   \   00000596   5F0F                       SUBI    R16,255
+   \   00000598   4F1F                       SBCI    R17,255
+   \   0000059A   8308                       ST      Y,R16
+   \   0000059C   8319                       STD     Y+1,R17
+   \                     ??main_30:
+   \   0000059E   8108                       LD      R16,Y
+   \   000005A0   8119                       LDD     R17,Y+1
+   \   000005A2   3005                       CPI     R16,5
+   \   000005A4   4010                       SBCI    R17,0
+   \   000005A6   F350                       BRCS    ??main_31
+    286                    };  // end for
+    287          
+    288                 /* test
+    289                    iRet = printf("\n\r ->");
+    290                    iRet = printf("%s", p);
+    291                    iRet = printf("\n\r");
+    292                 */
+    293                    for (i=0;i<=(CMD_PAR_MAX-1);i++)  // read parameter
+   \   000005A8   E000                       LDI     R16,0
+   \   000005AA   E010                       LDI     R17,0
+   \   000005AC   8308                       ST      Y,R16
+   \   000005AE   8319                       STD     Y+1,R17
+   \   000005B0   C029                       RJMP    ??main_32
+    294                    {
+    295                    p = strtok(NULL,",)\n"); // Read next parametr
+    296                          if ( p == 0)
+    297                          {
+    298                          break; // EXIT for
+    299                          };
+    300                          CMD_PAR[i].id = (char) i;              // store id parameter
+   \                     ??main_33:
+   \   000005B2   8068                       LD      R6,Y
+   \   000005B4   8079                       LDD     R7,Y+1
+   \   000005B6   8108                       LD      R16,Y
+   \   000005B8   8119                       LDD     R17,Y+1
+   \   000005BA   E04B                       LDI     R20,11
+   \   000005BC   E050                       LDI     R21,0
+   \   000005BE   ........                   CALL    ?S_MUL_L02
+   \   000005C2   01F8                       MOVW    R31 : R30,R17 : R16
+   \   000005C4   ....                       SUBI    R30,LOW((-(CMD_PAR) & 0xFFFF))
+   \   000005C6   ....                       SBCI    R31,(-(CMD_PAR) & 0xFFFF) >> 8
+   \   000005C8   8260                       ST      Z,R6
+    301                          pt = strcpy( CMD_PAR[i].par, p);       // store parametr
+   \   000005CA   019D                       MOVW    R19 : R18,R27 : R26
+   \   000005CC   01D9                       MOVW    R27 : R26,R19 : R18
+   \   000005CE   ....                       LDI     R16,LOW((CMD_PAR + 1))
+   \   000005D0   2E60                       MOV     R6,R16
+   \   000005D2   ....                       LDI     R16,(CMD_PAR + 1) >> 8
+   \   000005D4   2E70                       MOV     R7,R16
+   \   000005D6   8108                       LD      R16,Y
+   \   000005D8   8119                       LDD     R17,Y+1
+   \   000005DA   E04B                       LDI     R20,11
+   \   000005DC   E050                       LDI     R21,0
+   \   000005DE   ........                   CALL    ?S_MUL_L02
+   \   000005E2   0D06                       ADD     R16,R6
+   \   000005E4   1D17                       ADC     R17,R7
+   \   000005E6   019D                       MOVW    R19 : R18,R27 : R26
+   \   000005E8   ........                   CALL    strcpy
+    302                          j++;                                   // increment counter
+   \   000005EC   812A                       LDD     R18,Y+2
+   \   000005EE   813B                       LDD     R19,Y+3
+   \   000005F0   5F2F                       SUBI    R18,255
+   \   000005F2   4F3F                       SBCI    R19,255
+   \   000005F4   832A                       STD     Y+2,R18
+   \   000005F6   833B                       STD     Y+3,R19
+   \   000005F8   8128                       LD      R18,Y
+   \   000005FA   8139                       LDD     R19,Y+1
+   \   000005FC   5F2F                       SUBI    R18,255
+   \   000005FE   4F3F                       SBCI    R19,255
+   \   00000600   8328                       ST      Y,R18
+   \   00000602   8339                       STD     Y+1,R19
+   \                     ??main_32:
+   \   00000604   8108                       LD      R16,Y
+   \   00000606   8119                       LDD     R17,Y+1
+   \   00000608   3005                       CPI     R16,5
+   \   0000060A   4010                       SBCI    R17,0
+   \   0000060C   F450                       BRCC    ??main_34
+   \   0000060E   ....                       LDI     R18,LOW(`?<Constant ",)\\n">`)
+   \   00000610   ....                       LDI     R19,(`?<Constant ",)\\n">`) >> 8
+   \   00000612   E000                       LDI     R16,0
+   \   00000614   E010                       LDI     R17,0
+   \   00000616   ........                   CALL    strtok
+   \   0000061A   01D8                       MOVW    R27 : R26,R17 : R16
+   \   0000061C   2F0A                       MOV     R16,R26
+   \   0000061E   2B0B                       OR      R16,R27
+   \   00000620   F641                       BRNE    ??main_33
+    303          
+    304                 /* test print
+    305                    iRet = strlen_c( p );
+    306                    iRet = printf("\n\r MODE_OUT_MSG= %d",MODE_OUT_MSG)
+    307                    iRet = printf("\n\r~ len= %d", iRet);
+    308                    iRet = printf("\n\r~ point= %d", p);
+    309                    iRet = printf(" %s", p);
+    310                    iRet = printf("~ \n\r");
+    311                    iRet = printf("j= %d ~",j);
+    312                    iRet = printf("\n\r");
+    313                 */
+    314          
+    315                    }; // end for
+    316          
+    317                 /* test print
+    318                    iRet = Dict_CMD[point_dict].pars - (char)j;
+    319                    iRet = printf("~ sub= %d",( Dict_CMD[point_dict].pars - (char)j ));
+    320                    iRet = printf("\n\r pars=  %d", Dict_CMD[point_dict].pars);
+    321                    iRet = printf("\n\r j= %d ",j);
+    322                    iRet = printf("~  \n\r");
+    323                 */
+    324          
+    325                    if ( ( Dict_CMD[point_dict].pars - (char)j != 0 ) || (p != 0) )
+   \                     ??main_34:
+   \   00000622   ....                       LDI     R16,LOW((Dict_CMD + 20))
+   \   00000624   2E60                       MOV     R6,R16
+   \   00000626   ....                       LDI     R16,(Dict_CMD + 20) >> 8
+   \   00000628   2E70                       MOV     R7,R16
+   \   0000062A   0182                       MOVW    R17 : R16,R5 : R4
+   \   0000062C   E34D                       LDI     R20,61
+   \   0000062E   E050                       LDI     R21,0
+   \   00000630   ........                   CALL    ?S_MUL_L02
+   \   00000634   0D06                       ADD     R16,R6
+   \   00000636   1D17                       ADC     R17,R7
+   \   00000638   01F8                       MOVW    R31 : R30,R17 : R16
+   \   0000063A   9124                       LPM     R18,Z
+   \   0000063C   E030                       LDI     R19,0
+   \   0000063E   810A                       LDD     R16,Y+2
+   \   00000640   811B                       LDD     R17,Y+3
+   \   00000642   E010                       LDI     R17,0
+   \   00000644   1B20                       SUB     R18,R16
+   \   00000646   0B31                       SBC     R19,R17
+   \   00000648   F419                       BRNE    ??main_35
+   \   0000064A   2F0A                       MOV     R16,R26
+   \   0000064C   2B0B                       OR      R16,R27
+   \   0000064E   F011                       BREQ    ??main_36
+    326                    {
+    327                    flgerr = 254;     // Errors counter parametrs in Dict_CMD[i]
+   \                     ??main_35:
+   \   00000650   EF8E                       LDI     R24,254
+   \   00000652   E090                       LDI     R25,0
+    328                    };
+    329                          if ( p!= 0) // end function strtok()
+   \                     ??main_36:
+   \   00000654   2BAB                       OR      R26,R27
+   \   00000656   F049                       BREQ    ??main_37
+    330                          {
+    331                          do
+    332                          {
+    333                          p = strtok(NULL,",)\n"); // Read next parametr
+   \                     ??main_38:
+   \   00000658   ....                       LDI     R18,LOW(`?<Constant ",)\\n">`)
+   \   0000065A   ....                       LDI     R19,(`?<Constant ",)\\n">`) >> 8
+   \   0000065C   E000                       LDI     R16,0
+   \   0000065E   E010                       LDI     R17,0
+   \   00000660   ........                   CALL    strtok
+   \   00000664   01D8                       MOVW    R27 : R26,R17 : R16
+    334                          }
+    335                          while(p);
+   \   00000666   2BAB                       OR      R26,R27
+   \   00000668   F7B9                       BRNE    ??main_38
+    336                          };
+    337          
+    338                    if ( flgerr == 254)
+   \                     ??main_37:
+   \   0000066A   3F8E                       CPI     R24,254
+   \   0000066C   E000                       LDI     R16,0
+   \   0000066E   0790                       CPC     R25,R16
+   \   00000670   F511                       BRNE    ??main_39
+    339                    {
+    340                          if (MODE_OUT_MSG == 1)
+   \   00000672   9100....                   LDS     R16,MODE_OUT_MSG
+   \   00000676   3001                       CPI     R16,1
+   \   00000678   F491                       BRNE    ??main_40
+    341                          {
+    342                          point_err++ ;  // position print symbol '^' to On parameters
+   \   0000067A   ....                       LDI     R30,LOW(point_err)
+   \   0000067C   ....                       LDI     R31,(point_err) >> 8
+   \   0000067E   8100                       LD      R16,Z
+   \   00000680   8111                       LDD     R17,Z+1
+   \   00000682   5F0F                       SUBI    R16,255
+   \   00000684   4F1F                       SBCI    R17,255
+   \   00000686   8300                       ST      Z,R16
+   \   00000688   8311                       STD     Z+1,R17
+    343                          out_err_msg(BUF_CMD, flgerr, &point_err, 866);
+   \   0000068A   E662                       LDI     R22,98
+   \   0000068C   E073                       LDI     R23,3
+   \   0000068E   ....                       LDI     R20,LOW(point_err)
+   \   00000690   ....                       LDI     R21,(point_err) >> 8
+   \   00000692   019C                       MOVW    R19 : R18,R25 : R24
+   \   00000694   ....                       LDI     R16,LOW(BUF_CMD)
+   \   00000696   ....                       LDI     R17,(BUF_CMD) >> 8
+   \   00000698   ........                   CALL    out_err_msg
+   \   0000069C   CE19                       RJMP    ??main_6
+    344                          }
+    345                          else
+    346                          {
+    347                          iRet = printf("%d", flgerr);
+   \                     ??main_40:
+   \   0000069E   939A                       ST      -Y,R25
+   \   000006A0   938A                       ST      -Y,R24
+   \   000006A2   ....                       LDI     R16,LOW(`?<Constant "%d">`)
+   \   000006A4   ....                       LDI     R17,(`?<Constant "%d">`) >> 8
+   \   000006A6   ........                   CALL    printf
+   \   000006AA   9622                       ADIW    R29 : R28,2
+   \   000006AC   ....                       LDI     R30,LOW(??iRet)
+   \   000006AE   ....                       LDI     R31,(??iRet) >> 8
+   \   000006B0   8300                       ST      Z,R16
+   \   000006B2   8311                       STD     Z+1,R17
+   \   000006B4   CE0D                       RJMP    ??main_6
+    348                          };
+    349                          break; // EXIT do
+    350                    };
+    351          
+    352          
+    353                    if (flgerr == 0)      //
+   \                     ??main_39:
+   \   000006B6   2F08                       MOV     R16,R24
+   \   000006B8   2B09                       OR      R16,R25
+   \   000006BA   F009                       BREQ    ??main_41
+   \   000006BC   CECE                       RJMP    ??main_17
+    354                    {
+    355                    /* Call function from Dict_CMD */
+    356                    switch( point_dict ) // number function
+   \                     ??main_41:
+   \   000006BE   01F2                       MOVW    R31 : R30,R5 : R4
+   \   000006C0   9630                       ADIW    R31 : R30,0
+   \   000006C2   F029                       BREQ    ??main_42
+   \   000006C4   9731                       SBIW    R31 : R30,1
+   \   000006C6   F041                       BREQ    ??main_43
+   \   000006C8   9732                       SBIW    R31 : R30,2
+   \   000006CA   F059                       BREQ    ??main_44
+   \   000006CC   C0B4                       RJMP    ??main_45
+    357                    {
+    358                    case 0: // x()
+    359                          DDRA = 0xff;  // mode output
+   \                     ??main_42:
+   \   000006CE   EF0F                       LDI     R16,255
+   \   000006D0   BB0A                       OUT     0x1A,R16
+    360                          PORTA = 0x00; // ON lingh
+   \   000006D2   E000                       LDI     R16,0
+   \   000006D4   BB0B                       OUT     0x1B,R16
+   \   000006D6   C0AF                       RJMP    ??main_45
+    361                    break;
+    362                    case 1: // y()
+    363                          DDRA = 0xff;  // mode output
+   \                     ??main_43:
+   \   000006D8   EF0F                       LDI     R16,255
+   \   000006DA   BB0A                       OUT     0x1A,R16
+    364                          PORTA = 0xff; // OFF lingh
+   \   000006DC   EF0F                       LDI     R16,255
+   \   000006DE   BB0B                       OUT     0x1B,R16
+   \   000006E0   C0AA                       RJMP    ??main_45
+    365                    break;
+    366                    case 2: // z()
+    367                    break;
+    368                    case 3: // list()  - print names function
+    369                          iRet = printf("\n\r- Dictionary functions for KEY_DISP ver 0.01 -");
+   \                     ??main_44:
+   \   000006E2   ....                       LDI     R16,LOW(`?<Constant "\\n\\r- Dictionary functi...">`)
+   \   000006E4   ....                       LDI     R17,(`?<Constant "\\n\\r- Dictionary functi...">`) >> 8
+   \   000006E6   ........                   CALL    printf
+   \   000006EA   ....                       LDI     R30,LOW(??iRet)
+   \   000006EC   ....                       LDI     R31,(??iRet) >> 8
+   \   000006EE   8300                       ST      Z,R16
+   \   000006F0   8311                       STD     Z+1,R17
+    370                          for (i=0;i<=COUNT_CMD-1;i++)
+   \   000006F2   E000                       LDI     R16,0
+   \   000006F4   E010                       LDI     R17,0
+   \   000006F6   8308                       ST      Y,R16
+   \   000006F8   8319                       STD     Y+1,R17
+   \   000006FA   C040                       RJMP    ??main_46
+    371                          {
+    372                                  iRet = printf("\n\r\t");
+    373                                  for (j=0;j<=BUFFER_SIZE_CMD/2-1;j++)
+    374                                  {
+    375                                  if (Dict_CMD[i].name[j]==0) break; // EXIT for j
+    376                                  iRet = printf("%c", Dict_CMD[i].name[j]);
+    377                                  };
+    378                          iRet = printf("() - ");
+    379                                  for (j=0;j<=BUFFER_SIZE_CMD/2-1;j++)
+    380                                  {
+    381                                  if (Dict_CMD[i].info_name[j]==0) break; // EXIT for j
+    382                                  iRet = printf("%c", Dict_CMD[i].info_name[j]);
+   \                     ??main_47:
+   \   000006FC   8108                       LD      R16,Y
+   \   000006FE   8119                       LDD     R17,Y+1
+   \   00000700   ....                       LDI     R26,LOW(Dict_CMD)
+   \   00000702   ....                       LDI     R27,(Dict_CMD) >> 8
+   \   00000704   E34D                       LDI     R20,61
+   \   00000706   E050                       LDI     R21,0
+   \   00000708   ........                   CALL    ?S_MUL_L02
+   \   0000070C   0F0A                       ADD     R16,R26
+   \   0000070E   1F1B                       ADC     R17,R27
+   \   00000710   5E0B                       SUBI    R16,235
+   \   00000712   4F1F                       SBCI    R17,255
+   \   00000714   81EA                       LDD     R30,Y+2
+   \   00000716   81FB                       LDD     R31,Y+3
+   \   00000718   0FE0                       ADD     R30,R16
+   \   0000071A   1FF1                       ADC     R31,R17
+   \   0000071C   9104                       LPM     R16,Z
+   \   0000071E   E010                       LDI     R17,0
+   \   00000720   931A                       ST      -Y,R17
+   \   00000722   930A                       ST      -Y,R16
+   \   00000724   ....                       LDI     R16,LOW(`?<Constant "%c">`)
+   \   00000726   ....                       LDI     R17,(`?<Constant "%c">`) >> 8
+   \   00000728   ........                   CALL    printf
+   \   0000072C   9622                       ADIW    R29 : R28,2
+   \   0000072E   ....                       LDI     R30,LOW(??iRet)
+   \   00000730   ....                       LDI     R31,(??iRet) >> 8
+   \   00000732   8300                       ST      Z,R16
+   \   00000734   8311                       STD     Z+1,R17
+   \   00000736   810A                       LDD     R16,Y+2
+   \   00000738   811B                       LDD     R17,Y+3
+   \   0000073A   5F0F                       SUBI    R16,255
+   \   0000073C   4F1F                       SBCI    R17,255
+   \   0000073E   830A                       STD     Y+2,R16
+   \   00000740   831B                       STD     Y+3,R17
+   \                     ??main_48:
+   \   00000742   81AA                       LDD     R26,Y+2
+   \   00000744   81BB                       LDD     R27,Y+3
+   \   00000746   9754                       SBIW    R27 : R26,20
+   \   00000748   F498                       BRCC    ??main_49
+   \   0000074A   8108                       LD      R16,Y
+   \   0000074C   8119                       LDD     R17,Y+1
+   \   0000074E   ....                       LDI     R26,LOW(Dict_CMD)
+   \   00000750   ....                       LDI     R27,(Dict_CMD) >> 8
+   \   00000752   E34D                       LDI     R20,61
+   \   00000754   E050                       LDI     R21,0
+   \   00000756   ........                   CALL    ?S_MUL_L02
+   \   0000075A   0F0A                       ADD     R16,R26
+   \   0000075C   1F1B                       ADC     R17,R27
+   \   0000075E   5E0B                       SUBI    R16,235
+   \   00000760   4F1F                       SBCI    R17,255
+   \   00000762   81EA                       LDD     R30,Y+2
+   \   00000764   81FB                       LDD     R31,Y+3
+   \   00000766   0FE0                       ADD     R30,R16
+   \   00000768   1FF1                       ADC     R31,R17
+   \   0000076A   9104                       LPM     R16,Z
+   \   0000076C   2300                       TST     R16
+   \   0000076E   F631                       BRNE    ??main_47
+   \                     ??main_49:
+   \   00000770   8108                       LD      R16,Y
+   \   00000772   8119                       LDD     R17,Y+1
+   \   00000774   5F0F                       SUBI    R16,255
+   \   00000776   4F1F                       SBCI    R17,255
+   \   00000778   8308                       ST      Y,R16
+   \   0000077A   8319                       STD     Y+1,R17
+   \                     ??main_46:
+   \   0000077C   81A8                       LD      R26,Y
+   \   0000077E   81B9                       LDD     R27,Y+1
+   \   00000780   9716                       SBIW    R27 : R26,6
+   \   00000782   F008                       BRCS    ??main_50
+   \   00000784   C050                       RJMP    ??main_51
+   \                     ??main_50:
+   \   00000786   ....                       LDI     R16,LOW(`?<Constant "\\n\\r     ">`)
+   \   00000788   ....                       LDI     R17,(`?<Constant "\\n\\r        ">`) >> 8
+   \   0000078A   ........                   CALL    printf
+   \   0000078E   ....                       LDI     R30,LOW(??iRet)
+   \   00000790   ....                       LDI     R31,(??iRet) >> 8
+   \   00000792   8300                       ST      Z,R16
+   \   00000794   8311                       STD     Z+1,R17
+   \   00000796   E000                       LDI     R16,0
+   \   00000798   E010                       LDI     R17,0
+   \   0000079A   830A                       STD     Y+2,R16
+   \   0000079C   831B                       STD     Y+3,R17
+   \   0000079E   C021                       RJMP    ??main_52
+   \                     ??main_53:
+   \   000007A0   8108                       LD      R16,Y
+   \   000007A2   8119                       LDD     R17,Y+1
+   \   000007A4   ....                       LDI     R26,LOW(Dict_CMD)
+   \   000007A6   ....                       LDI     R27,(Dict_CMD) >> 8
+   \   000007A8   E34D                       LDI     R20,61
+   \   000007AA   E050                       LDI     R21,0
+   \   000007AC   ........                   CALL    ?S_MUL_L02
+   \   000007B0   0F0A                       ADD     R16,R26
+   \   000007B2   1F1B                       ADC     R17,R27
+   \   000007B4   81EA                       LDD     R30,Y+2
+   \   000007B6   81FB                       LDD     R31,Y+3
+   \   000007B8   0FE0                       ADD     R30,R16
+   \   000007BA   1FF1                       ADC     R31,R17
+   \   000007BC   9104                       LPM     R16,Z
+   \   000007BE   E010                       LDI     R17,0
+   \   000007C0   931A                       ST      -Y,R17
+   \   000007C2   930A                       ST      -Y,R16
+   \   000007C4   ....                       LDI     R16,LOW(`?<Constant "%c">`)
+   \   000007C6   ....                       LDI     R17,(`?<Constant "%c">`) >> 8
+   \   000007C8   ........                   CALL    printf
+   \   000007CC   9622                       ADIW    R29 : R28,2
+   \   000007CE   ....                       LDI     R30,LOW(??iRet)
+   \   000007D0   ....                       LDI     R31,(??iRet) >> 8
+   \   000007D2   8300                       ST      Z,R16
+   \   000007D4   8311                       STD     Z+1,R17
+   \   000007D6   810A                       LDD     R16,Y+2
+   \   000007D8   811B                       LDD     R17,Y+3
+   \   000007DA   5F0F                       SUBI    R16,255
+   \   000007DC   4F1F                       SBCI    R17,255
+   \   000007DE   830A                       STD     Y+2,R16
+   \   000007E0   831B                       STD     Y+3,R17
+   \                     ??main_52:
+   \   000007E2   81AA                       LDD     R26,Y+2
+   \   000007E4   81BB                       LDD     R27,Y+3
+   \   000007E6   9754                       SBIW    R27 : R26,20
+   \   000007E8   F488                       BRCC    ??main_54
+   \   000007EA   8108                       LD      R16,Y
+   \   000007EC   8119                       LDD     R17,Y+1
+   \   000007EE   ....                       LDI     R26,LOW(Dict_CMD)
+   \   000007F0   ....                       LDI     R27,(Dict_CMD) >> 8
+   \   000007F2   E34D                       LDI     R20,61
+   \   000007F4   E050                       LDI     R21,0
+   \   000007F6   ........                   CALL    ?S_MUL_L02
+   \   000007FA   0F0A                       ADD     R16,R26
+   \   000007FC   1F1B                       ADC     R17,R27
+   \   000007FE   81EA                       LDD     R30,Y+2
+   \   00000800   81FB                       LDD     R31,Y+3
+   \   00000802   0FE0                       ADD     R30,R16
+   \   00000804   1FF1                       ADC     R31,R17
+   \   00000806   9104                       LPM     R16,Z
+   \   00000808   2300                       TST     R16
+   \   0000080A   F651                       BRNE    ??main_53
+   \                     ??main_54:
+   \   0000080C   ....                       LDI     R16,LOW(`?<Constant "() - ">`)
+   \   0000080E   ....                       LDI     R17,(`?<Constant "() - ">`) >> 8
+   \   00000810   ........                   CALL    printf
+   \   00000814   ....                       LDI     R30,LOW(??iRet)
+   \   00000816   ....                       LDI     R31,(??iRet) >> 8
+   \   00000818   8300                       ST      Z,R16
+   \   0000081A   8311                       STD     Z+1,R17
+   \   0000081C   E000                       LDI     R16,0
+   \   0000081E   E010                       LDI     R17,0
+   \   00000820   830A                       STD     Y+2,R16
+   \   00000822   831B                       STD     Y+3,R17
+   \   00000824   CF8E                       RJMP    ??main_48
+    383                                  };
+    384                          };
+    385                          iRet = printf("\n\r\n\r\n\r");
+   \                     ??main_51:
+   \   00000826   ....                       LDI     R16,LOW(`?<Constant "\\n\\r\\n\\r\\n\\r">`)
+   \   00000828   ....                       LDI     R17,(`?<Constant "\\n\\r\\n\\r\\n\\r">`) >> 8
+   \   0000082A   ........                   CALL    printf
+   \   0000082E   ....                       LDI     R30,LOW(??iRet)
+   \   00000830   ....                       LDI     R31,(??iRet) >> 8
+   \   00000832   8300                       ST      Z,R16
+   \   00000834   8311                       STD     Z+1,R17
+    386                    break;
+    387                    case 4: // view()
+    388                    break;
+    389                    case 5: // print()
+    390                    break;
+    391                    default:
+    392                    break;
+    393                    };
+    394          
+    395                          if (MODE_OUT_MSG == 1)
+   \                     ??main_45:
+   \   00000836   9100....                   LDS     R16,MODE_OUT_MSG
+   \   0000083A   3001                       CPI     R16,1
+   \   0000083C   F449                       BRNE    ??main_55
+    396                          {
+    397                          iRet = printf("Ok!\n\r");
+   \   0000083E   ....                       LDI     R16,LOW(`?<Constant "Ok!\\n\\r">`)
+   \   00000840   ....                       LDI     R17,(`?<Constant "Ok!\\n\\r">`) >> 8
+   \   00000842   ........                   CALL    printf
+   \   00000846   ....                       LDI     R30,LOW(??iRet)
+   \   00000848   ....                       LDI     R31,(??iRet) >> 8
+   \   0000084A   8300                       ST      Z,R16
+   \   0000084C   8311                       STD     Z+1,R17
+   \   0000084E   CD40                       RJMP    ??main_6
+    398                          }
+    399                          else
+    400                          {
+    401                          iRet = printf("%d", flgerr);
+   \                     ??main_55:
+   \   00000850   939A                       ST      -Y,R25
+   \   00000852   938A                       ST      -Y,R24
+   \   00000854   ....                       LDI     R16,LOW(`?<Constant "%d">`)
+   \   00000856   ....                       LDI     R17,(`?<Constant "%d">`) >> 8
+   \   00000858   ........                   CALL    printf
+   \   0000085C   9622                       ADIW    R29 : R28,2
+   \   0000085E   ....                       LDI     R30,LOW(??iRet)
+   \   00000860   ....                       LDI     R31,(??iRet) >> 8
+   \   00000862   8300                       ST      Z,R16
+   \   00000864   8311                       STD     Z+1,R17
+   \   00000866   CD34                       RJMP    ??main_6
+    402                          };
+    403          
+    404                    break;        // EXIT do
+    405                    };
+    406                    }
+    407          
+    408                    while(1); // forever
+    409          
+    410               };  /* End if (flgerr == 0) */
+    411          
+    412                  // ?? output message error if flgerr > 0
+    413                  // ?? call function
+    414          
+    415               }
+    416              while ( 1 );  /* forever */
+    417            }
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   unsigned char __near cRet;
+   \                     ??cRet:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   int __near iByte;
+   \                     ??iByte:
+   \   00000000                              DS 2
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+   \   int __near iRet;
+   \                     ??iRet:
+   \   00000000                              DS 2
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "Ok!\n\r">[6];
+   \                     `?<Constant "Ok!\\n\\r">`:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for <Constant "Ok!\\n\\r">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "Ok!\\n\\r">>`:
+   \   00000000   6B4F0A21000D               DB "Ok!\012\015"
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "\n\r\n\r\n\r">[7];
+   \                     `?<Constant "\\n\\r\\n\\r\\n\\r">`:
+   \   00000000                              DS 7
+   \   00000007                              REQUIRE `?<Initializer for <Constant "\\n\\r\\n\\r\\n\\r">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "\\n\\r\\n\\r\\n\\r">>`:
+   \   00000000   0D0A0D0A0D0A               DB "\012\015\012\015\012\015"
+   \            00          
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "() - ">[6];
+   \                     `?<Constant "() - ">`:
+   \   00000000                              DS 6
+   \   00000006                              REQUIRE `?<Initializer for <Constant "() - ">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "() - ">>`:
+   \   00000000   29282D200020               DB "() - "
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "%c">[3];
+   \                     `?<Constant "%c">`:
+   \   00000000                              DS 3
+   \   00000003                              REQUIRE `?<Initializer for <Constant "%c">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "%c">>`:
+   \   00000000   632500                     DB "%c"
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "\n\r	">[4];
+   \                     `?<Constant "\\n\\r	">`:
+   \   00000000                              DS 4
+   \   00000004                              REQUIRE `?<Initializer for <Constant "\\n\\r    ">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "\\n\\r	">>`:
+   \   00000000   0D0A0009                   DB "\012\015    "
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "\n\r- Dictionary functi...">[49];
+   \                     `?<Constant "\\n\\r- Dictionary functi...">`:
+   \   00000000                              DS 49
+   \   00000031                              REQUIRE `?<Initializer for <Constant "\\n\\r- Dictionary `
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "\\n\\r- Dictionary `:
+   \   00000000   0D0A202D6944               DB "\012\015- Dictionary functions for KEY_DISP ver 0.01 -"
+   \            74636F69616E
+   \            797266206E75
+   \            74636F69736E
+   \            6620726F4B20
+   \            5945445F5349
+   \            205065762072
+   \            2E3031302D20
+   \            00          
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant ",)\n">[4];
+   \                     `?<Constant ",)\\n">`:
+   \   00000000                              DS 4
+   \   00000004                              REQUIRE `?<Initializer for <Constant ",)\\n">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant ",)\\n">>`:
+   \   00000000   292C000A                   DB ",)\012"
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "(),">[4];
+   \                     `?<Constant "(),">`:
+   \   00000000                              DS 4
+   \   00000004                              REQUIRE `?<Initializer for <Constant "(),">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "(),">>`:
+   \   00000000   2928002C                   DB "(),"
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "%d">[3];
+   \                     `?<Constant "%d">`:
+   \   00000000                              DS 3
+   \   00000003                              REQUIRE `?<Initializer for <Constant "%d">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "%d">>`:
+   \   00000000   642500                     DB "%d"
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "\n\r">[3];
+   \                     `?<Constant "\\n\\r">`:
+   \   00000000                              DS 3
+   \   00000003                              REQUIRE `?<Initializer for <Constant "\\n\\r">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "\\n\\r">>`:
+   \   00000000   0D0A00                     DB "\012\015"
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "\r">[2];
+   \                     `?<Constant "\\r">`:
+   \   00000000                              DS 2
+   \   00000002                              REQUIRE `?<Initializer for <Constant "\\r">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "\\r">>`:
+   \   00000000   000D                       DB "\015"
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "%c ">[4];
+   \                     `?<Constant "%c ">`:
+   \   00000000                              DS 4
+   \   00000004                              REQUIRE `?<Initializer for <Constant "%c ">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "%c ">>`:
+   \   00000000   63250020                   DB "%c "
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "\n\r\'Ok\n\rEnd Test out_e...">[33];
+   \                     `?<Constant "\\n\\r\\'Ok\\n\\rEnd Test out_e...">`:
+   \   00000000                              DS 33
+   \   00000021                              REQUIRE `?<Initializer for <Constant "\\n\\r\\'Ok\\n\\rEnd T`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "\\n\\r\\'Ok\\n\\rEnd T`:
+   \   00000000   0D0A4F270A6B               DB "\012\015'Ok\012\015End Test out_err_msg() \012\015"
+   \            450D646E5420
+   \            73652074756F
+   \            5F7472655F72
+   \            736D28672029
+   \            0D0A00      
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "view(1)\n">[9];
+   \                     `?<Constant "view(1)\\n">`:
+   \   00000000                              DS 9
+   \   00000009                              REQUIRE `?<Initializer for <Constant "view(1)\\n">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "view(1)\\n">>`:
+   \   00000000   697677653128               DB "view(1)\012"
+   \            0A2900      
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "print)1,2(\n">[12];
+   \                     `?<Constant "print)1,2(\\n">`:
+   \   00000000                              DS 12
+   \   0000000C                              REQUIRE `?<Initializer for <Constant "print)1,2(\\n">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "print)1,2(\\n">>`:
+   \   00000000   72706E692974               DB "print)1,2(\012"
+   \            2C312832000A
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "print(1,2\n">[11];
+   \                     `?<Constant "print(1,2\\n">`:
+   \   00000000                              DS 11
+   \   0000000B                              REQUIRE `?<Initializer for <Constant "print(1,2\\n">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "print(1,2\\n">>`:
+   \   00000000   72706E692874               DB "print(1,2\012"
+   \            2C310A3200  
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "print1,2\n">[10];
+   \                     `?<Constant "print1,2\\n">`:
+   \   00000000                              DS 10
+   \   0000000A                              REQUIRE `?<Initializer for <Constant "print1,2\\n">>`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "print1,2\\n">>`:
+   \   00000000   72706E693174               DB "print1,2\012"
+   \            322C000A    
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+   \   char __near <Constant "Test ver 0.02 for Sca...">[30];
+   \                     `?<Constant "Test ver 0.02 for Sca...">`:
+   \   00000000                              DS 30
+   \   0000001E                              REQUIRE `?<Initializer for <Constant "Test ver 0.02 for`
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for <Constant "Test ver 0.02 for`:
+   \   00000000   655474737620               DB "Test ver 0.02 for Scan_CMD \012\015"
+   \            72653020302E
+   \            20326F662072
+   \            63536E61435F
+   \            444D0A20000D
+    418          
+    419          #endif
+                       ^
+Warning[Pe001]: last line of file ends without a newline
+
+   Maximum stack usage in bytes:
+
+     Function           CSTACK  RSTACK
+     --------           ------  ------
+     main                  21       2 
+       -> Reset_UART0      19       2 
+       -> Init_S_UART0     19       2 
+       -> printf           19       2 
+       -> sprintf          19       2 
+       -> test_cmd_s       19       2 
+       -> out_err_msg      19       2 
+       -> sprintf          19       2 
+       -> test_cmd_s       19       2 
+       -> out_err_msg      19       2 
+       -> sprintf          19       2 
+       -> test_cmd_s       19       2 
+       -> out_err_msg      19       2 
+       -> sprintf          19       2 
+       -> test_cmd_s       19       2 
+       -> out_err_msg      19       2 
+       -> sprintf          19       2 
+       -> test_cmd_s       19       2 
+       -> out_err_msg      19       2 
+       -> printf           19       2 
+       -> strlen_c         19       2 
+       -> strchr_c         19       2 
+       -> strcat_c         19       2 
+       -> strcpy           19       2 
+       -> strcmp_c         19       2 
+       -> out_err_msg      19       2 
+       -> memset           19       2 
+       -> memset           19       2 
+       -> printf           21       2 
+       -> getchar_K        19       2 
+       -> printf           19       2 
+       -> strcpy           19       2 
+       -> strtok           19       2 
+       -> test_cmd_s       19       2 
+       -> out_err_msg      19       2 
+       -> printf           21       2 
+       -> strlen_c         19       2 
+       -> strtok           19       2 
+       -> printf           21       2 
+       -> strcpy           19       2 
+       -> strtok           19       2 
+       -> strtok           19       2 
+       -> out_err_msg      19       2 
+       -> printf           21       2 
+       -> printf           19       2 
+       -> printf           21       2 
+       -> printf           19       2 
+       -> printf           21       2 
+       -> printf           19       2 
+       -> printf           19       2 
+       -> printf           19       2 
+       -> printf           21       2 
+
+ 
+      2 bytes in segment ABSOLUTE
+   2152 bytes in segment CODE
+     12 bytes in segment INITTAB
+    366 bytes in segment NEAR_F
+    200 bytes in segment NEAR_I
+    200 bytes in segment NEAR_ID
+    148 bytes in segment NEAR_Z
+ 
+   2718 bytes of CODE memory (+ 12 bytes shared)
+    348 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: 3

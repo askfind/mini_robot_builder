@@ -1,0 +1,104 @@
+        NAME mr_two
+
+        RTMODEL "__64bit_doubles", "disabled"
+        RTMODEL "__cpu", "3"
+        RTMODEL "__cpu_name", "AT90Mega161"
+        RTMODEL "__enhanced_core", "enabled"
+        RTMODEL "__has_elpm", "false"
+        RTMODEL "__memory_model", "1"
+        RTMODEL "__rt_version", "2.30"
+
+        RSEG CSTACK:DATA:NOROOT(0)
+        RSEG RSTACK:DATA:NOROOT(0)
+        RSEG TINY_I:DATA:NOROOT(0)
+        RSEG TINY_ID:CODE:NOROOT(0)
+
+        ERROR
+;NOTE: This module defines or uses C++ functions, which is not
+;      possible from assembler code. Assembling this file will
+;      not produce an equivalent object file to the one produced
+;      by the C++ compiler.
+
+        EXTERN ?need_segment_init
+        EXTERN printf
+        FUNCTION printf,010202H
+
+        PUBWEAK `?<Segment init: TINY_I>`
+        PUBLIC ??mr_two
+        FUNCTION ??mr_two,021203H
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+        PUBLIC array
+;     1 /* second part of C-SPY DEMO */
+;     2 #include "stdio.h"
+;     3 
+
+        RSEG TINY_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: TINY_I>`
+;     4 char  array[10] = "abcd";
+; char __tiny array[10];
+array:
+	DS 10
+	REQUIRE `?<Initializer for array>`
+;     5 
+
+        RSEG CODE:CODE:NOROOT(1)
+;     6 void mr_two(int i)
+;     7 {
+;     8   char *cp;
+;     9 
+;    10   cp = &array[i];
+;    11   printf ("%c\n", *cp);
+; __nearfunc void mr_two(int);
+??mr_two:
+        FUNCALL ??mr_two, printf
+        LOCFRAME CSTACK, 2, STACK
+        LOCFRAME RSTACK, 2, STACK
+	MOV	R30,R16
+	SUBI	R30,(-(array) & 0xFF)
+	LDI	R31,0
+	LD	R16,Z
+	LDI	R17,0
+	ST	-Y,R17
+	ST	-Y,R16
+	LDI	R16,`?<Constant "%c\\n">`
+	CALL	printf
+	SUBI	R28,254
+;    12 }
+	RET
+
+        RSEG TINY_ID:CODE:NOROOT(0)
+`?<Initializer for array>`:
+	DB "abcd"
+	DB 0, 0, 0, 0, 0
+
+        RSEG INITTAB:CODE:NOROOT(0)
+`?<Segment init: TINY_I>`:
+	DW	SFE(TINY_I) - SFB(TINY_I)
+	DW	SFB(TINY_I)
+	DW	SFB(TINY_ID)
+	REQUIRE ?need_segment_init
+
+        RSEG TINY_I:DATA:NOROOT(0)
+	REQUIRE `?<Segment init: TINY_I>`
+; char __tiny <Constant "%c\n">[4];
+`?<Constant "%c\\n">`:
+	DS 4
+	REQUIRE `?<Initializer for <Constant "%c\\n">>`
+
+        RSEG TINY_ID:CODE:NOROOT(0)
+`?<Initializer for <Constant "%c\\n">>`:
+	DB "%c\012"
+
+        END
+; 
+;     24 bytes in segment CODE
+;      6 bytes in segment INITTAB
+;     14 bytes in segment TINY_I
+;     14 bytes in segment TINY_ID
+; 
+;     38 bytes of CODE memory (+ 6 bytes shared)
+;     14 bytes of DATA memory
+;
+;Errors: none
+;Warnings: none

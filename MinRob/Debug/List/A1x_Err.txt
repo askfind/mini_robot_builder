@@ -1,0 +1,39 @@
+========================
+02.03.2002
+
+1)
+  Error return 
+ if  
+
+main
+...
+volatile char Arr[50];
+...
+
+Call Sub 
+...
+for       // !! Errors
+
+=========
+5.09.2002
+ 
+1) Error Mode Parity
+    Formats Rx/Tx
+      |   5 bit   
+      |__ 7 bit    CHR90 = 0 8 bits Rx/Tx
+      |
+      |__ 8 bit    CHR90 = 1 9 bits Rx/Tx
+      
+    Formats Rx/Tx and Parity
+    
+      5-N-1   7-N-1   8-N-1  
+      5-E-1   7-E-1   8-E-1
+      5-O-1   7-O-1   8-O-1
+      5-S-1   7-S-1   8-S-1
+      5-M-1   7-M-1   8-M-1
+      
+ ==========
+ 10.09.2002
+ 
+ 1) Module DTR, RTS, CTS, control stream UART0
+          

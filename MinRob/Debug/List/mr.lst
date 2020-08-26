@@ -1,0 +1,2334 @@
+##############################################################################
+#                                                                            #
+# IAR Atmel AVR C/EC++ Compiler V2.26N/WIN             19/Aug/2002  14:15:35 #
+# Copyright 1996-2001 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Source file  =  C:\AVR_CC\MiniRobot_CODE\mr.c                           #
+#    Command line =  --cpu=m161 -ms -o C:\AVR_CC\MiniRobot_CODE\Debug\Obj\   #
+#                    -I C:\AVR_CC\AVR\INC\ -lC C:\AVR_CC\MiniRobot_CODE\Debu #
+#                    g\List\ -lA C:\AVR_CC\MiniRobot_CODE\Debug\List\        #
+#                    --ec++ -e -y --initializers_in_flash -s9 --no_cse       #
+#                    --no_inline --no_code_motion --no_cross_call            #
+#                    --no_clustering --debug C:\AVR_CC\MiniRobot_CODE\mr.c   #
+#    List file    =  C:\AVR_CC\MiniRobot_CODE\Debug\List\mr.lst              #
+#    Object file  =  C:\AVR_CC\MiniRobot_CODE\Debug\Obj\mr.r90               #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+      1          /************************************************************
+      2           * Name:    Mini Robot for buildings , EC++ version         *
+      3           * **********************************************************   
+      4           *                                                          *
+      5           * Version:             0.01                                *
+      6           * Date create:         30.07.2002  12:00                   *
+      7           * Last edit:           15.08.2002  23:05                   *
+      8           *                                                          *
+      9           * File:                mr.c                                *
+     10           *                                                          *  
+     11           ************************************************************/
+     12          #include <stdio.h>
+     13          #include "iom161.h"
+
+   \                                 In segment ABSOLUTE, at 0x2b
+   \   union <unnamed> volatile __io _A_UCSR0A;
+   \                     _A_UCSR0A:
+   \   00000000                              DS 1
+     14          #include <inavr.h>
+     15          #include "mc_def.h"
+     16          /* enable use of extended keywords */
+     17          #pragma language=extended
+     18          
+     19           /***********************************
+     20           *       Global variables          *
+     21           ***********************************/
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     22          volatile static  unsigned int Test;
+   \   static unsigned int volatile __near Test;
+   \                     Test:
+   \   00000000                              DS 2
+     23          //
+
+   \                                 In segment NEAR_I, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_I>`
+     24          static volatile  unsigned int   gl_speed = 9600; // default baund speed 9600 bps 
+   \   static unsigned int volatile __near gl_speed;
+   \                     gl_speed:
+   \   00000000                              DS 2
+   \   00000002                              REQUIRE `?<Initializer for gl_speed>`
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     25          static volatile  unsigned int   gl_parity = 0;   //         parity NO check 
+   \   static unsigned int volatile __near gl_parity;
+   \                     gl_parity:
+   \   00000000                              DS 2
+     26          //
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     27          static volatile  unsigned int   gl_test_Rx = 0;   // Mode Test Rx 
+   \   static unsigned int volatile __near gl_test_Rx;
+   \                     gl_test_Rx:
+   \   00000000                              DS 2
+     28                                                            // Counter Errors 
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     29          volatile static  unsigned int   aErRx[5];         // Array Erros Rx
+   \   static unsigned int volatile __near aErRx[5];
+   \                     aErRx:
+   \   00000000                              DS 10
+     30                                                            // aErRx[1] - FE0
+     31                                                            // aErRx[2] - OR0
+     32                                                            // aErRx[3] - Error Pariry    
+     33                                                            // aErRx[4] - Buf Rx Full
+     34          static volatile  unsigned int   gl_test_Tx = 0;   // Mode Test  Tx
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     35          volatile static  unsigned int   aErTx[5];         // Array Erros Tx
+   \   static unsigned int volatile __near aErTx[5];
+   \                     aErTx:
+   \   00000000                              DS 10
+     36                                                            // aErRx[1] - empty
+     37                                                            // aErRx[2] - empty
+     38                                                            // aErRx[3] - empty    
+     39                                                            // aErRx[4] - Buf Tx Full
+     40          //      
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     41          volatile static unsigned int var=0;
+   \   static unsigned int volatile __near var;
+   \                     var:
+   \   00000000                              DS 2
+     42          volatile static  unsigned char aTest[BufLen];
+     43          volatile static  unsigned int ErrTest;
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     44          volatile static  unsigned char cTest;  
+   \   static unsigned char volatile __near cTest;
+   \                     cTest:
+   \   00000000                              DS 1
+     45          volatile static  unsigned int  nTestPos;
+     46          
+     47          //  Variables for UART
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     48              volatile static unsigned char ErrRx;
+   \   static unsigned char volatile __near ErrRx;
+   \                     ErrRx:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     49              volatile static unsigned char RxBufPos ;
+   \   static unsigned char volatile __near RxBufPos;
+   \                     RxBufPos:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     50              volatile static unsigned char RxBuf[BufLen];
+   \   static unsigned char volatile __near RxBuf[15];
+   \                     RxBuf:
+   \   00000000                              DS 15
+     51              volatile static unsigned char ErrTx;
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     52              volatile static unsigned char TxBufPos ;
+   \   static unsigned char volatile __near TxBufPos;
+   \                     TxBufPos:
+   \   00000000                              DS 1
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     53              volatile static unsigned char TxBuf[BufLen]; 
+   \   static unsigned char volatile __near TxBuf[15];
+   \                     TxBuf:
+   \   00000000                              DS 15
+     54          
+     55          // Flag Print Erros Array
+
+   \                                 In segment NEAR_Z, align 1, keep-with-next
+   \   00000000                              REQUIRE `?<Segment init: NEAR_Z>`
+     56             volatile static bool FlgPrint = false;
+   \   static bool volatile __near FlgPrint;
+   \                     FlgPrint:
+   \   00000000                              DS 1
+     57             volatile static unsigned char p = 0;
+     58          //   
+
+   \                                 In segment ABSOLUTE, at 0x5b
+   \   00000000                              DS 1
+     59          static volatile __io unsigned char _GIMSK @ 0x3B;
+
+   \                                 In segment ABSOLUTE, at 0x3b
+   \   00000000                              DS 1
+     60          static volatile __io unsigned char _PORTA @ 0x1B ;
+
+   \                                 In segment ABSOLUTE, at 0x32
+   \   00000000                              DS 1
+     61          static volatile __io unsigned char _PORTD @ 0x12 ;
+     62          static volatile __io unsigned char _DDRD  @ 0x11 ;
+     63          static volatile __io unsigned char _SREG  @ 0x3F ;
+     64           /*******************************************
+     65           *     Base class declaration for UART0     *
+     66           ********************************************/ 
+     67           
+     68          class Uart0Baseclass
+     69          {
+     70            public:
+     71              // Constructor
+     72              //Uart0Baseclass()
+     73              //{};
+     74          
+     75              // Destructor
+     76              //~Uart0Baseclass()
+     77              //{};
+     78           
+     79              // This method init set for UART0.
+     80              // 
+     81              void InitUart(unsigned int speed, unsigned int parity);
+     82            
+     83              // This method clear the UART0
+     84              void Clear();
+     85              
+     86              //----------------------------------------
+     87              // This method clear the RxBuf
+     88              void ClearRxBuf();
+     89             // This method write on byte the RxBuf
+     90              void WrByteRxBuf(unsigned char Byte);
+     91              // This method write on byte the RxBuf
+     92              unsigned char  RdByteRxBuf(void);
+     93              // This method for RxBuf define Begin Buffer
+     94              // Return - True : Begin Buf, no bytes 
+     95              //        - Fasle : No Begin Buf , yes bytes 
+     96              bool B_RxBuf();
+     97              // This method for RxBuf define End Buffer
+     98              // Return - True : End Buf, full bytes 
+     99              //        - Fasle : No End Buf   
+    100              bool E_RxBuf();
+    101          
+    102              
+    103              //---------------------------------------
+    104              // This method clear the TxBuf
+    105              void ClearTxBuf();
+    106              // This method write on byte the TxBuf
+    107              void WrByteTxBuf(unsigned char Byte);
+    108              // This method write on byte the TxBuf
+    109              unsigned char  RdByteTxBuf(void);
+    110              // This method for TxBuf define Begin Buffer
+    111              // Return - True : Begin Buf, no bytes 
+    112              //        - Fasle : No Begin Buf , yes bytes 
+    113              bool B_TxBuf();
+    114              // This method for TxBuf define End Buffer
+    115              // Return - True : End Buf, full bytes 
+    116              //        - Fasle : No End Buf   
+    117              bool E_TxBuf();
+    118          
+    119              // For test method for interrupt
+    120              void testfunc();
+    121              
+    122          //*******************************   
+    123          // This method interrupt event RX 
+    124          #pragma vector=UART0_RX_vect
+
+   \                                 In segment CODE, align 2, keep-with-next
+    125              static __interrupt void   Uart0_RX()
+    126              {
+   \   __nearfunc __interrupt void Uart0Baseclass::Uart0_RX();
+   \                     ??Uart0_RX:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   939A                       ST      -Y,R25
+   \   00000006   938A                       ST      -Y,R24
+   \   00000008   93FA                       ST      -Y,R31
+   \   0000000A   93EA                       ST      -Y,R30
+   \   0000000C   921A                       ST      -Y,R1
+   \   0000000E   920A                       ST      -Y,R0
+   \   00000010   936A                       ST      -Y,R22
+   \   00000012   935A                       ST      -Y,R21
+   \   00000014   934A                       ST      -Y,R20
+   \   00000016   933A                       ST      -Y,R19
+   \   00000018   932A                       ST      -Y,R18
+   \   0000001A   931A                       ST      -Y,R17
+   \   0000001C   930A                       ST      -Y,R16
+   \   0000001E   B76F                       IN      R22,0x3F
+   \   00000020   972B                       SBIW    R29 : R28,11
+    127              volatile unsigned char cTmp;
+    128              volatile unsigned char cByte;
+    129              volatile unsigned char cPE;
+    130              volatile unsigned char cPERx;    
+    131              volatile bool FlgErr;
+    132              volatile int i;
+    133              volatile int j;
+    134              volatile int k;    
+    135              
+    136              FlgErr = false;               // No Errors Rx    
+   \   00000022   E000                       LDI     R16,0
+   \   00000024   8309                       STD     Y+1,R16
+    137          
+    138          
+    139                  cTmp = UCSR0A & 0x10;     // Test bit FE0=?
+   \   00000026   B10B                       IN      R16,0x0B
+   \   00000028   7100                       ANDI    R16,0x10
+   \   0000002A   8308                       ST      Y,R16
+    140                    if ( cTmp != 0 )
+   \   0000002C   8108                       LD      R16,Y
+   \   0000002E   2300                       TST     R16
+   \   00000030   F099                       BREQ    ??Uart0_RX_1
+    141                    {
+    142                      ErrRx = 1;
+   \   00000032   E001                       LDI     R16,1
+   \   00000034   9300....                   STS     ErrRx,R16
+    143                      FlgErr = true;
+   \   00000038   8309                       STD     Y+1,R16
+    144                      if ( gl_test_Rx == 1)
+   \   0000003A   ....                       LDI     R30,LOW(gl_test_Rx)
+   \   0000003C   ....                       LDI     R31,(gl_test_Rx) >> 8
+   \   0000003E   8100                       LD      R16,Z
+   \   00000040   8111                       LDD     R17,Z+1
+   \   00000042   3001                       CPI     R16,1
+   \   00000044   4010                       SBCI    R17,0
+   \   00000046   F441                       BRNE    ??Uart0_RX_1
+    145                      {
+    146                       aErRx[1]++;
+   \   00000048   ....                       LDI     R30,LOW(aErRx)
+   \   0000004A   ....                       LDI     R31,(aErRx) >> 8
+   \   0000004C   8102                       LDD     R16,Z+2
+   \   0000004E   8113                       LDD     R17,Z+3
+   \   00000050   5F0F                       SUBI    R16,255
+   \   00000052   4F1F                       SBCI    R17,255
+   \   00000054   8302                       STD     Z+2,R16
+   \   00000056   8313                       STD     Z+3,R17
+    147                       };
+    148                     };
+    149                  
+    150                  cTmp = UCSR0A & 0x08;     // Test bit OE0=?       
+   \                     ??Uart0_RX_1:
+   \   00000058   B10B                       IN      R16,0x0B
+   \   0000005A   7008                       ANDI    R16,0x08
+   \   0000005C   8308                       ST      Y,R16
+    151                    if ( (cTmp != 0) )  
+   \   0000005E   8108                       LD      R16,Y
+   \   00000060   2300                       TST     R16
+   \   00000062   F0A1                       BREQ    ??Uart0_RX_2
+    152                    {
+    153                      ErrRx = 2;
+   \   00000064   E002                       LDI     R16,2
+   \   00000066   9300....                   STS     ErrRx,R16
+    154                      FlgErr = true;
+   \   0000006A   E001                       LDI     R16,1
+   \   0000006C   8309                       STD     Y+1,R16
+    155                      if ( gl_test_Rx == 1 )
+   \   0000006E   ....                       LDI     R30,LOW(gl_test_Rx)
+   \   00000070   ....                       LDI     R31,(gl_test_Rx) >> 8
+   \   00000072   8100                       LD      R16,Z
+   \   00000074   8111                       LDD     R17,Z+1
+   \   00000076   3001                       CPI     R16,1
+   \   00000078   4010                       SBCI    R17,0
+   \   0000007A   F441                       BRNE    ??Uart0_RX_2
+    156                      {
+    157                      aErRx[2]++;
+   \   0000007C   ....                       LDI     R30,LOW(aErRx)
+   \   0000007E   ....                       LDI     R31,(aErRx) >> 8
+   \   00000080   8104                       LDD     R16,Z+4
+   \   00000082   8115                       LDD     R17,Z+5
+   \   00000084   5F0F                       SUBI    R16,255
+   \   00000086   4F1F                       SBCI    R17,255
+   \   00000088   8304                       STD     Z+4,R16
+   \   0000008A   8315                       STD     Z+5,R17
+    158                      };
+    159                    };
+    160             
+    161               cByte = UDR0;                        // Read Byte Rx from UDR0
+   \                     ??Uart0_RX_2:
+   \   0000008C   B10C                       IN      R16,0x0C
+   \   0000008E   830C                       STD     Y+4,R16
+    162               cPERx = (UCSR0B & 0x02) / 2;        // Read 9 Bit Rx
+   \   00000090   E000                       LDI     R16,0
+   \   00000092   9951                       SBIC    0x0A,0x01
+   \   00000094   9503                       INC     R16
+   \   00000096   830B                       STD     Y+3,R16
+    163          
+    164                         
+    165                switch(gl_parity)      // Test mode parity=?
+   \   00000098   ....                       LDI     R26,LOW(gl_parity)
+   \   0000009A   ....                       LDI     R27,(gl_parity) >> 8
+   \   0000009C   91ED                       LD      R30,X+
+   \   0000009E   91FC                       LD      R31,X
+   \   000000A0   9731                       SBIW    R31 : R30,1
+   \   000000A2   F019                       BREQ    ??Uart0_RX_4
+   \   000000A4   9731                       SBIW    R31 : R30,1
+   \   000000A6   F009                       BREQ    ??Uart0_RX_5
+   \   000000A8   C0BD                       RJMP    ??Uart0_RX_6
+    166                  {
+    167                  case 0:              // No parity
+    168                  break;
+    169           
+    170                  case 1:             // mode parity = "1"
+    171                  case 2:             // mode parity = ~ "1" 
+    172                      if ( true ) // Counters all Errors
+    173                      {
+    174                        j=1;
+   \                     ??Uart0_RX_5:
+   \                     ??Uart0_RX_4:
+   \   000000AA   E001                       LDI     R16,1
+   \   000000AC   E010                       LDI     R17,0
+   \   000000AE   830D                       STD     Y+5,R16
+   \   000000B0   831E                       STD     Y+6,R17
+    175                        k=0;
+   \   000000B2   8719                       STD     Y+9,R17
+   \   000000B4   871A                       STD     Y+10,R17
+    176                        
+    177                          for (i=1;i<=8;i++)
+   \   000000B6   C018                       RJMP    ??Uart0_RX_7
+    178                              {
+    179                              cTmp = cByte & j;
+   \                     ??Uart0_RX_8:
+   \   000000B8   810C                       LDD     R16,Y+4
+   \   000000BA   812D                       LDD     R18,Y+5
+   \   000000BC   813E                       LDD     R19,Y+6
+   \   000000BE   2320                       AND     R18,R16
+   \   000000C0   8328                       ST      Y,R18
+    180                                  if ( cTmp != 0)
+   \   000000C2   8108                       LD      R16,Y
+   \   000000C4   2300                       TST     R16
+   \   000000C6   F031                       BREQ    ??Uart0_RX_9
+    181                                  {
+    182                                  k++;
+   \   000000C8   8509                       LDD     R16,Y+9
+   \   000000CA   851A                       LDD     R17,Y+10
+   \   000000CC   5F0F                       SUBI    R16,255
+   \   000000CE   4F1F                       SBCI    R17,255
+   \   000000D0   8709                       STD     Y+9,R16
+   \   000000D2   871A                       STD     Y+10,R17
+    183                                  };
+    184                               j = j*2;   
+   \                     ??Uart0_RX_9:
+   \   000000D4   810D                       LDD     R16,Y+5
+   \   000000D6   811E                       LDD     R17,Y+6
+   \   000000D8   0F00                       LSL     R16
+   \   000000DA   1F11                       ROL     R17
+   \   000000DC   830D                       STD     Y+5,R16
+   \   000000DE   831E                       STD     Y+6,R17
+   \   000000E0   810F                       LDD     R16,Y+7
+   \   000000E2   8518                       LDD     R17,Y+8
+   \   000000E4   5F0F                       SUBI    R16,255
+   \   000000E6   4F1F                       SBCI    R17,255
+   \                     ??Uart0_RX_7:
+   \   000000E8   830F                       STD     Y+7,R16
+   \   000000EA   8718                       STD     Y+8,R17
+   \   000000EC   818F                       LDD     R24,Y+7
+   \   000000EE   8598                       LDD     R25,Y+8
+   \   000000F0   3089                       CPI     R24,9
+   \   000000F2   4090                       SBCI    R25,0
+   \   000000F4   F30C                       BRLT    ??Uart0_RX_8
+    185                              };
+    186                
+    187                          cTmp = (char) (k % 2);
+   \   000000F6   8509                       LDD     R16,Y+9
+   \   000000F8   851A                       LDD     R17,Y+10
+   \   000000FA   E042                       LDI     R20,2
+   \   000000FC   E050                       LDI     R21,0
+   \   000000FE   ........                   CALL    ?SS_DIVMOD_L02
+   \   00000102   8348                       ST      Y,R20
+    188                                
+    189                              if ( (cTmp == 1) && (gl_parity == 1) )
+   \   00000104   8108                       LD      R16,Y
+   \   00000106   3001                       CPI     R16,1
+   \   00000108   F509                       BRNE    ??Uart0_RX_10
+   \   0000010A   ....                       LDI     R30,LOW(gl_parity)
+   \   0000010C   ....                       LDI     R31,(gl_parity) >> 8
+   \   0000010E   8100                       LD      R16,Z
+   \   00000110   8111                       LDD     R17,Z+1
+   \   00000112   3001                       CPI     R16,1
+   \   00000114   4010                       SBCI    R17,0
+   \   00000116   F4D1                       BRNE    ??Uart0_RX_10
+    190                                {
+    191                                cPE = 1;
+   \   00000118   E001                       LDI     R16,1
+   \   0000011A   830A                       STD     Y+2,R16
+    192                                  if ( cPE != cPERx )
+   \   0000011C   810A                       LDD     R16,Y+2
+   \   0000011E   811B                       LDD     R17,Y+3
+   \   00000120   1701                       CP      R16,R17
+   \   00000122   F0A1                       BREQ    ??Uart0_RX_10
+    193                                  {
+    194                                   FlgErr = true;
+   \   00000124   E001                       LDI     R16,1
+   \   00000126   8309                       STD     Y+1,R16
+    195                                   ErrRx = 3;
+   \   00000128   E003                       LDI     R16,3
+   \   0000012A   9300....                   STS     ErrRx,R16
+    196                                      if ( gl_test_Rx == 1 )
+   \   0000012E   ....                       LDI     R30,LOW(gl_test_Rx)
+   \   00000130   ....                       LDI     R31,(gl_test_Rx) >> 8
+   \   00000132   8100                       LD      R16,Z
+   \   00000134   8111                       LDD     R17,Z+1
+   \   00000136   3001                       CPI     R16,1
+   \   00000138   4010                       SBCI    R17,0
+   \   0000013A   F441                       BRNE    ??Uart0_RX_10
+    197                                      {
+    198                                      aErRx[3]++;
+   \   0000013C   ....                       LDI     R30,LOW(aErRx)
+   \   0000013E   ....                       LDI     R31,(aErRx) >> 8
+   \   00000140   8106                       LDD     R16,Z+6
+   \   00000142   8117                       LDD     R17,Z+7
+   \   00000144   5F0F                       SUBI    R16,255
+   \   00000146   4F1F                       SBCI    R17,255
+   \   00000148   8306                       STD     Z+6,R16
+   \   0000014A   8317                       STD     Z+7,R17
+    199                                      };
+    200                                   };
+    201                                };
+    202                              if ( (cTmp == 1) && (gl_parity == 2) )
+   \                     ??Uart0_RX_10:
+   \   0000014C   8108                       LD      R16,Y
+   \   0000014E   3001                       CPI     R16,1
+   \   00000150   F509                       BRNE    ??Uart0_RX_11
+   \   00000152   ....                       LDI     R30,LOW(gl_parity)
+   \   00000154   ....                       LDI     R31,(gl_parity) >> 8
+   \   00000156   8100                       LD      R16,Z
+   \   00000158   8111                       LDD     R17,Z+1
+   \   0000015A   3002                       CPI     R16,2
+   \   0000015C   E000                       LDI     R16,0
+   \   0000015E   4010                       SBCI    R17,0
+   \   00000160   F4C9                       BRNE    ??Uart0_RX_11
+    203                                {
+    204                                cPE = 0;
+   \   00000162   830A                       STD     Y+2,R16
+    205                                  if ( cPE != cPERx )
+   \   00000164   810A                       LDD     R16,Y+2
+   \   00000166   811B                       LDD     R17,Y+3
+   \   00000168   1701                       CP      R16,R17
+   \   0000016A   F0A1                       BREQ    ??Uart0_RX_11
+    206                                  {
+    207                                   FlgErr = true;
+   \   0000016C   E001                       LDI     R16,1
+   \   0000016E   8309                       STD     Y+1,R16
+    208                                   ErrRx = 3;
+   \   00000170   E003                       LDI     R16,3
+   \   00000172   9300....                   STS     ErrRx,R16
+    209                                      if ( gl_test_Rx == 1 )
+   \   00000176   ....                       LDI     R30,LOW(gl_test_Rx)
+   \   00000178   ....                       LDI     R31,(gl_test_Rx) >> 8
+   \   0000017A   8100                       LD      R16,Z
+   \   0000017C   8111                       LDD     R17,Z+1
+   \   0000017E   3001                       CPI     R16,1
+   \   00000180   4010                       SBCI    R17,0
+   \   00000182   F441                       BRNE    ??Uart0_RX_11
+    210                                      {
+    211                                      aErRx[3]++;
+   \   00000184   ....                       LDI     R30,LOW(aErRx)
+   \   00000186   ....                       LDI     R31,(aErRx) >> 8
+   \   00000188   8106                       LDD     R16,Z+6
+   \   0000018A   8117                       LDD     R17,Z+7
+   \   0000018C   5F0F                       SUBI    R16,255
+   \   0000018E   4F1F                       SBCI    R17,255
+   \   00000190   8306                       STD     Z+6,R16
+   \   00000192   8317                       STD     Z+7,R17
+    212                                       };
+    213                                   };
+    214                                };
+    215                              if ( (cTmp == 0) && (gl_parity == 1) )
+   \                     ??Uart0_RX_11:
+   \   00000194   8108                       LD      R16,Y
+   \   00000196   2300                       TST     R16
+   \   00000198   F509                       BRNE    ??Uart0_RX_12
+   \   0000019A   ....                       LDI     R30,LOW(gl_parity)
+   \   0000019C   ....                       LDI     R31,(gl_parity) >> 8
+   \   0000019E   8100                       LD      R16,Z
+   \   000001A0   8111                       LDD     R17,Z+1
+   \   000001A2   3001                       CPI     R16,1
+   \   000001A4   E000                       LDI     R16,0
+   \   000001A6   4010                       SBCI    R17,0
+   \   000001A8   F4C9                       BRNE    ??Uart0_RX_12
+    216                                {
+    217                                cPE = 0;
+   \   000001AA   830A                       STD     Y+2,R16
+    218                                  if ( cPE != cPERx )
+   \   000001AC   810A                       LDD     R16,Y+2
+   \   000001AE   811B                       LDD     R17,Y+3
+   \   000001B0   1701                       CP      R16,R17
+   \   000001B2   F0A1                       BREQ    ??Uart0_RX_12
+    219                                  {
+    220                                   FlgErr = true;
+   \   000001B4   E001                       LDI     R16,1
+   \   000001B6   8309                       STD     Y+1,R16
+    221                                   ErrRx = 3;
+   \   000001B8   E003                       LDI     R16,3
+   \   000001BA   9300....                   STS     ErrRx,R16
+    222                                              if ( gl_test_Rx == 1 )
+   \   000001BE   ....                       LDI     R30,LOW(gl_test_Rx)
+   \   000001C0   ....                       LDI     R31,(gl_test_Rx) >> 8
+   \   000001C2   8100                       LD      R16,Z
+   \   000001C4   8111                       LDD     R17,Z+1
+   \   000001C6   3001                       CPI     R16,1
+   \   000001C8   4010                       SBCI    R17,0
+   \   000001CA   F441                       BRNE    ??Uart0_RX_12
+    223                                              {
+    224                                              aErRx[3]++;
+   \   000001CC   ....                       LDI     R30,LOW(aErRx)
+   \   000001CE   ....                       LDI     R31,(aErRx) >> 8
+   \   000001D0   8106                       LDD     R16,Z+6
+   \   000001D2   8117                       LDD     R17,Z+7
+   \   000001D4   5F0F                       SUBI    R16,255
+   \   000001D6   4F1F                       SBCI    R17,255
+   \   000001D8   8306                       STD     Z+6,R16
+   \   000001DA   8317                       STD     Z+7,R17
+    225                                              };
+    226                                   };                      
+    227                                };                            
+    228                              if ( (cTmp == 0) && (gl_parity == 2) )
+   \                     ??Uart0_RX_12:
+   \   000001DC   8108                       LD      R16,Y
+   \   000001DE   2300                       TST     R16
+   \   000001E0   F509                       BRNE    ??Uart0_RX_6
+   \   000001E2   ....                       LDI     R30,LOW(gl_parity)
+   \   000001E4   ....                       LDI     R31,(gl_parity) >> 8
+   \   000001E6   8100                       LD      R16,Z
+   \   000001E8   8111                       LDD     R17,Z+1
+   \   000001EA   3002                       CPI     R16,2
+   \   000001EC   4010                       SBCI    R17,0
+   \   000001EE   F4D1                       BRNE    ??Uart0_RX_6
+    229                                {
+    230                                cPE = 1;
+   \   000001F0   E001                       LDI     R16,1
+   \   000001F2   830A                       STD     Y+2,R16
+    231                                  if ( cPE != cPERx )
+   \   000001F4   810A                       LDD     R16,Y+2
+   \   000001F6   811B                       LDD     R17,Y+3
+   \   000001F8   1701                       CP      R16,R17
+   \   000001FA   F0A1                       BREQ    ??Uart0_RX_6
+    232                                  {
+    233                                   FlgErr = true;
+   \   000001FC   E001                       LDI     R16,1
+   \   000001FE   8309                       STD     Y+1,R16
+    234                                   ErrRx = 3;
+   \   00000200   E003                       LDI     R16,3
+   \   00000202   9300....                   STS     ErrRx,R16
+    235                                          if ( gl_test_Rx == 1 )
+   \   00000206   ....                       LDI     R30,LOW(gl_test_Rx)
+   \   00000208   ....                       LDI     R31,(gl_test_Rx) >> 8
+   \   0000020A   8100                       LD      R16,Z
+   \   0000020C   8111                       LDD     R17,Z+1
+   \   0000020E   3001                       CPI     R16,1
+   \   00000210   4010                       SBCI    R17,0
+   \   00000212   F441                       BRNE    ??Uart0_RX_6
+    236                                          {
+    237                                          aErRx[3]++;
+   \   00000214   ....                       LDI     R30,LOW(aErRx)
+   \   00000216   ....                       LDI     R31,(aErRx) >> 8
+   \   00000218   8106                       LDD     R16,Z+6
+   \   0000021A   8117                       LDD     R17,Z+7
+   \   0000021C   5F0F                       SUBI    R16,255
+   \   0000021E   4F1F                       SBCI    R17,255
+   \   00000220   8306                       STD     Z+6,R16
+   \   00000222   8317                       STD     Z+7,R17
+    238                                          };
+    239                                   };
+    240                           };
+    241                            
+    242                      };          
+    243                  break;
+    244                  };
+    245          
+    246                // Test End BufRx
+    247                // set FlgErr=true if End BufRx
+    248                 if ( (RxBufPos >= (BufLen))  )
+   \                     ??Uart0_RX_6:
+   \   00000224   9100....                   LDS     R16,RxBufPos
+   \   00000228   300F                       CPI     R16,15
+   \   0000022A   F0A0                       BRCS    ??Uart0_RX_13
+    249                    {
+    250                      FlgErr = true;
+   \   0000022C   E001                       LDI     R16,1
+   \   0000022E   8309                       STD     Y+1,R16
+    251                      ErrRx = 4; // Full BufRx
+   \   00000230   E004                       LDI     R16,4
+   \   00000232   9300....                   STS     ErrRx,R16
+    252                            if ( gl_test_Rx == 1 )
+   \   00000236   ....                       LDI     R30,LOW(gl_test_Rx)
+   \   00000238   ....                       LDI     R31,(gl_test_Rx) >> 8
+   \   0000023A   8100                       LD      R16,Z
+   \   0000023C   8111                       LDD     R17,Z+1
+   \   0000023E   3001                       CPI     R16,1
+   \   00000240   4010                       SBCI    R17,0
+   \   00000242   F441                       BRNE    ??Uart0_RX_13
+    253                            {
+    254                            aErRx[4]++;
+   \   00000244   ....                       LDI     R30,LOW(aErRx)
+   \   00000246   ....                       LDI     R31,(aErRx) >> 8
+   \   00000248   8500                       LDD     R16,Z+8
+   \   0000024A   8511                       LDD     R17,Z+9
+   \   0000024C   5F0F                       SUBI    R16,255
+   \   0000024E   4F1F                       SBCI    R17,255
+   \   00000250   8700                       STD     Z+8,R16
+   \   00000252   8711                       STD     Z+9,R17
+    255                            };
+    256                    }
+    257                else
+    258                    {
+    259                      ;
+    260                    };
+    261                    
+    262          
+    263                 
+    264                // Write Byte to BufRx  
+    265                if ( FlgErr == false )
+   \                     ??Uart0_RX_13:
+   \   00000254   8109                       LDD     R16,Y+1
+   \   00000256   2300                       TST     R16
+   \   00000258   F4E1                       BRNE    ??Uart0_RX_14
+    266                {
+    267                ErrRx = 0 ;   // No Errors Rx 
+   \   0000025A   E000                       LDI     R16,0
+   \   0000025C   9300....                   STS     ErrRx,R16
+    268                
+    269          
+    270                // Byte Write Rx Buf
+    271                      RxBuf[RxBufPos] = cByte;
+   \   00000260   812C                       LDD     R18,Y+4
+   \   00000262   9100....                   LDS     R16,RxBufPos
+   \   00000266   E010                       LDI     R17,0
+   \   00000268   01F8                       MOVW    R31 : R30,R17 : R16
+   \   0000026A   ....                       SUBI    R30,LOW((-(RxBuf) & 0xFFFF))
+   \   0000026C   ....                       SBCI    R31,(-(RxBuf) & 0xFFFF) >> 8
+   \   0000026E   8320                       ST      Z,R18
+    272                      RxBufPos = RxBufPos + 1 ;
+   \   00000270   ....                       LDI     R30,LOW(RxBufPos)
+   \   00000272   ....                       LDI     R31,(RxBufPos) >> 8
+   \   00000274   8100                       LD      R16,Z
+   \   00000276   9503                       INC     R16
+   \   00000278   8300                       ST      Z,R16
+    273          
+    274                      if ( (BufLen-RxBufPos) <= 2 ) // RTS0 = 1 stop Tx from PC
+   \   0000027A   E0EF                       LDI     R30,15
+   \   0000027C   E0F0                       LDI     R31,0
+   \   0000027E   9100....                   LDS     R16,RxBufPos
+   \   00000282   1BE0                       SUB     R30,R16
+   \   00000284   40F0                       SBCI    R31,0
+   \   00000286   9733                       SBIW    R31 : R30,3
+   \   00000288   F424                       BRGE    ??Uart0_RX_14
+    275                      {
+    276                      PORTC = PORTC ^ ( 1 ); // RTS0=1 Pins Out bits   
+   \   0000028A   B315                       IN      R17,0x15
+   \   0000028C   E001                       LDI     R16,1
+   \   0000028E   2701                       EOR     R16,R17
+   \   00000290   BB05                       OUT     0x15,R16
+    277                      };
+    278                };
+    279                      
+    280           }; 
+   \                     ??Uart0_RX_14:
+   \   00000292   962B                       ADIW    R29 : R28,11
+   \   00000294   BF6F                       OUT     0x3F,R22
+   \   00000296   9109                       LD      R16,Y+
+   \   00000298   9119                       LD      R17,Y+
+   \   0000029A   9129                       LD      R18,Y+
+   \   0000029C   9139                       LD      R19,Y+
+   \   0000029E   9149                       LD      R20,Y+
+   \   000002A0   9159                       LD      R21,Y+
+   \   000002A2   9169                       LD      R22,Y+
+   \   000002A4   9009                       LD      R0,Y+
+   \   000002A6   9019                       LD      R1,Y+
+   \   000002A8   91E9                       LD      R30,Y+
+   \   000002AA   91F9                       LD      R31,Y+
+   \   000002AC   9189                       LD      R24,Y+
+   \   000002AE   9199                       LD      R25,Y+
+   \   000002B0   91A9                       LD      R26,Y+
+   \   000002B2   91B9                       LD      R27,Y+
+   \   000002B4   9518                       RETI
+    281          
+    282          
+    283          
+    284          //*************************************
+    285          // This method interrupt event TX Empty
+    286          #pragma vector=UART0_TX_vect
+
+   \                                 In segment CODE, align 2, keep-with-next
+    287             static __interrupt void   Uart0_TX()
+    288          
+    289              {
+   \   __nearfunc __interrupt void Uart0Baseclass::Uart0_TX();
+   \                     ??Uart0_TX:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   939A                       ST      -Y,R25
+   \   00000006   938A                       ST      -Y,R24
+   \   00000008   93FA                       ST      -Y,R31
+   \   0000000A   93EA                       ST      -Y,R30
+   \   0000000C   921A                       ST      -Y,R1
+   \   0000000E   920A                       ST      -Y,R0
+   \   00000010   936A                       ST      -Y,R22
+   \   00000012   935A                       ST      -Y,R21
+   \   00000014   934A                       ST      -Y,R20
+   \   00000016   933A                       ST      -Y,R19
+   \   00000018   932A                       ST      -Y,R18
+   \   0000001A   931A                       ST      -Y,R17
+   \   0000001C   930A                       ST      -Y,R16
+   \   0000001E   B76F                       IN      R22,0x3F
+   \   00000020   972A                       SBIW    R29 : R28,10
+    290              volatile unsigned char cTmp;
+    291              volatile unsigned char cByte;
+    292              volatile unsigned char cPE;
+    293              volatile unsigned char cPERx;    
+    294              volatile bool FlgErr;
+    295              volatile bool Flg1;
+    296              volatile bool Flg2;
+    297              volatile bool Flg3; 
+    298              volatile int i;
+    299              volatile int j;
+    300              volatile int k;   
+    301          
+    302               //var++;  // test
+    303          
+    304               
+    305           // Init variable                 
+    306              Flg1 = false;   // BufTxPos = 0
+   \   00000022   E000                       LDI     R16,0
+   \   00000024   8309                       STD     Y+1,R16
+    307              Flg2 = false;   // DSR = 0;
+   \   00000026   830A                       STD     Y+2,R16
+    308              Flg3 = false;   // CTS = 0;
+   \   00000028   830B                       STD     Y+3,R16
+    309              
+    310            // Test status Flg1 for BufTxPos
+    311                if ( TxBufPos <= 0 )
+   \   0000002A   9100....                   LDS     R16,TxBufPos
+   \   0000002E   2300                       TST     R16
+   \   00000030   F411                       BRNE    ??Uart0_TX_1
+    312                {
+    313                  Flg1 = false;
+   \   00000032   E000                       LDI     R16,0
+   \   00000034   C001                       RJMP    ??Uart0_TX_2
+    314                  }
+    315                else
+    316                {
+    317                  Flg1 = true;
+   \                     ??Uart0_TX_1:
+   \   00000036   E001                       LDI     R16,1
+   \                     ??Uart0_TX_2:
+   \   00000038   8309                       STD     Y+1,R16
+    318                  };
+    319          
+    320            // Test status Flg2 for DSR signal
+    321                cTmp = PORTC & (~(8));
+   \   0000003A   B305                       IN      R16,0x15
+   \   0000003C   7F07                       ANDI    R16,0xF7
+   \   0000003E   8308                       ST      Y,R16
+    322                if (   cTmp == 0 )
+   \   00000040   8108                       LD      R16,Y
+   \   00000042   2300                       TST     R16
+   \   00000044   F411                       BRNE    ??Uart0_TX_3
+    323                {
+    324                  Flg2 = false;
+   \   00000046   E000                       LDI     R16,0
+   \   00000048   C001                       RJMP    ??Uart0_TX_4
+    325                }
+    326                else 
+    327                {
+    328                  Flg2 = true;
+   \                     ??Uart0_TX_3:
+   \   0000004A   E001                       LDI     R16,1
+   \                     ??Uart0_TX_4:
+   \   0000004C   830A                       STD     Y+2,R16
+    329                  };
+    330            // Test status Flg3 for CTS signal  
+    331                  cTmp = PORTC & (~(2));
+   \   0000004E   B305                       IN      R16,0x15
+   \   00000050   7F0D                       ANDI    R16,0xFD
+   \   00000052   8308                       ST      Y,R16
+    332                if (   cTmp == 0 )
+   \   00000054   8108                       LD      R16,Y
+   \   00000056   2300                       TST     R16
+   \   00000058   F411                       BRNE    ??Uart0_TX_5
+    333                {
+    334                  Flg3 = false;
+   \   0000005A   E000                       LDI     R16,0
+   \   0000005C   C001                       RJMP    ??Uart0_TX_6
+    335                }
+    336                else 
+    337                {
+    338                  Flg3 = true;
+   \                     ??Uart0_TX_5:
+   \   0000005E   E001                       LDI     R16,1
+   \                     ??Uart0_TX_6:
+   \   00000060   830B                       STD     Y+3,R16
+    339                  };
+    340            // Calculate Z=(0..7)
+    341                 cTmp = 0;
+   \   00000062   E000                       LDI     R16,0
+   \   00000064   8308                       ST      Y,R16
+    342                 if ( Flg1 == true)
+   \   00000066   8109                       LDD     R16,Y+1
+   \   00000068   3001                       CPI     R16,1
+   \   0000006A   F419                       BRNE    ??Uart0_TX_7
+    343                 cTmp = cTmp + 4;
+   \   0000006C   8108                       LD      R16,Y
+   \   0000006E   5F0C                       SUBI    R16,252
+   \   00000070   8308                       ST      Y,R16
+    344                 if (Flg2 == true)
+   \                     ??Uart0_TX_7:
+   \   00000072   810A                       LDD     R16,Y+2
+   \   00000074   3001                       CPI     R16,1
+   \   00000076   F419                       BRNE    ??Uart0_TX_8
+    345                 cTmp = cTmp + 2;
+   \   00000078   8108                       LD      R16,Y
+   \   0000007A   5F0E                       SUBI    R16,254
+   \   0000007C   8308                       ST      Y,R16
+    346                 if (Flg3 == true)
+   \                     ??Uart0_TX_8:
+   \   0000007E   810B                       LDD     R16,Y+3
+   \   00000080   3001                       CPI     R16,1
+   \   00000082   F419                       BRNE    ??Uart0_TX_9
+    347                 cTmp = cTmp + 1;
+   \   00000084   8108                       LD      R16,Y
+   \   00000086   9503                       INC     R16
+   \   00000088   8308                       ST      Y,R16
+    348                 
+    349              _PORTA = (unsigned char) cTmp;
+   \                     ??Uart0_TX_9:
+   \   0000008A   8108                       LD      R16,Y
+   \   0000008C   BB0B                       OUT     0x1B,R16
+    350          // Execute events Z      
+    351                switch(cTmp)
+   \   0000008E   8108                       LD      R16,Y
+   \   00000090   5004                       SUBI    R16,4
+   \   00000092   F010                       BRCS    ??Uart0_TX_10
+   \   00000094   F019                       BREQ    ??Uart0_TX_11
+   \   00000096   C082                       RJMP    ??Uart0_TX_12
+    352                {
+    353                case 0:  // Z=0 Disable Tx interrupt       
+    354                case 1:  // Z=1
+    355                case 2:  // Z=2
+    356                case 3:  // Z=3
+    357                UCSR0B = UCSR0B & (~(0x40)); // TXCIE0 = 0 
+   \                     ??Uart0_TX_10:
+   \   00000098   9856                       CBI     0x0A,0x06
+   \   0000009A   C080                       RJMP    ??Uart0_TX_12
+    358                break;
+    359          
+    360                case 4:  // Z=4 Write Byte of BufTx
+    361                cByte=TxBuf[TxBufPos-1];
+   \                     ??Uart0_TX_11:
+   \   0000009C   9100....                   LDS     R16,TxBufPos
+   \   000000A0   E010                       LDI     R17,0
+   \   000000A2   5001                       SUBI    R16,1
+   \   000000A4   4010                       SBCI    R17,0
+   \   000000A6   01F8                       MOVW    R31 : R30,R17 : R16
+   \   000000A8   ....                       SUBI    R30,LOW((-(TxBuf) & 0xFFFF))
+   \   000000AA   ....                       SBCI    R31,(-(TxBuf) & 0xFFFF) >> 8
+   \   000000AC   8100                       LD      R16,Z
+   \   000000AE   8309                       STD     Y+1,R16
+    362                TxBufPos = TxBufPos - 1;
+   \   000000B0   ....                       LDI     R30,LOW(TxBufPos)
+   \   000000B2   ....                       LDI     R31,(TxBufPos) >> 8
+   \   000000B4   8100                       LD      R16,Z
+   \   000000B6   950A                       DEC     R16
+   \   000000B8   8300                       ST      Z,R16
+    363          
+    364                    switch(gl_parity) // Calculate 9 bit
+   \   000000BA   ....                       LDI     R26,LOW(gl_parity)
+   \   000000BC   ....                       LDI     R27,(gl_parity) >> 8
+   \   000000BE   91ED                       LD      R30,X+
+   \   000000C0   91FC                       LD      R31,X
+   \   000000C2   9731                       SBIW    R31 : R30,1
+   \   000000C4   F019                       BREQ    ??Uart0_TX_13
+   \   000000C6   9731                       SBIW    R31 : R30,1
+   \   000000C8   F1B1                       BREQ    ??Uart0_TX_14
+   \   000000CA   C066                       RJMP    ??Uart0_TX_15
+    365                    {
+    366                    case 0:
+    367                    // no 9 bit for Tx
+    368                    break;
+    369                    case 1:
+    370                    //  calculate 9 bit for Tx
+    371                        j=1;
+   \                     ??Uart0_TX_13:
+   \   000000CC   E001                       LDI     R16,1
+   \   000000CE   E010                       LDI     R17,0
+   \   000000D0   830C                       STD     Y+4,R16
+   \   000000D2   831D                       STD     Y+5,R17
+    372                        k=0;
+   \   000000D4   8718                       STD     Y+8,R17
+   \   000000D6   8719                       STD     Y+9,R17
+    373                        
+    374                          for (i=1;i<=8;i++)
+   \   000000D8   C018                       RJMP    ??Uart0_TX_16
+    375                              {
+    376                              cTmp = cByte & j;
+   \                     ??Uart0_TX_17:
+   \   000000DA   8109                       LDD     R16,Y+1
+   \   000000DC   812C                       LDD     R18,Y+4
+   \   000000DE   813D                       LDD     R19,Y+5
+   \   000000E0   2320                       AND     R18,R16
+   \   000000E2   8328                       ST      Y,R18
+    377                                  if ( cTmp != 0)
+   \   000000E4   8108                       LD      R16,Y
+   \   000000E6   2300                       TST     R16
+   \   000000E8   F031                       BREQ    ??Uart0_TX_18
+    378                                  {
+    379                                  k++;
+   \   000000EA   8508                       LDD     R16,Y+8
+   \   000000EC   8519                       LDD     R17,Y+9
+   \   000000EE   5F0F                       SUBI    R16,255
+   \   000000F0   4F1F                       SBCI    R17,255
+   \   000000F2   8708                       STD     Y+8,R16
+   \   000000F4   8719                       STD     Y+9,R17
+    380                                  };
+    381                               j = j*2;   
+   \                     ??Uart0_TX_18:
+   \   000000F6   810C                       LDD     R16,Y+4
+   \   000000F8   811D                       LDD     R17,Y+5
+   \   000000FA   0F00                       LSL     R16
+   \   000000FC   1F11                       ROL     R17
+   \   000000FE   830C                       STD     Y+4,R16
+   \   00000100   831D                       STD     Y+5,R17
+   \   00000102   810E                       LDD     R16,Y+6
+   \   00000104   811F                       LDD     R17,Y+7
+   \   00000106   5F0F                       SUBI    R16,255
+   \   00000108   4F1F                       SBCI    R17,255
+   \                     ??Uart0_TX_16:
+   \   0000010A   830E                       STD     Y+6,R16
+   \   0000010C   831F                       STD     Y+7,R17
+   \   0000010E   818E                       LDD     R24,Y+6
+   \   00000110   819F                       LDD     R25,Y+7
+   \   00000112   3089                       CPI     R24,9
+   \   00000114   4090                       SBCI    R25,0
+   \   00000116   F30C                       BRLT    ??Uart0_TX_17
+    382                              };
+    383                              
+    384                          cTmp = (char) (k % 2);
+   \   00000118   8508                       LDD     R16,Y+8
+   \   0000011A   8519                       LDD     R17,Y+9
+   \   0000011C   E042                       LDI     R20,2
+   \   0000011E   E050                       LDI     R21,0
+   \   00000120   ........                   CALL    ?SS_DIVMOD_L02
+   \   00000124   8348                       ST      Y,R20
+    385                    //  Write 9 bit PE
+    386                          if ( cTmp == 0 )
+   \   00000126   8108                       LD      R16,Y
+   \   00000128   2300                       TST     R16
+   \   0000012A   F1A9                       BREQ    ??Uart0_TX_19
+    387                          {
+    388                          UCSR0B = UCSR0B & ( ~(0x01));  // Tx 9 bit=0
+    389                          }
+    390                          else
+    391                          {
+    392                          UCSR0B = UCSR0B ^ (0x01);     // Tx 9 bit=1           
+   \                     ??Uart0_TX_20:
+   \   0000012C   B11A                       IN      R17,0x0A
+   \   0000012E   E001                       LDI     R16,1
+   \   00000130   2701                       EOR     R16,R17
+   \   00000132   B90A                       OUT     0x0A,R16
+   \   00000134   C031                       RJMP    ??Uart0_TX_15
+    393                          };                
+    394                    break;
+    395                    case 2:
+    396                        j=1;
+   \                     ??Uart0_TX_14:
+   \   00000136   E001                       LDI     R16,1
+   \   00000138   E010                       LDI     R17,0
+   \   0000013A   830C                       STD     Y+4,R16
+   \   0000013C   831D                       STD     Y+5,R17
+    397                        k=0;
+   \   0000013E   8718                       STD     Y+8,R17
+   \   00000140   8719                       STD     Y+9,R17
+    398                        
+    399                          for (i=1;i<=8;i++)
+   \   00000142   C018                       RJMP    ??Uart0_TX_21
+    400                              {
+    401                              cTmp = cByte & j;
+   \                     ??Uart0_TX_22:
+   \   00000144   8109                       LDD     R16,Y+1
+   \   00000146   812C                       LDD     R18,Y+4
+   \   00000148   813D                       LDD     R19,Y+5
+   \   0000014A   2320                       AND     R18,R16
+   \   0000014C   8328                       ST      Y,R18
+    402                                  if ( cTmp != 0)
+   \   0000014E   8108                       LD      R16,Y
+   \   00000150   2300                       TST     R16
+   \   00000152   F031                       BREQ    ??Uart0_TX_23
+    403                                  {
+    404                                  k++;
+   \   00000154   8508                       LDD     R16,Y+8
+   \   00000156   8519                       LDD     R17,Y+9
+   \   00000158   5F0F                       SUBI    R16,255
+   \   0000015A   4F1F                       SBCI    R17,255
+   \   0000015C   8708                       STD     Y+8,R16
+   \   0000015E   8719                       STD     Y+9,R17
+    405                                  };
+    406                               j = j*2;   
+   \                     ??Uart0_TX_23:
+   \   00000160   810C                       LDD     R16,Y+4
+   \   00000162   811D                       LDD     R17,Y+5
+   \   00000164   0F00                       LSL     R16
+   \   00000166   1F11                       ROL     R17
+   \   00000168   830C                       STD     Y+4,R16
+   \   0000016A   831D                       STD     Y+5,R17
+   \   0000016C   810E                       LDD     R16,Y+6
+   \   0000016E   811F                       LDD     R17,Y+7
+   \   00000170   5F0F                       SUBI    R16,255
+   \   00000172   4F1F                       SBCI    R17,255
+   \                     ??Uart0_TX_21:
+   \   00000174   830E                       STD     Y+6,R16
+   \   00000176   831F                       STD     Y+7,R17
+   \   00000178   818E                       LDD     R24,Y+6
+   \   0000017A   819F                       LDD     R25,Y+7
+   \   0000017C   3089                       CPI     R24,9
+   \   0000017E   4090                       SBCI    R25,0
+   \   00000180   F30C                       BRLT    ??Uart0_TX_22
+    407                              };
+    408                              
+    409                          cTmp = (char) (k % 2);
+   \   00000182   8508                       LDD     R16,Y+8
+   \   00000184   8519                       LDD     R17,Y+9
+   \   00000186   E042                       LDI     R20,2
+   \   00000188   E050                       LDI     R21,0
+   \   0000018A   ........                   CALL    ?SS_DIVMOD_L02
+   \   0000018E   8348                       ST      Y,R20
+    410                    // write 9 bit PE
+    411                          if ( cTmp == 0 )
+   \   00000190   8108                       LD      R16,Y
+   \   00000192   2300                       TST     R16
+   \   00000194   F259                       BREQ    ??Uart0_TX_20
+    412                          {
+    413                          UCSR0B = UCSR0B ^ ( 0x01 );  // Tx 9 bit=1
+    414                          }
+    415                          else
+    416                          {
+    417                          UCSR0B = UCSR0B & (~(0x01)); // Tx 9 bit=0           
+   \                     ??Uart0_TX_19:
+   \   00000196   9850                       CBI     0x0A,0x00
+    418                          };    
+    419                    break;     
+    420                    };
+    421                    UDR0 = cByte;  // Transmit Byte and 9 bit
+   \                     ??Uart0_TX_15:
+   \   00000198   8109                       LDD     R16,Y+1
+   \   0000019A   B90C                       OUT     0x0C,R16
+    422          
+    423                break;
+    424          
+    425                case 5:  // Z=5 Wait CTS=0
+    426                case 6:  // Z=6 Wait DSR=0
+    427                case 7:  // Z=7 Wait CTS=0 and DSR=0
+    428                // ?? What must enable interrupt
+    429                break;
+    430                };
+    431           };
+   \                     ??Uart0_TX_12:
+   \   0000019C   962A                       ADIW    R29 : R28,10
+   \   0000019E   BF6F                       OUT     0x3F,R22
+   \   000001A0   9109                       LD      R16,Y+
+   \   000001A2   9119                       LD      R17,Y+
+   \   000001A4   9129                       LD      R18,Y+
+   \   000001A6   9139                       LD      R19,Y+
+   \   000001A8   9149                       LD      R20,Y+
+   \   000001AA   9159                       LD      R21,Y+
+   \   000001AC   9169                       LD      R22,Y+
+   \   000001AE   9009                       LD      R0,Y+
+   \   000001B0   9019                       LD      R1,Y+
+   \   000001B2   91E9                       LD      R30,Y+
+   \   000001B4   91F9                       LD      R31,Y+
+   \   000001B6   9189                       LD      R24,Y+
+   \   000001B8   9199                       LD      R25,Y+
+   \   000001BA   91A9                       LD      R26,Y+
+   \   000001BC   91B9                       LD      R27,Y+
+   \   000001BE   9518                       RETI
+    432          
+    433          //*******************************
+    434          // This method interrupt event TX 
+    435          #pragma vector=UART0_UDRE_vect 
+
+   \                                 In segment CODE, align 2, keep-with-next
+    436              static __interrupt void   Uart0_UDRE()
+    437              {
+   \   __nearfunc __interrupt void Uart0Baseclass::Uart0_UDRE();
+   \                     ??Uart0_UDRE:
+   \   00000000   93FA                       ST      -Y,R31
+   \   00000002   93EA                       ST      -Y,R30
+   \   00000004   932A                       ST      -Y,R18
+   \   00000006   931A                       ST      -Y,R17
+   \   00000008   930A                       ST      -Y,R16
+   \   0000000A   B72F                       IN      R18,0x3F
+    438              _PORTA = Test; // test
+   \   0000000C   ....                       LDI     R30,LOW(Test)
+   \   0000000E   ....                       LDI     R31,(Test) >> 8
+   \   00000010   8100                       LD      R16,Z
+   \   00000012   8111                       LDD     R17,Z+1
+   \   00000014   BB0B                       OUT     0x1B,R16
+    439                Test++;
+   \   00000016   8100                       LD      R16,Z
+   \   00000018   8111                       LDD     R17,Z+1
+   \   0000001A   5F0F                       SUBI    R16,255
+   \   0000001C   4F1F                       SBCI    R17,255
+   \   0000001E   8300                       ST      Z,R16
+   \   00000020   8311                       STD     Z+1,R17
+    440               UDR0 = '4'; 
+   \   00000022   E304                       LDI     R16,52
+   \   00000024   B90C                       OUT     0x0C,R16
+    441               };
+   \   00000026   BF2F                       OUT     0x3F,R18
+   \   00000028   9109                       LD      R16,Y+
+   \   0000002A   9119                       LD      R17,Y+
+   \   0000002C   9129                       LD      R18,Y+
+   \   0000002E   91E9                       LD      R30,Y+
+   \   00000030   91F9                       LD      R31,Y+
+   \   00000032   9518                       RETI
+    442               
+    443          private:
+    444              // Registrs for UART0
+    445              volatile char TempVar ;
+    446              static volatile __io unsigned char PORTC @ 0x15 ;
+    447              static volatile __io unsigned char DDRC  @ 0x14 ;
+    448              static volatile __io unsigned char PINC  @ 0x13 ;        
+    449              static volatile __io unsigned char UCSR0A @ 0x0B ;
+    450              static volatile __io unsigned char UCSR0B @ 0x0A ;
+    451              static volatile __io struct
+    452                  { unsigned char uh0:4 ,
+    453                                  uh1:4 ;
+    454                  } UBRRHI @ 0x20;  
+    455              static volatile __io unsigned char UBRR0  @ 0x09 ;
+    456              static volatile __io unsigned char UDR0   @ 0x0C ; 
+    457           };   
+    458          
+    459          
+    460           /***********************************
+    461           *    Base class implementation    *
+    462           ***********************************/
+    463          //-----------------------------------
+    464          // Declare function
+
+   \                                 In segment CODE, align 2, keep-with-next
+    465            void Uart0Baseclass::InitUart(unsigned int speed, unsigned int parity )
+    466            {
+   \   __nearfunc void Uart0Baseclass::InitUart(Uart0Baseclass *, unsigned int, unsigned int);
+   \                     ??InitUart:
+   \   00000000   93BA                       ST      -Y,R27
+   \   00000002   93AA                       ST      -Y,R26
+   \   00000004   939A                       ST      -Y,R25
+   \   00000006   938A                       ST      -Y,R24
+   \   00000008   9728                       SBIW    R29 : R28,8
+   \   0000000A   01C9                       MOVW    R25 : R24,R19 : R18
+   \   0000000C   01DA                       MOVW    R27 : R26,R21 : R20
+    467              volatile unsigned char cTmp;
+    468              volatile bool FlErr;
+    469              volatile unsigned long  lTmp;
+    470              volatile unsigned int  i;
+    471              
+    472              //-----------------------
+    473              // Disable all interrupts
+    474              //__disable_interrupt();
+    475          
+    476              //--------------------
+    477              // Disable Tx and Rx
+    478              // ?? disable interrupt UART0, Clear Errors Tx/Rx, Clear UDR
+    479              UCSR0A = 0x20;  // reset UART Control and Status Registers A
+   \   0000000E   E200                       LDI     R16,32
+   \   00000010   B90B                       OUT     0x0B,R16
+    480              UCSR0B = 0x02;  // reset UART Control and Status Registers B
+   \   00000012   E002                       LDI     R16,2
+   \   00000014   B90A                       OUT     0x0A,R16
+    481              cTmp = UDR0  ;  // reset Errors Flags UART0 Rx
+   \   00000016   B10C                       IN      R16,0x0C
+   \   00000018   8308                       ST      Y,R16
+    482          
+    483              //-----------------------
+    484              // Resets out pins DTR0=1
+    485              //                 RTS0=1
+    486              cTmp = DDRC ^ ( 1+4 );   // Mode Pins to Out
+   \   0000001A   B314                       IN      R17,0x14
+   \   0000001C   E005                       LDI     R16,5
+   \   0000001E   2701                       EOR     R16,R17
+   \   00000020   8308                       ST      Y,R16
+    487              DDRC = cTmp; 
+   \   00000022   8108                       LD      R16,Y
+   \   00000024   BB04                       OUT     0x14,R16
+    488              cTmp = PORTC ^ ( 1+4 ); // Pins Out bits
+   \   00000026   B315                       IN      R17,0x15
+   \   00000028   E005                       LDI     R16,5
+   \   0000002A   2701                       EOR     R16,R17
+   \   0000002C   8308                       ST      Y,R16
+    489              PORTC = cTmp ;
+   \   0000002E   8108                       LD      R16,Y
+   \   00000030   BB05                       OUT     0x15,R16
+    490          
+    491              //------------------------
+    492              // Enable other interrupts
+    493              //__enable_interrupt();  
+    494          
+    495              //------------------------
+    496              // Erase Counter Errors
+    497              for (i=1;i<=4;i++)
+   \   00000032   E001                       LDI     R16,1
+   \   00000034   E010                       LDI     R17,0
+   \   00000036   C00E                       RJMP    ??InitUart_1
+    498              {
+    499              aErRx[i] = 0;
+   \                     ??InitUart_2:
+   \   00000038   E000                       LDI     R16,0
+   \   0000003A   812A                       LDD     R18,Y+2
+   \   0000003C   813B                       LDD     R19,Y+3
+   \   0000003E   0F22                       LSL     R18
+   \   00000040   1F33                       ROL     R19
+   \   00000042   01F9                       MOVW    R31 : R30,R19 : R18
+   \   00000044   ....                       SUBI    R30,LOW((-(aErRx) & 0xFFFF))
+   \   00000046   ....                       SBCI    R31,(-(aErRx) & 0xFFFF) >> 8
+   \   00000048   8300                       ST      Z,R16
+   \   0000004A   8301                       STD     Z+1,R16
+   \   0000004C   810A                       LDD     R16,Y+2
+   \   0000004E   811B                       LDD     R17,Y+3
+   \   00000050   5F0F                       SUBI    R16,255
+   \   00000052   4F1F                       SBCI    R17,255
+   \                     ??InitUart_1:
+   \   00000054   830A                       STD     Y+2,R16
+   \   00000056   831B                       STD     Y+3,R17
+   \   00000058   810A                       LDD     R16,Y+2
+   \   0000005A   811B                       LDD     R17,Y+3
+   \   0000005C   3005                       CPI     R16,5
+   \   0000005E   4010                       SBCI    R17,0
+   \   00000060   F358                       BRCS    ??InitUart_2
+    500              }; 
+    501              
+    502              //-------------------- 
+    503              // Set speed baud UART
+    504              // ?? CASE (300...57600 bps) the calculate const
+    505              // registers
+    506              FlErr = true;  
+   \   00000062   E001                       LDI     R16,1
+   \   00000064   8309                       STD     Y+1,R16
+    507              cTmp = UCSR0A & 0x02; 
+   \   00000066   B10B                       IN      R16,0x0B
+   \   00000068   7002                       ANDI    R16,0x02
+   \   0000006A   8308                       ST      Y,R16
+    508              switch (speed)
+   \   0000006C   01FC                       MOVW    R31 : R30,R25 : R24
+   \   0000006E   50E0                       SUBI    R30,0
+   \   00000070   49F6                       SBCI    R31,150
+   \   00000072   F0C1                       BREQ    ??InitUart_3
+   \   00000074   50E0                       SUBI    R30,0
+   \   00000076   44FB                       SBCI    R31,75
+   \   00000078   F0A9                       BREQ    ??InitUart_3
+   \   0000007A   52EC                       SUBI    R30,44
+   \   0000007C   42F0                       SBCI    R31,32
+   \   0000007E   F091                       BREQ    ??InitUart_3
+   \   00000080   52EC                       SUBI    R30,44
+   \   00000082   40F1                       SBCI    R31,1
+   \   00000084   F079                       BREQ    ??InitUart_3
+   \   00000086   55E8                       SUBI    R30,88
+   \   00000088   40F2                       SBCI    R31,2
+   \   0000008A   F061                       BREQ    ??InitUart_3
+   \   0000008C   5BE0                       SUBI    R30,176
+   \   0000008E   40F4                       SBCI    R31,4
+   \   00000090   F049                       BREQ    ??InitUart_3
+   \   00000092   56E0                       SUBI    R30,96
+   \   00000094   40F9                       SBCI    R31,9
+   \   00000096   F031                       BREQ    ??InitUart_3
+   \   00000098   5CE0                       SUBI    R30,192
+   \   0000009A   41F2                       SBCI    R31,18
+   \   0000009C   F019                       BREQ    ??InitUart_3
+   \   0000009E   58E0                       SUBI    R30,128
+   \   000000A0   42F5                       SBCI    R31,37
+   \   000000A2   F531                       BRNE    ??InitUart_4
+    509                {
+    510                case 300:
+    511                case 600:
+    512                case 1200:
+    513                case 2400:
+    514                case 4800:
+    515                case 9600:
+    516                case 19200:
+    517                case 38400:
+    518                case 57600:
+    519                if ( cTmp == 0)
+   \                     ??InitUart_3:
+   \   000000A4   8108                       LD      R16,Y
+   \   000000A6   2300                       TST     R16
+   \   000000A8   E000                       LDI     R16,0
+   \   000000AA   F4F9                       BRNE    ??InitUart_5
+    520                  {   // calculate UBR for On Speed Mode
+    521                   lTmp = (unsigned long)FQCK / 16 / (unsigned long)speed - 1;
+   \   000000AC   E814                       LDI     R17,132
+   \   000000AE   E023                       LDI     R18,3
+   \                     ??InitUart_6:
+   \   000000B0   E030                       LDI     R19,0
+   \   000000B2   01AC                       MOVW    R21 : R20,R25 : R24
+   \   000000B4   E060                       LDI     R22,0
+   \   000000B6   E070                       LDI     R23,0
+   \   000000B8   ........                   CALL    ?UL_DIVMOD_L03
+   \   000000BC   5001                       SUBI    R16,1
+   \   000000BE   4010                       SBCI    R17,0
+   \   000000C0   4020                       SBCI    R18,0
+   \   000000C2   4030                       SBCI    R19,0
+   \   000000C4   830C                       STD     Y+4,R16
+   \   000000C6   831D                       STD     Y+5,R17
+   \   000000C8   832E                       STD     Y+6,R18
+   \   000000CA   833F                       STD     Y+7,R19
+    522                   UBRR0 =(unsigned char)lTmp;                  // low byte UBR
+   \   000000CC   810C                       LDD     R16,Y+4
+   \   000000CE   811D                       LDD     R17,Y+5
+   \   000000D0   812E                       LDD     R18,Y+6
+   \   000000D2   813F                       LDD     R19,Y+7
+   \   000000D4   B909                       OUT     0x09,R16
+    523                   UBRRHI.uh0 = (unsigned char)(lTmp / 256);     // high byte UBR 
+   \   000000D6   810C                       LDD     R16,Y+4
+   \   000000D8   810D                       LDD     R16,Y+5
+   \   000000DA   812E                       LDD     R18,Y+6
+   \   000000DC   813F                       LDD     R19,Y+7
+   \   000000DE   B540                       IN      R20,0x20
+   \   000000E0   7F40                       ANDI    R20,0xF0
+   \   000000E2   700F                       ANDI    R16,0x0F
+   \   000000E4   2B04                       OR      R16,R20
+   \   000000E6   BD00                       OUT     0x20,R16
+   \   000000E8   C005                       RJMP    ??InitUart_7
+    524                   }
+    525                else
+    526                  {   // calculate UBR for Double Speed Mode 
+    527                   lTmp = (unsigned long)FQCK / 8 / (unsigned long)speed - 1;
+   \                     ??InitUart_5:
+   \   000000EA   E018                       LDI     R17,8
+   \   000000EC   E027                       LDI     R18,7
+   \   000000EE   CFE0                       RJMP    ??InitUart_6
+    528                   UBRR0 =(unsigned char)lTmp;                  // low byte UBR
+    529                   UBRRHI.uh0 = (unsigned char)(lTmp / 256);     // high byte UBR 
+    530                   };   
+    531                break;
+    532                default:
+    533                  // if error speed store old speed
+    534                  FlErr = false;
+   \                     ??InitUart_4:
+   \   000000F0   E000                       LDI     R16,0
+   \   000000F2   8309                       STD     Y+1,R16
+    535                };
+    536                if ( FlErr == true )
+   \                     ??InitUart_7:
+   \   000000F4   8109                       LDD     R16,Y+1
+   \   000000F6   3001                       CPI     R16,1
+   \   000000F8   F421                       BRNE    ??InitUart_8
+    537                  {
+    538                  gl_speed = speed; 
+   \   000000FA   ....                       LDI     R30,LOW(gl_speed)
+   \   000000FC   ....                       LDI     R31,(gl_speed) >> 8
+   \   000000FE   8380                       ST      Z,R24
+   \   00000100   8391                       STD     Z+1,R25
+    539                  };
+    540                  
+    541              //---------------------------------------------
+    542              // Set control parity chek
+    543              // For parity=0  no check parity bit9=(1 or 0);
+    544              //     parity=1  check parity set bit9
+    545              //     parity=2  check no parity set bit9
+    546              FlErr = true;  
+   \                     ??InitUart_8:
+   \   00000102   E001                       LDI     R16,1
+   \   00000104   8309                       STD     Y+1,R16
+    547              // ?? CASE (0,1,2) the calculate parity
+    548              switch (parity)
+   \   00000106   01FD                       MOVW    R31 : R30,R27 : R26
+   \   00000108   9630                       ADIW    R31 : R30,0
+   \   0000010A   F029                       BREQ    ??InitUart_9
+   \   0000010C   9731                       SBIW    R31 : R30,1
+   \   0000010E   F051                       BREQ    ??InitUart_10
+   \   00000110   9731                       SBIW    R31 : R30,1
+   \   00000112   F041                       BREQ    ??InitUart_10
+   \   00000114   C00E                       RJMP    ??InitUart_11
+    549                {
+    550                case 0:
+    551                cTmp = UCSR0B;                // read Status 
+   \                     ??InitUart_9:
+   \   00000116   B10A                       IN      R16,0x0A
+   \   00000118   8308                       ST      Y,R16
+    552                cTmp = cTmp & (~( 4 + 1 ) );  // Tx/Rx Mode 8 bits and 9 bits = 0
+   \   0000011A   7F0A                       ANDI    R16,0xFA
+   \   0000011C   8308                       ST      Y,R16
+    553                UCSR0B = cTmp;     
+   \                     ??InitUart_12:
+   \   0000011E   8108                       LD      R16,Y
+   \   00000120   B90A                       OUT     0x0A,R16
+   \   00000122   C009                       RJMP    ??InitUart_13
+    554                break;
+    555                case 1:
+    556                case 2:
+    557                cTmp = UCSR0B;        // read Sattus 
+   \                     ??InitUart_10:
+   \   00000124   B10A                       IN      R16,0x0A
+   \   00000126   8308                       ST      Y,R16
+    558                cTmp = cTmp ^ ( 4 + 1 );  // Tx/Rx Mode 9 bits and 9 bits = 1
+   \   00000128   E005                       LDI     R16,5
+   \   0000012A   8118                       LD      R17,Y
+   \   0000012C   2710                       EOR     R17,R16
+   \   0000012E   8318                       ST      Y,R17
+    559                UCSR0B = cTmp;
+   \   00000130   CFF6                       RJMP    ??InitUart_12
+    560                break;
+    561                default:
+    562                  // if error parity store old parity
+    563                  FlErr = false;
+   \                     ??InitUart_11:
+   \   00000132   E000                       LDI     R16,0
+   \   00000134   8309                       STD     Y+1,R16
+    564                };
+    565                if ( FlErr == true )
+   \                     ??InitUart_13:
+   \   00000136   8109                       LDD     R16,Y+1
+   \   00000138   3001                       CPI     R16,1
+   \   0000013A   F421                       BRNE    ??InitUart_14
+    566                  {
+    567                  gl_parity = parity; 
+   \   0000013C   ....                       LDI     R30,LOW(gl_parity)
+   \   0000013E   ....                       LDI     R31,(gl_parity) >> 8
+   \   00000140   83A0                       ST      Z,R26
+   \   00000142   83B1                       STD     Z+1,R27
+    568                  };
+    569                  
+    570                  //----------------------------------
+    571                  // Enable iterrupts Tx/Rx
+    572                  // Sets bits Rts0 and Dtr0 for UART0
+    573          
+    574                  //      RXCIE0,TXCIE0,RXEN0,TXEN0=1 
+    575                  UCSR0B = UCSR0B ^ ( 128+64+16+8);  //
+   \                     ??InitUart_14:
+   \   00000144   B11A                       IN      R17,0x0A
+   \   00000146   ED08                       LDI     R16,216
+   \   00000148   2701                       EOR     R16,R17
+   \   0000014A   B90A                       OUT     0x0A,R16
+    576          
+    577                  PORTC = PORTC & (~(4+1) ); // DTR=0 and RTS=0 Pins Out bits
+   \   0000014C   B305                       IN      R16,0x15
+   \   0000014E   7F0A                       ANDI    R16,0xFA
+   \   00000150   BB05                       OUT     0x15,R16
+    578           }
+   \   00000152   9628                       ADIW    R29 : R28,8
+   \   00000154   9189                       LD      R24,Y+
+   \   00000156   9199                       LD      R25,Y+
+   \   00000158   91A9                       LD      R26,Y+
+   \   0000015A   91B9                       LD      R27,Y+
+   \   0000015C   9508                       RET
+    579          
+    580          //-----------------------------------
+    581          // Declare function
+
+   \                                 In segment CODE, align 2, keep-with-next
+    582            void Uart0Baseclass::Clear()
+    583            {
+    584              // Clear All Registers for UART0 and Stop Resiverd/Transmits
+    585              //__disable_interrupt();
+    586              UCSR0A=0x20;
+   \   __nearfunc void Uart0Baseclass::Clear(Uart0Baseclass *);
+   \                     ??Clear:
+   \   00000000   E220                       LDI     R18,32
+   \   00000002   B92B                       OUT     0x0B,R18
+    587              UCSR0B=0x02;
+   \   00000004   E022                       LDI     R18,2
+   \   00000006   B92A                       OUT     0x0A,R18
+    588              UBRRHI.uh0=0x00;
+   \   00000008   B520                       IN      R18,0x20
+   \   0000000A   7F20                       ANDI    R18,0xF0
+   \   0000000C   BD20                       OUT     0x20,R18
+    589              UBRR0=0x0;
+   \   0000000E   E020                       LDI     R18,0
+   \   00000010   B929                       OUT     0x09,R18
+    590              TempVar = UDR0; // Clear ERROR Resiverd
+   \   00000012   B12C                       IN      R18,0x0C
+   \   00000014   01F8                       MOVW    R31 : R30,R17 : R16
+   \   00000016   8320                       ST      Z,R18
+    591              //__enable_interrupt();
+    592           }
+   \   00000018   9508                       RET
+    593          
+    594          //-----------------------------------
+    595          // Declare function
+
+   \                                 In segment CODE, align 2, keep-with-next
+    596            void Uart0Baseclass::ClearRxBuf() 
+    597            {
+    598            unsigned int i;
+    599            //?? Define disable Rx interrupt
+    600            //__disable_interrupt();
+    601            for (i=0; i <= BufLen-1 ; i++)
+   \   __nearfunc void Uart0Baseclass::ClearRxBuf(Uart0Baseclass *);
+   \                     ??ClearRxBuf:
+   \   00000000   ....                       LDI     R30,LOW(RxBuf)
+   \   00000002   ....                       LDI     R31,(RxBuf) >> 8
+   \   00000004   E00F                       LDI     R16,15
+    602              {RxBuf[i]=0xFF;
+   \                     ??ClearRxBuf_1:
+   \   00000006   EF1F                       LDI     R17,255
+   \   00000008   9311                       ST      Z+,R17
+    603               RxBufPos=0 ;
+   \   0000000A   E010                       LDI     R17,0
+   \   0000000C   9310....                   STS     RxBufPos,R17
+   \   00000010   950A                       DEC     R16
+   \   00000012   F7C9                       BRNE    ??ClearRxBuf_1
+    604              }
+    605            //__enable_interrupt();
+    606            }
+   \   00000014   9508                       RET
+    607          
+    608          //-----------------------------------
+    609          // Declare function
+
+   \                                 In segment CODE, align 2, keep-with-next
+    610            void Uart0Baseclass::WrByteRxBuf(unsigned char Byte) 
+    611          {
+    612            //__disable_interrupt();
+    613              if ( RxBufPos >= (BufLen) )
+   \   __nearfunc void Uart0Baseclass::WrByteRxBuf(Uart0Baseclass *, unsigned char);
+   \                     ??WrByteRxBuf:
+   \   00000000   9100....                   LDS     R16,RxBufPos
+   \   00000004   300F                       CPI     R16,15
+   \   00000006   F460                       BRCC    ??WrByteRxBuf_1
+    614              ;
+    615              else
+    616                { 
+    617                RxBuf[RxBufPos] = Byte;
+   \   00000008   9100....                   LDS     R16,RxBufPos
+   \   0000000C   E010                       LDI     R17,0
+   \   0000000E   01F8                       MOVW    R31 : R30,R17 : R16
+   \   00000010   ....                       SUBI    R30,LOW((-(RxBuf) & 0xFFFF))
+   \   00000012   ....                       SBCI    R31,(-(RxBuf) & 0xFFFF) >> 8
+   \   00000014   8320                       ST      Z,R18
+    618                RxBufPos = RxBufPos + 1 ;
+   \   00000016   ....                       LDI     R30,LOW(RxBufPos)
+   \   00000018   ....                       LDI     R31,(RxBufPos) >> 8
+   \   0000001A   8100                       LD      R16,Z
+   \   0000001C   9503                       INC     R16
+   \   0000001E   8300                       ST      Z,R16
+    619                };
+    620            //__enable_interrupt();  
+    621           }
+   \                     ??WrByteRxBuf_1:
+   \   00000020   9508                       RET
+    622          
+    623          //-----------------------------------
+    624          // Declare functi-on
+
+   \                                 In segment CODE, align 2, keep-with-next
+    625          bool Uart0Baseclass::B_RxBuf(void)
+    626          {
+    627            bool Flag;
+    628            //__disable_interrupt();
+    629            if ( RxBufPos <= 0 )
+   \   __nearfunc bool Uart0Baseclass::B_RxBuf(Uart0Baseclass *);
+   \                     ??B_RxBuf:
+   \   00000000   9100....                   LDS     R16,RxBufPos
+   \   00000004   2300                       TST     R16
+   \   00000006   F429                       BRNE    ??B_RxBuf_1
+    630              {
+    631              Flag = true;
+   \   00000008   E001                       LDI     R16,1
+    632              RxBufPos = 0;
+   \   0000000A   E010                       LDI     R17,0
+   \   0000000C   9310....                   STS     RxBufPos,R17
+   \   00000010   9508                       RET
+    633              }
+    634            else
+    635              {
+    636              Flag = false;
+   \                     ??B_RxBuf_1:
+   \   00000012   E000                       LDI     R16,0
+    637             //__enable_interrupt();
+    638               };
+    639            return ( Flag);
+   \   00000014   9508                       RET
+    640          }    
+    641          
+    642          //-----------------------------------
+    643          // Declare functi-on
+
+   \                                 In segment CODE, align 2, keep-with-next
+    644            unsigned char Uart0Baseclass::RdByteRxBuf(void) 
+    645          {
+    646           unsigned char Byte;
+    647            //__disable_interrupt();
+    648            if ( (BufLen - RxBufPos) > 2 )
+   \   __nearfunc unsigned char Uart0Baseclass::RdByteRxBuf(Uart0Baseclass *);
+   \                     ??RdByteRxBuf:
+   \   00000000   E0EF                       LDI     R30,15
+   \   00000002   E0F0                       LDI     R31,0
+   \   00000004   9120....                   LDS     R18,RxBufPos
+   \   00000008   1BE2                       SUB     R30,R18
+   \   0000000A   40F0                       SBCI    R31,0
+   \   0000000C   9733                       SBIW    R31 : R30,3
+   \   0000000E   F00C                       BRLT    ??RdByteRxBuf_1
+    649              {
+    650               PORTC = PORTC & (~ 1 ); // RTS0=0 Pins Out bits Enable Tx from PC
+   \   00000010   98A8                       CBI     0x15,0x00
+    651              };
+    652           
+    653            if ( RxBufPos == 0 )
+   \                     ??RdByteRxBuf_1:
+   \   00000012   9110....                   LDS     R17,RxBufPos
+   \   00000016   2311                       TST     R17
+   \   00000018   F071                       BREQ    ??RdByteRxBuf_2
+    654            ;
+    655            else
+    656                { 
+    657                Byte=RxBuf[RxBufPos-1];
+   \   0000001A   9100....                   LDS     R16,RxBufPos
+   \   0000001E   E010                       LDI     R17,0
+   \   00000020   5001                       SUBI    R16,1
+   \   00000022   4010                       SBCI    R17,0
+   \   00000024   01F8                       MOVW    R31 : R30,R17 : R16
+   \   00000026   ....                       SUBI    R30,LOW((-(RxBuf) & 0xFFFF))
+   \   00000028   ....                       SBCI    R31,(-(RxBuf) & 0xFFFF) >> 8
+   \   0000002A   8100                       LD      R16,Z
+    658                RxBufPos = RxBufPos - 1;
+   \   0000002C   ....                       LDI     R30,LOW(RxBufPos)
+   \   0000002E   ....                       LDI     R31,(RxBufPos) >> 8
+   \   00000030   8110                       LD      R17,Z
+   \   00000032   951A                       DEC     R17
+   \   00000034   8310                       ST      Z,R17
+    659                }; 
+    660            //__enable_interrupt() ;
+    661          return (Byte);
+   \                     ??RdByteRxBuf_2:
+   \   00000036   9508                       RET
+    662          }
+    663          
+    664          //-----------------------------------
+    665          // Declare functi-on
+
+   \                                 In segment CODE, align 2, keep-with-next
+    666          bool Uart0Baseclass::E_RxBuf(void)
+    667          {
+    668            bool Flag;
+    669            //__disable_interrupt();
+    670            if ( RxBufPos >= (BufLen) )
+   \   __nearfunc bool Uart0Baseclass::E_RxBuf(Uart0Baseclass *);
+   \                     ??E_RxBuf:
+   \   00000000   9100....                   LDS     R16,RxBufPos
+   \   00000004   300F                       CPI     R16,15
+   \   00000006   F028                       BRCS    ??E_RxBuf_1
+    671              {
+    672              Flag = true;
+   \   00000008   E001                       LDI     R16,1
+    673              RxBufPos = BufLen;
+   \   0000000A   E01F                       LDI     R17,15
+   \   0000000C   9310....                   STS     RxBufPos,R17
+   \   00000010   9508                       RET
+    674              }
+    675            else
+    676              {
+    677              Flag = false;
+   \                     ??E_RxBuf_1:
+   \   00000012   E000                       LDI     R16,0
+    678            //__enable_interrupt();
+    679              };
+    680            return ( Flag);
+   \   00000014   9508                       RET
+    681          } 
+    682          
+    683          //-----------------------------------
+    684          // Declare function
+
+   \                                 In segment CODE, align 2, keep-with-next
+    685            void Uart0Baseclass::ClearTxBuf() 
+    686            {
+    687            unsigned int i;
+    688            //?? Define disable Rx interrupt
+    689            //__disable_interrupt();
+    690            for (i=0; i <= BufLen-1 ; i++)
+   \   __nearfunc void Uart0Baseclass::ClearTxBuf(Uart0Baseclass *);
+   \                     ??ClearTxBuf:
+   \   00000000   ....                       LDI     R30,LOW(TxBuf)
+   \   00000002   ....                       LDI     R31,(TxBuf) >> 8
+   \   00000004   E00F                       LDI     R16,15
+    691              {TxBuf[i]=0xFF;
+   \                     ??ClearTxBuf_1:
+   \   00000006   EF1F                       LDI     R17,255
+   \   00000008   9311                       ST      Z+,R17
+    692               TxBufPos=0;
+   \   0000000A   E010                       LDI     R17,0
+   \   0000000C   9310....                   STS     TxBufPos,R17
+   \   00000010   950A                       DEC     R16
+   \   00000012   F7C9                       BRNE    ??ClearTxBuf_1
+    693              }
+    694            //__enable_interrupt();
+    695            }
+   \   00000014   9508                       RET
+    696          
+    697          //-----------------------------------
+    698          // Declare function
+
+   \                                 In segment CODE, align 2, keep-with-next
+    699            void Uart0Baseclass::WrByteTxBuf(unsigned char Byte) 
+    700          {
+    701            //__disable_interrupt TXCIE0;
+    702            UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+   \   __nearfunc void Uart0Baseclass::WrByteTxBuf(Uart0Baseclass *, unsigned char);
+   \                     ??WrByteTxBuf:
+   \   00000000   9856                       CBI     0x0A,0x06
+    703          
+    704              if ( TxBufPos >= (BufLen) )
+   \   00000002   9100....                   LDS     R16,TxBufPos
+   \   00000006   300F                       CPI     R16,15
+   \   00000008   F4F0                       BRCC    ??WrByteTxBuf_1
+    705                ; // ErrTx Buffer Full
+    706              else
+    707                {
+    708                  TxBuf[TxBufPos] = Byte;
+   \   0000000A   9100....                   LDS     R16,TxBufPos
+   \   0000000E   E010                       LDI     R17,0
+   \   00000010   01F8                       MOVW    R31 : R30,R17 : R16
+   \   00000012   ....                       SUBI    R30,LOW((-(TxBuf) & 0xFFFF))
+   \   00000014   ....                       SBCI    R31,(-(TxBuf) & 0xFFFF) >> 8
+   \   00000016   8320                       ST      Z,R18
+    709                  TxBufPos = TxBufPos + 1 ;
+   \   00000018   ....                       LDI     R30,LOW(TxBufPos)
+   \   0000001A   ....                       LDI     R31,(TxBufPos) >> 8
+   \   0000001C   8100                       LD      R16,Z
+   \   0000001E   9503                       INC     R16
+   \   00000020   8300                       ST      Z,R16
+    710                    
+    711                    if (TxBufPos == 1 ) // yes primary byte in BufTx
+   \   00000022   9100....                   LDS     R16,TxBufPos
+   \   00000026   3001                       CPI     R16,1
+   \   00000028   F431                       BRNE    ??WrByteTxBuf_2
+    712                      {
+    713                      TxBufPos = TxBufPos - 1 ;      
+   \   0000002A   8100                       LD      R16,Z
+   \   0000002C   950A                       DEC     R16
+   \   0000002E   8300                       ST      Z,R16
+    714                      UDR0 = Byte; 
+   \   00000030   B92C                       OUT     0x0C,R18
+    715                      UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+   \   00000032   9856                       CBI     0x0A,0x06
+   \   00000034   9508                       RET
+    716                      } 
+    717                    else 
+    718                      {
+    719                        if ( TxBufPos != 0 )
+   \                     ??WrByteTxBuf_2:
+   \   00000036   9100....                   LDS     R16,TxBufPos
+   \   0000003A   2300                       TST     R16
+   \   0000003C   F021                       BREQ    ??WrByteTxBuf_1
+    720                        {
+    721                        //__enable_interrupt TXC0; 
+    722                        UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete      
+   \   0000003E   B11A                       IN      R17,0x0A
+   \   00000040   E400                       LDI     R16,64
+   \   00000042   2701                       EOR     R16,R17
+   \   00000044   B90A                       OUT     0x0A,R16
+    723                        };
+    724                      };
+    725               }; 
+    726          
+    727           }
+   \                     ??WrByteTxBuf_1:
+   \   00000046   9508                       RET
+    728          
+    729          //-----------------------------------
+    730          // Declare functi-on
+
+   \                                 In segment CODE, align 2, keep-with-next
+    731            unsigned char Uart0Baseclass::RdByteTxBuf(void) 
+    732          {
+    733           unsigned char Byte;
+    734            //__disable_interrupt TXCIE0;
+    735            UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+   \   __nearfunc unsigned char Uart0Baseclass::RdByteTxBuf(Uart0Baseclass *);
+   \                     ??RdByteTxBuf:
+   \   00000000   9856                       CBI     0x0A,0x06
+    736          
+    737            if ( TxBufPos == 0 )
+   \   00000002   9110....                   LDS     R17,TxBufPos
+   \   00000006   2311                       TST     R17
+   \   00000008   F071                       BREQ    ??RdByteTxBuf_1
+    738            ;
+    739            else
+    740                { 
+    741                Byte=TxBuf[TxBufPos-1];
+   \   0000000A   9100....                   LDS     R16,TxBufPos
+   \   0000000E   E010                       LDI     R17,0
+   \   00000010   5001                       SUBI    R16,1
+   \   00000012   4010                       SBCI    R17,0
+   \   00000014   01F8                       MOVW    R31 : R30,R17 : R16
+   \   00000016   ....                       SUBI    R30,LOW((-(TxBuf) & 0xFFFF))
+   \   00000018   ....                       SBCI    R31,(-(TxBuf) & 0xFFFF) >> 8
+   \   0000001A   8100                       LD      R16,Z
+    742                TxBufPos = TxBufPos - 1;
+   \   0000001C   ....                       LDI     R30,LOW(TxBufPos)
+   \   0000001E   ....                       LDI     R31,(TxBufPos) >> 8
+   \   00000020   8110                       LD      R17,Z
+   \   00000022   951A                       DEC     R17
+   \   00000024   8310                       ST      Z,R17
+    743                }; 
+    744            //__enable_interrupt TXC0; 
+    745               UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+   \                     ??RdByteTxBuf_1:
+   \   00000026   B12A                       IN      R18,0x0A
+   \   00000028   E410                       LDI     R17,64
+   \   0000002A   2712                       EOR     R17,R18
+   \   0000002C   B91A                       OUT     0x0A,R17
+    746          return (Byte);
+   \   0000002E   9508                       RET
+    747          }
+    748          
+    749          //-----------------------------------
+    750          // Declare functi-on
+
+   \                                 In segment CODE, align 2, keep-with-next
+    751          bool Uart0Baseclass::B_TxBuf(void)
+    752          {
+    753            bool Flag;
+    754            //__disable_interrupt TXCIE0;
+    755            UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+   \   __nearfunc bool Uart0Baseclass::B_TxBuf(Uart0Baseclass *);
+   \                     ??B_TxBuf:
+   \   00000000   9856                       CBI     0x0A,0x06
+    756            if ( TxBufPos <= 0 )
+   \   00000002   9100....                   LDS     R16,TxBufPos
+   \   00000006   2300                       TST     R16
+   \   00000008   F429                       BRNE    ??B_TxBuf_1
+    757              {
+    758              Flag = true;
+   \   0000000A   E001                       LDI     R16,1
+    759              TxBufPos = 0;
+   \   0000000C   E010                       LDI     R17,0
+   \   0000000E   9310....                   STS     TxBufPos,R17
+   \   00000012   9508                       RET
+    760              }
+    761            else
+    762              {
+    763              Flag = false;
+   \                     ??B_TxBuf_1:
+   \   00000014   E000                       LDI     R16,0
+    764            //__enable_interrupt TXC0; 
+    765               UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+   \   00000016   B12A                       IN      R18,0x0A
+   \   00000018   E410                       LDI     R17,64
+   \   0000001A   2712                       EOR     R17,R18
+   \   0000001C   B91A                       OUT     0x0A,R17
+    766               };
+    767            return ( Flag);
+   \   0000001E   9508                       RET
+    768          }    
+    769          
+    770          //-----------------------------------
+    771          // Declare functi-on
+
+   \                                 In segment CODE, align 2, keep-with-next
+    772          bool Uart0Baseclass::E_TxBuf(void)
+    773          {
+    774            bool Flag;
+    775            //__disable_interrupt TXCIE0;
+    776            UCSR0B = UCSR0B & ~(0x40); // TXCIE0 =0 Disable interrupt Tx Complet
+   \   __nearfunc bool Uart0Baseclass::E_TxBuf(Uart0Baseclass *);
+   \                     ??E_TxBuf:
+   \   00000000   9856                       CBI     0x0A,0x06
+    777            if ( TxBufPos >= (BufLen) )
+   \   00000002   9100....                   LDS     R16,TxBufPos
+   \   00000006   300F                       CPI     R16,15
+   \   00000008   F028                       BRCS    ??E_TxBuf_1
+    778              {
+    779              Flag = true;
+   \   0000000A   E001                       LDI     R16,1
+    780              TxBufPos = BufLen;
+   \   0000000C   E01F                       LDI     R17,15
+   \   0000000E   9310....                   STS     TxBufPos,R17
+   \   00000012   9508                       RET
+    781              }
+    782            else
+    783              {
+    784              Flag = false;
+   \                     ??E_TxBuf_1:
+   \   00000014   E000                       LDI     R16,0
+    785            //__enable_interrupt TXC0; 
+    786               UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+   \   00000016   B12A                       IN      R18,0x0A
+   \   00000018   E410                       LDI     R17,64
+   \   0000001A   2712                       EOR     R17,R18
+   \   0000001C   B91A                       OUT     0x0A,R17
+    787              };
+    788            return ( Flag);
+   \   0000001E   9508                       RET
+    789          } 
+    790          //================================
+    791          // test function
+
+   \                                 In segment CODE, align 2, keep-with-next
+    792          void Uart0Baseclass::testfunc(void)
+    793              {
+    794              ;
+    795              }
+   \   __nearfunc void Uart0Baseclass::testfunc(Uart0Baseclass *);
+   \                     ??testfunc:
+   \   00000000   9508                       RET
+    796           
+    797          /***********************************
+    798           *    Derived class declaration    *
+    799           ***********************************/
+    800          class Uart0 : public Uart0Baseclass
+    801          {
+    802          public:
+    803            static volatile  unsigned char test ;
+    804          };
+    805          
+    806          //************************
+    807          // Declaration functions *
+    808          //************************
+    809          
+    810          // This method interrupt event TX 
+    811          #pragma vector=INT1_vect 
+
+   \                                 In segment CODE, align 2, keep-with-next
+    812          static __interrupt void   Ext_INT1(void)
+                                           ^
+Warning[Pe177]: function "Ext_INT1" was declared but never referenced
+    813          {
+   \   static __nearfunc __interrupt void Ext_INT1();
+   \                     ??Ext_INT1:
+   \   00000000   93FA                       ST      -Y,R31
+   \   00000002   93EA                       ST      -Y,R30
+   \   00000004   931A                       ST      -Y,R17
+   \   00000006   930A                       ST      -Y,R16
+    814            //_PORTA = UCSR0A;
+    815             _PORTA = var;
+   \   00000008   ....                       LDI     R30,LOW(var)
+   \   0000000A   ....                       LDI     R31,(var) >> 8
+   \   0000000C   8100                       LD      R16,Z
+   \   0000000E   8111                       LDD     R17,Z+1
+   \   00000010   BB0B                       OUT     0x1B,R16
+    816             FlgPrint = true;
+   \   00000012   E001                       LDI     R16,1
+   \   00000014   9300....                   STS     FlgPrint,R16
+    817          }
+   \   00000018   9109                       LD      R16,Y+
+   \   0000001A   9119                       LD      R17,Y+
+   \   0000001C   91E9                       LD      R30,Y+
+   \   0000001E   91F9                       LD      R31,Y+
+   \   00000020   9518                       RETI
+    818          
+
+   \                                 In segment CODE, align 2, keep-with-next
+    819          void main()
+    820          {
+   \   __nearfunc void main();
+   \                     main:
+   \   00000000   9722                       SBIW    R29 : R28,2
+    821          volatile unsigned char iVar = '0';
+   \   00000002   E300                       LDI     R16,48
+   \   00000004   8309                       STD     Y+1,R16
+    822          
+    823          
+    824          static volatile __io unsigned char DDRA  @ 0x1A ;
+    825          static volatile __io unsigned char PINA  @ 0x19 ;
+    826          
+    827          //*******************************
+    828          
+    829            //**********************
+    830            // Full reset UART
+    831            Uart0 UartTest;               // Define new type UartTest 
+    832            UartTest.Clear();             // Erase all registers and 
+   \   00000006   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000008   ....                       RCALL   ??Clear
+    833                                          // disable interrupts UART0 
+    834            UartTest.ClearRxBuf();        // Erase Buffer Rx
+   \   0000000A   018E                       MOVW    R17 : R16,R29 : R28
+   \   0000000C   ....                       RCALL   ??ClearRxBuf
+    835            UartTest.ClearTxBuf();        // Erase Buffer Tx
+   \   0000000E   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000010   ....                       RCALL   ??ClearTxBuf
+    836            UartTest.InitUart(gl_speed, gl_parity);
+   \   00000012   ....                       LDI     R30,LOW(gl_parity)
+   \   00000014   ....                       LDI     R31,(gl_parity) >> 8
+   \   00000016   8140                       LD      R20,Z
+   \   00000018   8151                       LDD     R21,Z+1
+   \   0000001A   ....                       LDI     R30,LOW(gl_speed)
+   \   0000001C   ....                       LDI     R31,(gl_speed) >> 8
+   \   0000001E   8120                       LD      R18,Z
+   \   00000020   8131                       LDD     R19,Z+1
+   \   00000022   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000024   ....                       RCALL   ??InitUart
+    837                                          // Sets speed, mode parity UART0
+    838                                          // and enable interrupt UART0 Tx and Rx 
+    839                                      
+    840            //***********************
+    841            // Proramm 
+    842            DDRA = 0xff;          // Port A  all pins Output
+   \   00000026   EF0F                       LDI     R16,255
+   \   00000028   BB0A                       OUT     0x1A,R16
+    843          
+    844            iVar = _GIMSK ^ 0x80; // Enable INT1
+   \   0000002A   B71B                       IN      R17,0x3B
+   \   0000002C   E800                       LDI     R16,128
+   \   0000002E   2701                       EOR     R16,R17
+   \   00000030   8309                       STD     Y+1,R16
+    845            _GIMSK = iVar;
+   \   00000032   8109                       LDD     R16,Y+1
+   \   00000034   BF0B                       OUT     0x3B,R16
+    846            _PORTD = _PORTD ^ 0x08 ;   // Port D pin INT1 Input 
+   \   00000036   B312                       IN      R17,0x12
+   \   00000038   E008                       LDI     R16,8
+   \   0000003A   2701                       EOR     R16,R17
+   \   0000003C   BB02                       OUT     0x12,R16
+    847            _PORTA = 0x55;
+   \   0000003E   E505                       LDI     R16,85
+   \   00000040   BB0B                       OUT     0x1B,R16
+    848            UCSR0A = UCSR0A ^ 0x40;   // Erase Bit TXC0=0 !!
+   \   00000042   B11B                       IN      R17,0x0B
+   \   00000044   E400                       LDI     R16,64
+   \   00000046   2701                       EOR     R16,R17
+   \   00000048   B90B                       OUT     0x0B,R16
+    849            //UCSR0B = UCSR0B ^ (0x40); // TXCIE0 =1 Enable interrupt Tx Complete
+    850            __enable_interrupt();
+   \   0000004A   9478                       SEI
+   \   0000004C   C040                       RJMP    ??main_0
+    851          
+    852          
+    853            //UDR0 = '5';
+    854          
+    855          
+    856           loop:
+    857          
+    858             
+    859            //__disable_interrupt();
+    860          
+    861            //if ( UartTest.E_TxBuf() != true  )
+    862            //  {
+    863            // UartTest.WrByteTxBuf('1');
+    864            //  UartTest.WrByteTxBuf('2');
+    865            //  UartTest.WrByteTxBuf('3');
+    866            //  };
+    867          
+    868          
+    869          
+    870            //======================================================
+    871            // Test On  Read Byte from UART0 and Write Bute to UART0
+    872            // Connect signals DTR,RTS,CTS,DTS
+    873           
+    874            //do
+    875            //_PORTA ++;
+    876            //while ( (UCSR0A & 0x40) == 0 );
+    877            //UCSR0A = UCSR0A ^ (0x40);
+    878          
+    879          
+    880            if ( UartTest.B_RxBuf() != true  )
+    881              {
+    882              cTest = UartTest.RdByteRxBuf();
+    883              };
+    884          
+    885            if ( UartTest.E_TxBuf() != true  )
+    886              {
+    887              UartTest.WrByteTxBuf(cTest);
+    888              }
+    889            else
+    890              {
+    891              aErTx[4]++;   // Error Buf Tx full 
+   \                     ??main_1:
+   \   0000004E   ....                       LDI     R30,LOW(aErTx)
+   \   00000050   ....                       LDI     R31,(aErTx) >> 8
+   \   00000052   8500                       LDD     R16,Z+8
+   \   00000054   8511                       LDD     R17,Z+9
+   \   00000056   5F0F                       SUBI    R16,255
+   \   00000058   4F1F                       SBCI    R17,255
+   \   0000005A   8700                       STD     Z+8,R16
+   \   0000005C   8711                       STD     Z+9,R17
+    892              };
+    893          
+    894            // Test FlgPrint for print table errors Rx and Tx
+    895              if (FlgPrint == true)
+   \                     ??main_2:
+   \   0000005E   9100....                   LDS     R16,FlgPrint
+   \   00000062   3001                       CPI     R16,1
+   \   00000064   F5A1                       BRNE    ??main_0
+    896              {
+    897              // Print Table
+    898                  // R1
+    899                  if ( UartTest.E_TxBuf() != true  )
+   \   00000066   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000068   ....                       RCALL   ??E_TxBuf
+   \   0000006A   3001                       CPI     R16,1
+   \   0000006C   F019                       BREQ    ??main_3
+    900                  {
+    901                  UartTest.WrByteTxBuf('R');
+   \   0000006E   E522                       LDI     R18,82
+   \   00000070   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000072   ....                       RCALL   ??WrByteTxBuf
+    902                  };
+    903                  if ( UartTest.E_TxBuf() != true  )
+   \                     ??main_3:
+   \   00000074   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000076   ....                       RCALL   ??E_TxBuf
+   \   00000078   3001                       CPI     R16,1
+   \   0000007A   F019                       BREQ    ??main_4
+    904                  {
+    905                  UartTest.WrByteTxBuf('1');
+   \   0000007C   E321                       LDI     R18,49
+   \   0000007E   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000080   ....                       RCALL   ??WrByteTxBuf
+    906                  };
+    907                  if ( UartTest.E_TxBuf() != true  )
+   \                     ??main_4:
+   \   00000082   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000084   ....                       RCALL   ??E_TxBuf
+   \   00000086   3001                       CPI     R16,1
+   \   00000088   F019                       BREQ    ??main_5
+    908                  {
+    909                  UartTest.WrByteTxBuf('=');
+   \   0000008A   E32D                       LDI     R18,61
+   \   0000008C   018E                       MOVW    R17 : R16,R29 : R28
+   \   0000008E   ....                       RCALL   ??WrByteTxBuf
+    910                  };
+    911                  if ( UartTest.E_TxBuf() != true  )
+   \                     ??main_5:
+   \   00000090   018E                       MOVW    R17 : R16,R29 : R28
+   \   00000092   ....                       RCALL   ??E_TxBuf
+   \   00000094   3001                       CPI     R16,1
+   \   00000096   F051                       BREQ    ??main_6
+    912                  {
+    913                  cTest = (unsigned char) ( aErRx[1] / 256 );
+   \   00000098   ....                       LDI     R30,LOW(aErRx)
+   \   0000009A   ....                       LDI     R31,(aErRx) >> 8
+   \   0000009C   8102                       LDD     R16,Z+2
+   \   0000009E   8103                       LDD     R16,Z+3
+   \   000000A0   9300....                   STS     cTest,R16
+    914                  UartTest.WrByteTxBuf(cTest);
+   \   000000A4   9120....                   LDS     R18,cTest
+   \   000000A8   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000AA   ....                       RCALL   ??WrByteTxBuf
+    915                  };
+    916                  if ( UartTest.E_TxBuf() != true  )
+   \                     ??main_6:
+   \   000000AC   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000AE   ....                       RCALL   ??E_TxBuf
+   \   000000B0   3001                       CPI     R16,1
+   \   000000B2   F051                       BREQ    ??main_7
+    917                  {
+    918                  cTest = (unsigned char) ( aErRx[1] % 256 );
+   \   000000B4   ....                       LDI     R30,LOW(aErRx)
+   \   000000B6   ....                       LDI     R31,(aErRx) >> 8
+   \   000000B8   8102                       LDD     R16,Z+2
+   \   000000BA   8113                       LDD     R17,Z+3
+   \   000000BC   9300....                   STS     cTest,R16
+    919                  UartTest.WrByteTxBuf(cTest);
+   \   000000C0   9120....                   LDS     R18,cTest
+   \   000000C4   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000C6   ....                       RCALL   ??WrByteTxBuf
+    920                  };                        
+    921              //
+    922              FlgPrint = false;
+   \                     ??main_7:
+   \   000000C8   E000                       LDI     R16,0
+   \   000000CA   9300....                   STS     FlgPrint,R16
+   \                     ??main_0:
+   \   000000CE   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000D0   ....                       RCALL   ??B_RxBuf
+   \   000000D2   3001                       CPI     R16,1
+   \   000000D4   F021                       BREQ    ??main_8
+   \   000000D6   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000D8   ....                       RCALL   ??RdByteRxBuf
+   \   000000DA   9300....                   STS     cTest,R16
+   \                     ??main_8:
+   \   000000DE   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000E0   ....                       RCALL   ??E_TxBuf
+   \   000000E2   3001                       CPI     R16,1
+   \   000000E4   F409                       BRNE    ??main_9
+   \   000000E6   CFB3                       RJMP    ??main_1
+   \                     ??main_9:
+   \   000000E8   9120....                   LDS     R18,cTest
+   \   000000EC   018E                       MOVW    R17 : R16,R29 : R28
+   \   000000EE   ....                       RCALL   ??WrByteTxBuf
+   \   000000F0   CFB6                       RJMP    ??main_2
+    923              };
+    924            // ?? module test 2
+    925            goto loop;  
+    926          }
+
+   \                                 In segment ABSOLUTE, at 0x3a
+   \   00000000                              DS 1
+
+   \                                 In segment ABSOLUTE, at 0x39
+   \   00000000                              DS 1
+
+   \                                 In segment INTVEC, offset 0x8, root
+   \   00000000   ........                   JMP     ??Ext_INT1
+
+   \                                 In segment INTVEC, offset 0x34, root
+   \   00000000   ........                   JMP     ??Uart0_RX
+
+   \                                 In segment INTVEC, offset 0x3c, root
+   \   00000000   ........                   JMP     ??Uart0_UDRE
+
+   \                                 In segment INTVEC, offset 0x44, root
+   \   00000000   ........                   JMP     ??Uart0_TX
+
+   \                                 In segment NEAR_ID, align 1, keep-with-next
+   \                     `?<Initializer for gl_speed>`:
+   \   00000000   2580                       DW 9600
+
+   Maximum stack usage in bytes:
+
+     Function                        CSTACK  RSTACK
+     --------                        ------  ------
+     Ext_INT1()                          5       0 
+     Uart0Baseclass::B_RxBuf             0       0 
+     Uart0Baseclass::B_TxBuf             0       0 
+     Uart0Baseclass::Clear               0       0 
+     Uart0Baseclass::ClearRxBuf          0       0 
+     Uart0Baseclass::ClearTxBuf          0       0 
+     Uart0Baseclass::E_RxBuf             0       0 
+     Uart0Baseclass::E_TxBuf             0       0 
+     Uart0Baseclass::InitUart           12       2 
+     Uart0Baseclass::RdByteRxBuf         0       0 
+     Uart0Baseclass::RdByteTxBuf         0       0 
+     Uart0Baseclass::Uart0_RX           30       2 
+     Uart0Baseclass::Uart0_TX           29       2 
+     Uart0Baseclass::Uart0_UDRE          5       0 
+     Uart0Baseclass::WrByteRxBuf         0       0 
+     Uart0Baseclass::WrByteTxBuf         0       0 
+     Uart0Baseclass::testfunc            0       0 
+     main                                2       2 
+       -> Uart0Baseclass::Clear          2       2 
+       -> Uart0Baseclass::ClearRxBuf
+                                         2       2 
+       -> Uart0Baseclass::ClearTxBuf
+                                         2       2 
+       -> Uart0Baseclass::InitUart       2       2 
+       -> Uart0Baseclass::E_TxBuf        2       2 
+       -> Uart0Baseclass::WrByteTxBuf
+                                         2       2 
+       -> Uart0Baseclass::E_TxBuf        2       2 
+       -> Uart0Baseclass::WrByteTxBuf
+                                         2       2 
+       -> Uart0Baseclass::E_TxBuf        2       2 
+       -> Uart0Baseclass::WrByteTxBuf
+                                         2       2 
+       -> Uart0Baseclass::E_TxBuf        2       2 
+       -> Uart0Baseclass::WrByteTxBuf
+                                         2       2 
+       -> Uart0Baseclass::E_TxBuf        2       2 
+       -> Uart0Baseclass::WrByteTxBuf
+                                         2       2 
+       -> Uart0Baseclass::B_RxBuf        2       2 
+       -> Uart0Baseclass::RdByteRxBuf
+                                         2       2 
+       -> Uart0Baseclass::E_TxBuf        2       2 
+       -> Uart0Baseclass::WrByteTxBuf
+                                         2       2 
+
+ 
+      6 bytes in segment ABSOLUTE
+   2210 bytes in segment CODE
+     12 bytes in segment INITTAB
+     16 bytes in segment INTVEC
+      2 bytes in segment NEAR_I
+      2 bytes in segment NEAR_ID
+     63 bytes in segment NEAR_Z
+ 
+   1034 bytes of CODE memory (+ 1206 bytes shared)
+     65 bytes of DATA memory (+ 6 bytes shared)
+
+Errors: none
+Warnings: 1
